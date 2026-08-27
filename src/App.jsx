@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   Sparkles
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { stateRules } from "./data/stateRules";
 
 const initialAnswers = {
