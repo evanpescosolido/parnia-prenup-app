@@ -1,6 +1,86 @@
-export const stateRules = {
+const communityPropertyStates = new Set(["AZ", "CA", "ID", "LA", "NV", "NM", "TX", "WA", "WI"]);
+
+const states = [
+  ["AL", "Alabama"],
+  ["AK", "Alaska"],
+  ["AZ", "Arizona"],
+  ["AR", "Arkansas"],
+  ["CA", "California"],
+  ["CO", "Colorado"],
+  ["CT", "Connecticut"],
+  ["DE", "Delaware"],
+  ["FL", "Florida"],
+  ["GA", "Georgia"],
+  ["HI", "Hawaii"],
+  ["ID", "Idaho"],
+  ["IL", "Illinois"],
+  ["IN", "Indiana"],
+  ["IA", "Iowa"],
+  ["KS", "Kansas"],
+  ["KY", "Kentucky"],
+  ["LA", "Louisiana"],
+  ["ME", "Maine"],
+  ["MD", "Maryland"],
+  ["MA", "Massachusetts"],
+  ["MI", "Michigan"],
+  ["MN", "Minnesota"],
+  ["MS", "Mississippi"],
+  ["MO", "Missouri"],
+  ["MT", "Montana"],
+  ["NE", "Nebraska"],
+  ["NV", "Nevada"],
+  ["NH", "New Hampshire"],
+  ["NJ", "New Jersey"],
+  ["NM", "New Mexico"],
+  ["NY", "New York"],
+  ["NC", "North Carolina"],
+  ["ND", "North Dakota"],
+  ["OH", "Ohio"],
+  ["OK", "Oklahoma"],
+  ["OR", "Oregon"],
+  ["PA", "Pennsylvania"],
+  ["RI", "Rhode Island"],
+  ["SC", "South Carolina"],
+  ["SD", "South Dakota"],
+  ["TN", "Tennessee"],
+  ["TX", "Texas"],
+  ["UT", "Utah"],
+  ["VT", "Vermont"],
+  ["VA", "Virginia"],
+  ["WA", "Washington"],
+  ["WV", "West Virginia"],
+  ["WI", "Wisconsin"],
+  ["WY", "Wyoming"]
+];
+
+const defaultSourceNotes = [
+  "Uniform Premarital Agreement Act or state-specific premarital agreement law where adopted",
+  "State domestic relations statutes and contract-law enforceability principles"
+];
+
+function buildRule(code, name) {
+  const isCommunityProperty = communityPropertyStates.has(code);
+  const propertySystem = isCommunityProperty ? "Community property" : "Equitable distribution";
+  const propertyContext = isCommunityProperty
+    ? "This state generally starts from a community-property framework, so separate property, marital/community property, appreciation, income, and debt classification should be addressed directly."
+    : "This state generally uses an equitable-distribution framework, so property division can depend on classification, fairness factors, disclosure, and judicial review.";
+
+  return {
+    name,
+    propertySystem,
+    prenupContext: `${name} generally permits premarital agreements, but enforceability depends on state-specific requirements such as voluntariness, adequate disclosure, formal execution, and public-policy limits. ${propertyContext}`,
+    postnupContext: `${name} may treat marital or postnuptial agreements differently from premarital agreements, so spouses should pay close attention to disclosure, fairness, independent counsel, and the duties owed after marriage.`,
+    timing: "Starting early helps reduce challenge risk tied to pressure, rushed review, incomplete disclosure, or last-minute signing.",
+    futureAssets:
+      "Future inheritances, gifts, appreciation, separate-property income, business growth, and later home purchases should be addressed expressly if protection is a goal.",
+    international:
+      "Foreign property can raise recognition, enforcement, tax, inheritance, title, and local-law issues beyond the selected state's family-law rules.",
+    sourceNotes: defaultSourceNotes
+  };
+}
+
+const stateOverrides = {
   MA: {
-    name: "Massachusetts",
     propertySystem: "Equitable distribution",
     prenupContext:
       "Massachusetts generally allows premarital agreements, but enforceability can turn on process, disclosure, voluntariness, and fairness when enforcement is sought.",
@@ -17,7 +97,6 @@ export const stateRules = {
     ]
   },
   CA: {
-    name: "California",
     propertySystem: "Community property",
     prenupContext:
       "California is a community-property state and has specific statutory requirements for premarital agreements, including voluntariness and process protections.",
@@ -29,13 +108,9 @@ export const stateRules = {
       "Future inheritance, gifts, separate-property appreciation, and business growth should be identified carefully to avoid later disputes over community-property claims.",
     international:
       "Cross-border assets may require California counsel plus counsel in the country where the asset is located.",
-    sourceNotes: [
-      "California Family Code sections 1500-1617",
-      "California Family Code section 721"
-    ]
+    sourceNotes: ["California Family Code sections 1500-1617", "California Family Code section 721"]
   },
   NY: {
-    name: "New York",
     propertySystem: "Equitable distribution",
     prenupContext:
       "New York generally allows premarital agreements, with enforceability depending on formal execution, disclosure, voluntariness, and fairness concerns.",
@@ -46,9 +121,10 @@ export const stateRules = {
       "Inheritances and gifts are often treated differently from marital property, but commingling, joint titling, and appreciation can complicate that treatment.",
     international:
       "International property may involve enforceability and ownership issues outside New York law.",
-    sourceNotes: [
-      "New York Domestic Relations Law section 236",
-      "New York contract and family-law enforceability principles"
-    ]
+    sourceNotes: ["New York Domestic Relations Law section 236", "New York contract and family-law enforceability principles"]
   }
 };
+
+export const stateRules = Object.fromEntries(
+  states.map(([code, name]) => [code, { ...buildRule(code, name), ...stateOverrides[code] }])
+);

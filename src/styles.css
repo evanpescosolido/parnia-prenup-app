@@ -306,6 +306,33 @@ select {
   padding: 8px 13px;
 }
 
+.asset-value-list {
+  background: #fbfaf7;
+  border: 1px solid #ded8ca;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.asset-value-row {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(180px, 1fr) minmax(160px, 260px);
+}
+
+.asset-value-row span {
+  color: #3f4b46;
+  font-weight: 650;
+}
+
+.asset-total {
+  color: #1f5f48;
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
 .mini-grid {
   align-items: center;
   display: grid;
@@ -405,6 +432,7 @@ li + li {
     flex-direction: column;
   }
 
+  .asset-value-row,
   .choice-grid.two,
   .report-grid,
   .mini-grid {

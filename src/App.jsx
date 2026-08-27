@@ -26,7 +26,9 @@ const initialAnswers = {
   counsel: "",
   disclosureStarted: "",
   currentAssets: [],
+  currentAssetValues: {},
   futureAssets: [],
+  futureAssetValues: {},
   internationalAssets: "",
   incomeGap: "",
   debts: "",
@@ -65,8 +67,21 @@ const futureAssetOptions = [
   "Income from separate property"
 ];
 
-function toggleValue(list, value) {
-  return list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
+function formatCurrency(value) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0
+  }).format(amount);
+}
+
+function getAssetTotal(assetValues) {
+  return Object.values(assetValues).reduce((total, value) => {
+    const amount = Number(value);
+    return Number.isFinite(amount) && amount > 0 ? total + amount : total;
+  }, 0);
 }
 
 function scoreAnswers(answers) {
@@ -150,8 +165,30 @@ function App() {
   const [stepIndex, setStepIndex] = useState(0);
   const rule = stateRules[answers.state];
   const result = useMemo(() => scoreAnswers(answers), [answers]);
+  const currentAssetTotal = useMemo(() => getAssetTotal(answers.currentAssetValues), [answers.currentAssetValues]);
+  const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
+  const toggleAsset = (groupKey, valueKey, asset) => {
+    setAnswers((current) => {
+      const isSelected = current[groupKey].includes(asset);
+      const nextValues = { ...current[valueKey] };
+      if (isSelected) delete nextValues[asset];
+      return {
+        ...current,
+        [groupKey]: isSelected ? current[groupKey].filter((item) => item !== asset) : [...current[groupKey], asset],
+        [valueKey]: nextValues
+      };
+    });
+  };
+  const setAssetValue = (groupKey, asset, value) =>
+    setAnswers((current) => ({
+      ...current,
+      [groupKey]: {
+        ...current[groupKey],
+        [asset]: value
+      }
+    }));
   const step = steps[stepIndex];
 
   return (
@@ -284,13 +321,33 @@ function App() {
                       className={answers.currentAssets.includes(asset) ? "chip selected" : "chip"}
                       key={asset}
                       type="button"
-                      onClick={() => setAnswer("currentAssets", toggleValue(answers.currentAssets, asset))}
+                      onClick={() => toggleAsset("currentAssets", "currentAssetValues", asset)}
                     >
                       {asset}
                     </button>
                   ))}
                 </div>
               </div>
+
+              {answers.currentAssets.length > 0 && (
+                <div className="asset-value-list">
+                  <p className="label-text">Estimated current values</p>
+                  {answers.currentAssets.map((asset) => (
+                    <label className="asset-value-row" key={asset}>
+                      <span>{asset}</span>
+                      <input
+                        min="0"
+                        inputMode="numeric"
+                        type="number"
+                        value={answers.currentAssetValues[asset] ?? ""}
+                        onChange={(event) => setAssetValue("currentAssetValues", asset, event.target.value)}
+                        placeholder="Estimated USD"
+                      />
+                    </label>
+                  ))}
+                  {currentAssetTotal > 0 && <p className="asset-total">Current estimated total: {formatCurrency(currentAssetTotal)}</p>}
+                </div>
+              )}
 
               <div>
                 <p className="label-text">Future asset topics</p>
@@ -300,13 +357,33 @@ function App() {
                       className={answers.futureAssets.includes(asset) ? "chip selected" : "chip"}
                       key={asset}
                       type="button"
-                      onClick={() => setAnswer("futureAssets", toggleValue(answers.futureAssets, asset))}
+                      onClick={() => toggleAsset("futureAssets", "futureAssetValues", asset)}
                     >
                       {asset}
                     </button>
                   ))}
                 </div>
               </div>
+
+              {answers.futureAssets.length > 0 && (
+                <div className="asset-value-list">
+                  <p className="label-text">Estimated future values</p>
+                  {answers.futureAssets.map((asset) => (
+                    <label className="asset-value-row" key={asset}>
+                      <span>{asset}</span>
+                      <input
+                        min="0"
+                        inputMode="numeric"
+                        type="number"
+                        value={answers.futureAssetValues[asset] ?? ""}
+                        onChange={(event) => setAssetValue("futureAssetValues", asset, event.target.value)}
+                        placeholder="Estimated USD"
+                      />
+                    </label>
+                  ))}
+                  {futureAssetTotal > 0 && <p className="asset-total">Future estimated total: {formatCurrency(futureAssetTotal)}</p>}
+                </div>
+              )}
 
               <div className="state-summary">
                 <Landmark size={20} aria-hidden="true" />
@@ -393,6 +470,17 @@ function App() {
                     <li>Whether international assets require local counsel in another country.</li>
                   </ul>
                 </article>
+
+                {(currentAssetTotal > 0 || futureAssetTotal > 0) && (
+                  <article>
+                    <h3>Asset value snapshot</h3>
+                    <ul>
+                      {currentAssetTotal > 0 && <li>Estimated current asset/debt topics total: {formatCurrency(currentAssetTotal)}.</li>}
+                      {futureAssetTotal > 0 && <li>Estimated future asset topics total: {formatCurrency(futureAssetTotal)}.</li>}
+                      <li>These are planning estimates only and should be replaced with formal disclosure numbers before signing.</li>
+                    </ul>
+                  </article>
+                )}
 
                 <article>
                   <h3>Source notes</h3>
