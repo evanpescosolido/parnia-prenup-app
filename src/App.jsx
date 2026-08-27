@@ -84,6 +84,93 @@ function getAssetTotal(assetValues) {
   }, 0);
 }
 
+function assetLabelWithValue(asset, assetValues) {
+  const formatted = formatCurrency(assetValues[asset]);
+  return formatted ? `${asset} (${formatted})` : asset;
+}
+
+function getRiskItems(answers, rule) {
+  const risks = [];
+  const currentAssets = answers.currentAssets.map((asset) => assetLabelWithValue(asset, answers.currentAssetValues));
+  const futureAssets = answers.futureAssets.map((asset) => assetLabelWithValue(asset, answers.futureAssetValues));
+
+  if (currentAssets.length > 0) {
+    risks.push(
+      `Current property and debt: ${currentAssets.join(", ")}. In divorce, these can become disputed if ownership, value, separate-property status, or responsibility for debt is unclear.`
+    );
+  }
+
+  if (futureAssets.length > 0) {
+    risks.push(
+      `Future property: ${futureAssets.join(", ")}. These are often where conflict appears later because the value may grow, change form, or be mixed with marital funds.`
+    );
+  }
+
+  if (answers.business === "yes") {
+    risks.push("Business interests may be vulnerable to disputes over valuation, future growth, spouse contributions, and whether appreciation is separate or marital/community property.");
+  }
+
+  if (answers.realEstate === "yes") {
+    risks.push("Real estate can be at risk when title, mortgage payments, renovations, appreciation, or use of joint funds make ownership less clean over time.");
+  }
+
+  if (answers.incomeGap === "yes" || answers.careerSacrifice === "yes") {
+    risks.push("Income gaps or career sacrifices can make support terms, fairness, and bargaining power especially important to discuss before signing.");
+  }
+
+  if (answers.debts === "yes") {
+    risks.push("Debt should be addressed directly so student loans, credit cards, business debt, or personal obligations are not accidentally treated as shared responsibility.");
+  }
+
+  if (answers.children === "yes") {
+    risks.push("Children can affect financial planning, housing needs, support expectations, and what terms a court may refuse to enforce as against public policy.");
+  }
+
+  if (answers.internationalAssets === "yes") {
+    risks.push("International assets may be hard to value or enforce against without local advice in the country where the property is located.");
+  }
+
+  if (answers.pressure === "yes") {
+    risks.push("The agreement itself may be at risk if someone feels pressured, rushed, or unable to review it with independent counsel.");
+  }
+
+  if (risks.length === 0) {
+    risks.push(
+      `No major asset category has been flagged yet, but ${rule.propertySystem.toLowerCase()} rules can still affect savings, income, property bought during marriage, and debt.`
+    );
+  }
+
+  return risks;
+}
+
+function getNextSteps(answers) {
+  const steps = [
+    "Make a complete list of assets, debts, expected inheritances, business interests, real estate, and estimated values.",
+    "Discuss the goal of the agreement in plain language before exchanging draft terms.",
+    "Ask a family-law attorney in the selected state what disclosures and process steps are needed."
+  ];
+
+  if (answers.mode === "prenup") {
+    steps.push("Start early enough that both people have time to review, negotiate, and decide without wedding-pressure concerns.");
+  } else {
+    steps.push("Ask counsel how postnup review differs from prenup review because spouses may already owe fiduciary duties to each other.");
+  }
+
+  if (answers.counsel !== "yes") {
+    steps.push("Consider separate counsel for each person, especially if there is a wealth gap, business, real estate, or family money involved.");
+  }
+
+  if (answers.disclosureStarted !== "yes") {
+    steps.push("Gather account statements, property documents, loan balances, tax records, and business documents before relying on any draft.");
+  }
+
+  if (answers.internationalAssets === "yes") {
+    steps.push("Identify which country controls each foreign asset and ask whether local counsel is needed there.");
+  }
+
+  return steps;
+}
+
 function scoreAnswers(answers) {
   let score = 0;
   const reasons = [];
@@ -167,6 +254,8 @@ function App() {
   const result = useMemo(() => scoreAnswers(answers), [answers]);
   const currentAssetTotal = useMemo(() => getAssetTotal(answers.currentAssetValues), [answers.currentAssetValues]);
   const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
+  const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
+  const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
   const toggleAsset = (groupKey, valueKey, asset) => {
@@ -445,7 +534,32 @@ function App() {
 
               <div className="report-grid">
                 <article>
-                  <h3>Why this may matter</h3>
+                  <h3>Why a prenup can be important</h3>
+                  <ul>
+                    <li>A prenup lets both people decide some financial rules in advance instead of leaving everything to default divorce law.</li>
+                    <li>It can protect separate property, family gifts, inheritances, business interests, and debt expectations if the relationship later ends.</li>
+                    <li>The process can force clearer disclosure and reduce surprises, which can matter even when the couple never divorces.</li>
+                    <li>It is not just about protecting the wealthier person; it can also create expectations for support, housing, or career sacrifices.</li>
+                  </ul>
+                </article>
+
+                <article>
+                  <h3>What may be most at risk</h3>
+                  <ul>
+                    {riskItems.map((risk) => (
+                      <li key={risk}>{risk}</li>
+                    ))}
+                  </ul>
+                </article>
+
+                <article>
+                  <h3>State context</h3>
+                  <p>{answers.mode === "prenup" ? rule.prenupContext : rule.postnupContext}</p>
+                  <p>{rule.timing}</p>
+                </article>
+
+                <article>
+                  <h3>Why this case may need planning</h3>
                   <ul>
                     {(result.reasons.length ? result.reasons : ["The current answers show fewer major complexity flags, but state-law process and disclosure still matter."]).map(
                       (reason) => (
@@ -456,9 +570,12 @@ function App() {
                 </article>
 
                 <article>
-                  <h3>State context</h3>
-                  <p>{answers.mode === "prenup" ? rule.prenupContext : rule.postnupContext}</p>
-                  <p>{rule.timing}</p>
+                  <h3>Recommended next steps</h3>
+                  <ul>
+                    {nextSteps.map((nextStep) => (
+                      <li key={nextStep}>{nextStep}</li>
+                    ))}
+                  </ul>
                 </article>
 
                 <article>
