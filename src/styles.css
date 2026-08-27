@@ -345,6 +345,27 @@ select {
   margin-bottom: 0;
 }
 
+.report-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.download-button {
+  align-items: center;
+  background: #113b35;
+  border: 1px solid #113b35;
+  border-radius: 8px;
+  color: #ffffff;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+
 .report-grid {
   display: grid;
   gap: 14px;
@@ -430,6 +451,11 @@ li + li {
   .report-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .report-actions {
+    align-items: flex-start;
+    flex-direction: column-reverse;
   }
 
   .asset-value-row,

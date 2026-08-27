@@ -171,6 +171,114 @@ function getNextSteps(answers) {
   return steps;
 }
 
+function addPdfSection(doc, title, lines, cursor) {
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const normalizedLines = Array.isArray(lines) ? lines : [lines];
+  let y = cursor;
+
+  if (y > pageHeight - 38) {
+    doc.addPage();
+    y = 20;
+  }
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.setTextColor(28, 37, 34);
+  doc.text(title, 18, y);
+  y += 8;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(63, 75, 70);
+
+  normalizedLines.forEach((line) => {
+    const wrapped = doc.splitTextToSize(line, 172);
+    if (y + wrapped.length * 5 > pageHeight - 18) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(wrapped, 22, y);
+    y += wrapped.length * 5 + 3;
+  });
+
+  return y + 4;
+}
+
+async function generateReportPdf({ answers, rule, result, currentAssetTotal, futureAssetTotal, riskItems, nextSteps }) {
+  const { jsPDF } = await import("jspdf");
+  const doc = new jsPDF({ unit: "mm", format: "letter" });
+  const generatedAt = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+  const pathLabel = answers.mode === "prenup" ? "Prenup readiness" : "Postnup readiness";
+  const scoreLabel = `${result.level} planning value`;
+
+  doc.setFillColor(17, 59, 53);
+  doc.rect(0, 0, 216, 42, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("Prenup Planner Report", 18, 20);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`${pathLabel} | ${rule.name} | Generated ${generatedAt}`, 18, 29);
+
+  doc.setFillColor(232, 196, 106);
+  doc.roundedRect(162, 12, 36, 18, 2, 2, "F");
+  doc.setTextColor(22, 51, 47);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text(String(result.score), 171, 24);
+  doc.setFontSize(8);
+  doc.text(scoreLabel, 18, 49);
+
+  let y = 60;
+  y = addPdfSection(doc, "Plain-English Summary", [
+    "A prenup lets both people decide some financial rules in advance instead of leaving everything to default divorce law.",
+    "It can protect separate property, family gifts, inheritances, business interests, and debt expectations if the relationship later ends.",
+    "It is not only about protecting the wealthier person. It can also set expectations around support, housing, disclosure, or career sacrifices."
+  ], y);
+
+  y = addPdfSection(doc, "What May Be Most At Risk In Divorce", riskItems, y);
+
+  y = addPdfSection(doc, "Recommended Next Steps", nextSteps, y);
+
+  y = addPdfSection(doc, "State Law Context", [
+    answers.mode === "prenup" ? rule.prenupContext : rule.postnupContext,
+    rule.timing,
+    rule.futureAssets,
+    rule.international
+  ], y);
+
+  if (currentAssetTotal > 0 || futureAssetTotal > 0) {
+    const assetLines = [];
+    if (currentAssetTotal > 0) assetLines.push(`Estimated current asset/debt topics total: ${formatCurrency(currentAssetTotal)}.`);
+    if (futureAssetTotal > 0) assetLines.push(`Estimated future asset topics total: ${formatCurrency(futureAssetTotal)}.`);
+    assetLines.push("These are planning estimates only and should be replaced with formal disclosure numbers before signing.");
+    y = addPdfSection(doc, "Asset Value Snapshot", assetLines, y);
+  }
+
+  y = addPdfSection(doc, "Attorney Discussion Topics", [
+    "Whether independent counsel is recommended for each person.",
+    "What financial disclosure should be prepared before negotiation.",
+    "How future inheritances, gifts, appreciation, and commingling should be handled.",
+    "Whether international assets require local counsel in another country."
+  ], y);
+
+  y = addPdfSection(doc, "Source Notes", rule.sourceNotes, y);
+
+  addPdfSection(
+    doc,
+    "Educational Use Note",
+    "This report is for educational planning and issue spotting only. It does not draft an agreement, provide legal advice, or replace legal counsel.",
+    y
+  );
+
+  doc.save(`prenup-planner-${answers.state.toLowerCase()}-report.pdf`);
+}
+
 function scoreAnswers(answers) {
   let score = 0;
   const reasons = [];
@@ -529,7 +637,27 @@ function App() {
                   <p className="eyebrow">Planning report</p>
                   <h2>{result.level} value in discussing an agreement</h2>
                 </div>
-                <div className={`score-badge ${result.level.toLowerCase()}`}>{result.score}</div>
+                <div className="report-actions">
+                  <button
+                    className="download-button"
+                    type="button"
+                    onClick={() =>
+                      generateReportPdf({
+                        answers,
+                        rule,
+                        result,
+                        currentAssetTotal,
+                        futureAssetTotal,
+                        riskItems,
+                        nextSteps
+                      })
+                    }
+                  >
+                    <FileText size={17} aria-hidden="true" />
+                    Download PDF
+                  </button>
+                  <div className={`score-badge ${result.level.toLowerCase()}`}>{result.score}</div>
+                </div>
               </div>
 
               <div className="report-grid">
