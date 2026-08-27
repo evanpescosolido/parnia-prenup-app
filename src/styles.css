@@ -327,6 +327,12 @@ select {
   font-weight: 650;
 }
 
+.income-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .asset-total {
   color: #1f5f48;
   font-weight: 800;
@@ -460,6 +466,7 @@ li + li {
 
   .asset-value-row,
   .choice-grid.two,
+  .income-grid,
   .report-grid,
   .mini-grid {
     grid-template-columns: 1fr;

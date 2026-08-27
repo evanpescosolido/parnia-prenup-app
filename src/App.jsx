@@ -32,6 +32,9 @@ const initialAnswers = {
   internationalAssets: "",
   foreignCountry: "",
   incomeGap: "",
+  currentAnnualIncome: "",
+  expectedAnnualIncome: "",
+  expectedIncomeGrowth: "",
   debts: "",
   business: "",
   realEstate: "",
@@ -85,6 +88,24 @@ function getAssetTotal(assetValues) {
   }, 0);
 }
 
+function getIncomeSnapshot(answers) {
+  const currentIncome = formatCurrency(answers.currentAnnualIncome);
+  const expectedIncome = formatCurrency(answers.expectedAnnualIncome);
+  const growthDetails = answers.expectedIncomeGrowth.trim();
+  const lines = [];
+
+  if (currentIncome) lines.push(`Estimated current annual income: ${currentIncome}.`);
+  if (expectedIncome) lines.push(`Estimated future annual income during the marriage: ${expectedIncome}.`);
+  if (growthDetails) lines.push(`Expected income growth context: ${growthDetails}.`);
+  if (lines.length > 0) {
+    lines.push(
+      "Income growth can matter because future earnings, lifestyle changes, business upside, support expectations, and community or marital-property claims may become disputed later."
+    );
+  }
+
+  return lines;
+}
+
 function assetLabelWithValue(asset, assetValues) {
   const formatted = formatCurrency(assetValues[asset]);
   return formatted ? `${asset} (${formatted})` : asset;
@@ -117,6 +138,10 @@ function getRiskItems(answers, rule) {
 
   if (answers.incomeGap === "yes" || answers.careerSacrifice === "yes") {
     risks.push("Income gaps or career sacrifices can make support terms, fairness, and bargaining power especially important to discuss before signing.");
+  }
+
+  if (getIncomeSnapshot(answers).length > 0) {
+    risks.push("Expected income or income growth during marriage may be relevant to support, lifestyle expectations, and whether future earnings or appreciation should be addressed.");
   }
 
   if (answers.debts === "yes") {
@@ -163,6 +188,10 @@ function getNextSteps(answers) {
 
   if (answers.disclosureStarted !== "yes") {
     steps.push("Gather account statements, property documents, loan balances, tax records, and business documents before relying on any draft.");
+  }
+
+  if (getIncomeSnapshot(answers).length > 0) {
+    steps.push("Discuss how current income, future raises, equity, bonuses, business growth, or career changes should be treated during the marriage.");
   }
 
   if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
@@ -309,6 +338,7 @@ async function generateReportPdf({
   futureAssetTotal,
   riskItems,
   nextSteps,
+  incomeSnapshot,
   foreignLawContext
 }) {
   const { jsPDF } = await import("jspdf");
@@ -350,6 +380,10 @@ async function generateReportPdf({
   y = addPdfSection(doc, "What May Be Most At Risk In Divorce", riskItems, y);
 
   y = addPdfSection(doc, "Recommended Next Steps", nextSteps, y);
+
+  if (incomeSnapshot.length > 0) {
+    y = addPdfSection(doc, "Expected Income And Growth", incomeSnapshot, y);
+  }
 
   y = addPdfSection(doc, "State Law Context", [
     answers.mode === "prenup" ? rule.prenupContext : rule.postnupContext,
@@ -475,6 +509,7 @@ function App() {
   const result = useMemo(() => scoreAnswers(answers), [answers]);
   const currentAssetTotal = useMemo(() => getAssetTotal(answers.currentAssetValues), [answers.currentAssetValues]);
   const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
+  const incomeSnapshot = useMemo(() => getIncomeSnapshot(answers), [answers]);
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
@@ -727,6 +762,43 @@ function App() {
                 <YesNo value={answers.incomeGap} onChange={(value) => setAnswer("incomeGap", value)} />
               </label>
 
+              <div className="asset-value-list">
+                <p className="label-text">Expected income and growth during the marriage</p>
+                <div className="income-grid">
+                  <label>
+                    Current estimated annual income
+                    <input
+                      min="0"
+                      inputMode="numeric"
+                      type="number"
+                      value={answers.currentAnnualIncome}
+                      onChange={(event) => setAnswer("currentAnnualIncome", event.target.value)}
+                      placeholder="Example: 95000"
+                    />
+                  </label>
+                  <label>
+                    Expected future annual income
+                    <input
+                      min="0"
+                      inputMode="numeric"
+                      type="number"
+                      value={answers.expectedAnnualIncome}
+                      onChange={(event) => setAnswer("expectedAnnualIncome", event.target.value)}
+                      placeholder="Example: 160000"
+                    />
+                  </label>
+                </div>
+                <label>
+                  Expected income growth context
+                  <input
+                    type="text"
+                    value={answers.expectedIncomeGrowth}
+                    onChange={(event) => setAnswer("expectedIncomeGrowth", event.target.value)}
+                    placeholder="Example: medical residency, law firm track, startup equity, family business"
+                  />
+                </label>
+              </div>
+
               <label>
                 Does either person own or expect to own a business?
                 <YesNo value={answers.business} onChange={(value) => setAnswer("business", value)} />
@@ -776,6 +848,7 @@ function App() {
                         futureAssetTotal,
                         riskItems,
                         nextSteps,
+                        incomeSnapshot,
                         foreignLawContext
                       })
                     }
@@ -821,6 +894,17 @@ function App() {
                       {foreignLawContext.summary}
                     </p>
                     <p>{foreignLawContext.nextStep}</p>
+                  </article>
+                )}
+
+                {incomeSnapshot.length > 0 && (
+                  <article>
+                    <h3>Expected income and growth</h3>
+                    <ul>
+                      {incomeSnapshot.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
                   </article>
                 )}
 
