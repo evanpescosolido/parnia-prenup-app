@@ -30,6 +30,7 @@ const initialAnswers = {
   futureAssets: [],
   futureAssetValues: {},
   internationalAssets: "",
+  foreignCountry: "",
   incomeGap: "",
   debts: "",
   business: "",
@@ -126,7 +127,7 @@ function getRiskItems(answers, rule) {
     risks.push("Children can affect financial planning, housing needs, support expectations, and what terms a court may refuse to enforce as against public policy.");
   }
 
-  if (answers.internationalAssets === "yes") {
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
     risks.push("International assets may be hard to value or enforce against without local advice in the country where the property is located.");
   }
 
@@ -164,11 +165,107 @@ function getNextSteps(answers) {
     steps.push("Gather account statements, property documents, loan balances, tax records, and business documents before relying on any draft.");
   }
 
-  if (answers.internationalAssets === "yes") {
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
     steps.push("Identify which country controls each foreign asset and ask whether local counsel is needed there.");
   }
 
   return steps;
+}
+
+function getForeignLawContext(countryInput) {
+  const country = countryInput.trim();
+  if (!country) {
+    return {
+      label: "Foreign jurisdiction not specified",
+      summary:
+        "Foreign assets may be governed by the law of the place where the asset is located, especially for real estate, title, inheritance, tax, and local enforcement.",
+      nextStep: "List each foreign country or jurisdiction before meeting with counsel so the attorney can check whether local legal advice is needed."
+    };
+  }
+
+  const normalized = country.toLowerCase();
+  const matches = [
+    {
+      terms: ["canada"],
+      label: "Canada",
+      summary:
+        "Canadian family-property rules vary by province, so the controlling law question may depend on where the asset is located and where the spouses live.",
+      nextStep: "Identify the province connected to the asset and ask whether Canadian provincial counsel should review title, inheritance, and enforceability."
+    },
+    {
+      terms: ["england", "wales", "united kingdom", "uk", "scotland"],
+      label: "United Kingdom",
+      summary:
+        "UK treatment can differ by jurisdiction, and nuptial agreements may be evaluated differently than in many US states. Local law may matter for property and enforcement.",
+      nextStep: "Clarify whether the asset is in England and Wales, Scotland, or Northern Ireland and ask about local advice before relying on US agreement language."
+    },
+    {
+      terms: ["mexico"],
+      label: "Mexico",
+      summary:
+        "Mexican property and marital-regime issues can depend on the state, title records, and whether the property is real estate or another asset type.",
+      nextStep: "Identify the Mexican state and asset type, then ask whether Mexican counsel should review title, marital-property treatment, and enforcement."
+    },
+    {
+      terms: ["india"],
+      label: "India",
+      summary:
+        "Indian law can raise separate questions around property title, inheritance, family law, religion-based personal law, and practical enforceability.",
+      nextStep: "Ask counsel whether Indian local advice is needed for ownership, inheritance, and whether the US agreement would be recognized in practice."
+    },
+    {
+      terms: ["china", "hong kong"],
+      label: "China / Hong Kong",
+      summary:
+        "Property located in China or Hong Kong may involve local ownership, transfer, inheritance, currency, and enforcement rules that a US agreement alone may not control.",
+      nextStep: "Separate mainland China and Hong Kong assets and ask counsel whether local advice is needed for title, transfer restrictions, and enforcement."
+    },
+    {
+      terms: ["france"],
+      label: "France",
+      summary:
+        "French marital-property and inheritance rules can differ substantially from US default rules, especially for real property and forced-heirship issues.",
+      nextStep: "Ask whether French counsel should review real estate, inheritance expectations, marital regime, and whether any separate French agreement is needed."
+    },
+    {
+      terms: ["italy"],
+      label: "Italy",
+      summary:
+        "Italian law may matter for real property, marital-property regime, inheritance, and local recording or enforcement issues.",
+      nextStep: "Ask counsel whether Italian advice is needed for property title, inheritance, and any local formalities."
+    },
+    {
+      terms: ["germany"],
+      label: "Germany",
+      summary:
+        "German marital-property, inheritance, and notarial/formality rules may affect how foreign assets are treated or documented.",
+      nextStep: "Ask whether German counsel or a notary is needed for property, inheritance, and enforceability questions."
+    },
+    {
+      terms: ["uae", "united arab emirates", "dubai", "abu dhabi"],
+      label: "United Arab Emirates",
+      summary:
+        "UAE assets can involve local property ownership, inheritance, family-law, and forum issues that may not track US assumptions.",
+      nextStep: "Identify the emirate connected to the asset and ask whether UAE counsel should review ownership, inheritance, and enforcement."
+    },
+    {
+      terms: ["australia"],
+      label: "Australia",
+      summary:
+        "Australian family-law treatment and enforceability may differ from US state law, and property location can still matter.",
+      nextStep: "Ask whether Australian counsel should review the agreement if meaningful assets, residence, or enforcement questions connect to Australia."
+    }
+  ];
+
+  const match = matches.find((item) => item.terms.some((term) => normalized.includes(term)));
+  if (match) return match;
+
+  return {
+    label: country,
+    summary:
+      `${country} may have its own rules for property title, inheritance, tax, marital-property classification, and whether a US prenup or postnup will be recognized.`,
+    nextStep: `Ask counsel to check whether local legal advice is needed in ${country}, especially if the asset is real estate, family property, business ownership, or inheritance-related.`
+  };
 }
 
 function addPdfSection(doc, title, lines, cursor) {
@@ -204,7 +301,16 @@ function addPdfSection(doc, title, lines, cursor) {
   return y + 4;
 }
 
-async function generateReportPdf({ answers, rule, result, currentAssetTotal, futureAssetTotal, riskItems, nextSteps }) {
+async function generateReportPdf({
+  answers,
+  rule,
+  result,
+  currentAssetTotal,
+  futureAssetTotal,
+  riskItems,
+  nextSteps,
+  foreignLawContext
+}) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
   const generatedAt = new Date().toLocaleDateString("en-US", {
@@ -251,6 +357,13 @@ async function generateReportPdf({ answers, rule, result, currentAssetTotal, fut
     rule.futureAssets,
     rule.international
   ], y);
+
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
+    y = addPdfSection(doc, "Foreign Asset Controlling-Law Note", [
+      `${foreignLawContext.label}: ${foreignLawContext.summary}`,
+      foreignLawContext.nextStep
+    ], y);
+  }
 
   if (currentAssetTotal > 0 || futureAssetTotal > 0) {
     const assetLines = [];
@@ -364,6 +477,7 @@ function App() {
   const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
+  const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
   const toggleAsset = (groupKey, valueKey, asset) => {
@@ -596,6 +710,18 @@ function App() {
                 <YesNo value={answers.internationalAssets} onChange={(value) => setAnswer("internationalAssets", value)} />
               </label>
 
+              {(answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") && (
+                <label>
+                  Foreign country or jurisdiction connected to the asset
+                  <input
+                    type="text"
+                    value={answers.foreignCountry}
+                    onChange={(event) => setAnswer("foreignCountry", event.target.value)}
+                    placeholder="Example: Canada, France, India, Dubai"
+                  />
+                </label>
+              )}
+
               <label>
                 Is there a meaningful income or wealth gap?
                 <YesNo value={answers.incomeGap} onChange={(value) => setAnswer("incomeGap", value)} />
@@ -649,7 +775,8 @@ function App() {
                         currentAssetTotal,
                         futureAssetTotal,
                         riskItems,
-                        nextSteps
+                        nextSteps,
+                        foreignLawContext
                       })
                     }
                   >
@@ -685,6 +812,17 @@ function App() {
                   <p>{answers.mode === "prenup" ? rule.prenupContext : rule.postnupContext}</p>
                   <p>{rule.timing}</p>
                 </article>
+
+                {(answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") && (
+                  <article>
+                    <h3>Foreign asset controlling-law note</h3>
+                    <p>
+                      <strong>{foreignLawContext.label}: </strong>
+                      {foreignLawContext.summary}
+                    </p>
+                    <p>{foreignLawContext.nextStep}</p>
+                  </article>
+                )}
 
                 <article>
                   <h3>Why this case may need planning</h3>
