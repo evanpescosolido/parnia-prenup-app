@@ -1,10 +1,11 @@
 import {
-  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
   BriefcaseBusiness,
   CheckCircle2,
+  CircleDollarSign,
+  Clock3,
   FileText,
   Globe2,
   HeartHandshake,
@@ -45,8 +46,8 @@ const initialAnswers = {
 
 const steps = [
   { id: "path", label: "Path", icon: HeartHandshake },
-  { id: "timing", label: "Timing", icon: AlertTriangle },
-  { id: "assets", label: "Assets", icon: Landmark },
+  { id: "timing", label: "Timing", icon: Clock3 },
+  { id: "assets", label: "Assets", icon: CircleDollarSign },
   { id: "complexity", label: "Complexity", icon: Globe2 },
   { id: "report", label: "Report", icon: FileText }
 ];
