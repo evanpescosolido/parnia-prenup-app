@@ -201,9 +201,62 @@ function getNextSteps(answers) {
   return steps;
 }
 
+function roundToNearest(value, interval) {
+  return Math.round(value / interval) * interval;
+}
+
+function formatCostRange(low, high, plus = false) {
+  return `${formatCurrency(low)}-${formatCurrency(high)}${plus ? "+" : ""}`;
+}
+
+function getStateCostAdjustment(stateCode) {
+  const highCostStates = new Set(["CA", "CT", "IL", "MA", "MD", "NJ", "NY", "VA", "WA"]);
+  const lowerCostStates = new Set([
+    "AL",
+    "AR",
+    "IA",
+    "ID",
+    "IN",
+    "KS",
+    "KY",
+    "LA",
+    "MO",
+    "MS",
+    "NE",
+    "ND",
+    "OK",
+    "SD",
+    "WV",
+    "WY"
+  ]);
+
+  if (highCostStates.has(stateCode)) {
+    return {
+      multiplier: 1.25,
+      label: "higher-cost legal market",
+      note: "The selected state is treated as a higher-cost legal market, so the estimate is adjusted upward."
+    };
+  }
+
+  if (lowerCostStates.has(stateCode)) {
+    return {
+      multiplier: 0.85,
+      label: "lower-cost legal market",
+      note: "The selected state is treated as a lower-cost legal market, so the estimate is adjusted downward."
+    };
+  }
+
+  return {
+    multiplier: 1,
+    label: "typical-cost legal market",
+    note: "The selected state is treated as a typical-cost legal market for this rough estimate."
+  };
+}
+
 function getCostEstimate(answers, result) {
   const factors = [];
   let tier = result.level;
+  const stateCost = getStateCostAdjustment(answers.state);
 
   if (answers.business === "yes") factors.push("business ownership or expected business growth");
   if (answers.realEstate === "yes") factors.push("real estate");
@@ -218,22 +271,31 @@ function getCostEstimate(answers, result) {
 
   const ranges = {
     Lower: {
-      range: "$1,500-$3,500",
+      low: 1500,
+      high: 3500,
       summary: "A simpler agreement with clear assets, modest negotiation, and fewer special issues may fall in this range."
     },
     Moderate: {
-      range: "$3,500-$7,500",
+      low: 3500,
+      high: 7500,
       summary: "A more customized agreement with meaningful assets, disclosure work, negotiation, or support terms often falls in this range."
     },
     High: {
-      range: "$7,500-$15,000+",
+      low: 7500,
+      high: 15000,
+      plus: true,
       summary: "Complex matters involving businesses, major real estate, foreign assets, high income, family wealth, or heavier negotiation can exceed this range."
     }
   };
+  const range = ranges[tier];
+  const adjustedLow = roundToNearest(range.low * stateCost.multiplier, 250);
+  const adjustedHigh = roundToNearest(range.high * stateCost.multiplier, 250);
 
   return {
     tier,
-    ...ranges[tier],
+    range: formatCostRange(adjustedLow, adjustedHigh, range.plus),
+    summary: range.summary,
+    stateCost,
     factors: factors.length > 0 ? factors : ["no major complexity factor selected yet"],
     note:
       "This is a rough US private-attorney drafting and review estimate. Actual cost depends on location, lawyer rates, negotiation, disclosure quality, and whether each person hires separate counsel."
@@ -423,8 +485,10 @@ async function generateReportPdf({
 
   y = addPdfSection(doc, "Estimated Attorney Cost", [
     `Estimated range: ${costEstimate.range}.`,
+    `State adjustment: ${rule.name} is treated as a ${costEstimate.stateCost.label}.`,
     costEstimate.summary,
     `Main cost drivers: ${costEstimate.factors.join(", ")}.`,
+    costEstimate.stateCost.note,
     costEstimate.note
   ], y);
 
@@ -982,8 +1046,12 @@ function App() {
                   <p>
                     <strong>{costEstimate.range}</strong>
                   </p>
+                  <p>
+                    State adjustment: {rule.name} is treated as a {costEstimate.stateCost.label}.
+                  </p>
                   <p>{costEstimate.summary}</p>
                   <p>Main cost drivers: {costEstimate.factors.join(", ")}.</p>
+                  <p>{costEstimate.stateCost.note}</p>
                   <p>{costEstimate.note}</p>
                 </article>
 
