@@ -713,7 +713,7 @@ function App() {
               </div>
 
               <label>
-                State law context
+                What state will the marriage license get filed?
                 <select value={answers.state} onChange={(event) => setAnswer("state", event.target.value)}>
                   {Object.entries(stateRules).map(([code, state]) => (
                     <option value={code} key={code}>
