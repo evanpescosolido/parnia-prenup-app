@@ -633,7 +633,7 @@ function App() {
 
         <div className="panel">
           {step.id === "path" && (
-            <FieldGroup title="Choose the planning path">
+            <FieldGroup title="Marital status">
               <div className="choice-grid two">
                 <ChoiceButton active={answers.mode === "prenup"} onClick={() => setAnswer("mode", "prenup")}>
                   <BadgeCheck size={22} aria-hidden="true" />
