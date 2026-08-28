@@ -201,6 +201,45 @@ function getNextSteps(answers) {
   return steps;
 }
 
+function getCostEstimate(answers, result) {
+  const factors = [];
+  let tier = result.level;
+
+  if (answers.business === "yes") factors.push("business ownership or expected business growth");
+  if (answers.realEstate === "yes") factors.push("real estate");
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") factors.push("foreign assets or enforcement questions");
+  if (answers.futureAssets.length > 0) factors.push("future inheritances, gifts, appreciation, or expected assets");
+  if (answers.incomeGap === "yes" || getIncomeSnapshot(answers).length > 0) factors.push("income gap or expected income growth");
+  if (answers.mode === "postnup") factors.push("postnup review after marriage");
+  if (answers.pressure === "yes") factors.push("timing or pressure concerns");
+
+  if (factors.length >= 4 || answers.internationalAssets === "yes") tier = "High";
+  if (tier === "Lower" && factors.length >= 2) tier = "Moderate";
+
+  const ranges = {
+    Lower: {
+      range: "$1,500-$3,500",
+      summary: "A simpler agreement with clear assets, modest negotiation, and fewer special issues may fall in this range."
+    },
+    Moderate: {
+      range: "$3,500-$7,500",
+      summary: "A more customized agreement with meaningful assets, disclosure work, negotiation, or support terms often falls in this range."
+    },
+    High: {
+      range: "$7,500-$15,000+",
+      summary: "Complex matters involving businesses, major real estate, foreign assets, high income, family wealth, or heavier negotiation can exceed this range."
+    }
+  };
+
+  return {
+    tier,
+    ...ranges[tier],
+    factors: factors.length > 0 ? factors : ["no major complexity factor selected yet"],
+    note:
+      "This is a rough US private-attorney drafting and review estimate. Actual cost depends on location, lawyer rates, negotiation, disclosure quality, and whether each person hires separate counsel."
+  };
+}
+
 function getForeignLawContext(countryInput) {
   const country = countryInput.trim();
   if (!country) {
@@ -338,6 +377,7 @@ async function generateReportPdf({
   futureAssetTotal,
   riskItems,
   nextSteps,
+  costEstimate,
   incomeSnapshot,
   foreignLawContext
 }) {
@@ -351,7 +391,7 @@ async function generateReportPdf({
   const pathLabel = answers.mode === "prenup" ? "Prenup readiness" : "Postnup readiness";
   const scoreLabel = `${result.level} planning value`;
 
-  doc.setFillColor(17, 59, 53);
+  doc.setFillColor(47, 52, 55);
   doc.rect(0, 0, 216, 42, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
@@ -361,9 +401,9 @@ async function generateReportPdf({
   doc.setFontSize(10);
   doc.text(`${pathLabel} | ${rule.name} | Generated ${generatedAt}`, 18, 29);
 
-  doc.setFillColor(232, 196, 106);
+  doc.setFillColor(216, 210, 200);
   doc.roundedRect(162, 12, 36, 18, 2, 2, "F");
-  doc.setTextColor(22, 51, 47);
+  doc.setTextColor(42, 45, 47);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
   doc.text(String(result.score), 171, 24);
@@ -380,6 +420,13 @@ async function generateReportPdf({
   y = addPdfSection(doc, "What May Be Most At Risk In Divorce", riskItems, y);
 
   y = addPdfSection(doc, "Recommended Next Steps", nextSteps, y);
+
+  y = addPdfSection(doc, "Estimated Attorney Cost", [
+    `Estimated range: ${costEstimate.range}.`,
+    costEstimate.summary,
+    `Main cost drivers: ${costEstimate.factors.join(", ")}.`,
+    costEstimate.note
+  ], y);
 
   if (incomeSnapshot.length > 0) {
     y = addPdfSection(doc, "Expected Income And Growth", incomeSnapshot, y);
@@ -512,6 +559,7 @@ function App() {
   const incomeSnapshot = useMemo(() => getIncomeSnapshot(answers), [answers]);
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
+  const costEstimate = useMemo(() => getCostEstimate(answers, result), [answers, result]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
@@ -848,6 +896,7 @@ function App() {
                         futureAssetTotal,
                         riskItems,
                         nextSteps,
+                        costEstimate,
                         incomeSnapshot,
                         foreignLawContext
                       })
@@ -926,6 +975,16 @@ function App() {
                       <li key={nextStep}>{nextStep}</li>
                     ))}
                   </ul>
+                </article>
+
+                <article>
+                  <h3>Estimated attorney cost</h3>
+                  <p>
+                    <strong>{costEstimate.range}</strong>
+                  </p>
+                  <p>{costEstimate.summary}</p>
+                  <p>Main cost drivers: {costEstimate.factors.join(", ")}.</p>
+                  <p>{costEstimate.note}</p>
                 </article>
 
                 <article>

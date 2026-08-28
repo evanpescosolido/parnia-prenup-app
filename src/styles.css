@@ -1,6 +1,6 @@
 :root {
-  color: #1c2522;
-  background: #f5f2ec;
+  color: #252525;
+  background: #f6f5f2;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
@@ -33,8 +33,8 @@ button {
 }
 
 .sidebar {
-  background: #113b35;
-  color: #f8f6ef;
+  background: #2f3437;
+  color: #fafafa;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -56,7 +56,7 @@ button {
 .brand span,
 .boundary-note p,
 .eyebrow {
-  color: rgba(248, 246, 239, 0.72);
+  color: rgba(250, 250, 250, 0.72);
   font-size: 0.82rem;
   margin: 0;
 }
@@ -71,7 +71,7 @@ button {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  color: #f8f6ef;
+  color: #fafafa;
   display: flex;
   gap: 10px;
   min-height: 44px;
@@ -80,9 +80,9 @@ button {
 }
 
 .step.active {
-  background: #e8c46a;
-  border-color: #e8c46a;
-  color: #16332f;
+  background: #d8d2c8;
+  border-color: #d8d2c8;
+  color: #2a2d2f;
 }
 
 .boundary-note {
@@ -157,7 +157,7 @@ h3 {
 
 .score-pill {
   background: #ffffff;
-  border: 1px solid #ded8ca;
+  border: 1px solid #d9d6cf;
   padding: 10px 14px;
 }
 
@@ -171,24 +171,24 @@ h3 {
 
 .score-pill.high,
 .score-badge.high {
-  color: #8f2f1d;
+  color: #6b4d47;
 }
 
 .score-pill.moderate,
 .score-badge.moderate {
-  color: #826214;
+  color: #6b604f;
 }
 
 .score-pill.lower,
 .score-badge.lower {
-  color: #277153;
+  color: #6f766f;
 }
 
 .panel {
   background: #ffffff;
-  border: 1px solid #ded8ca;
+  border: 1px solid #d9d6cf;
   border-radius: 8px;
-  box-shadow: 0 18px 50px rgba(29, 39, 34, 0.08);
+  box-shadow: 0 18px 50px rgba(38, 38, 38, 0.08);
   min-height: 520px;
   padding: 28px;
 }
@@ -204,7 +204,7 @@ h3 {
 
 label,
 .label-text {
-  color: #37423d;
+  color: #3c3f41;
   display: grid;
   font-weight: 760;
   gap: 9px;
@@ -212,10 +212,10 @@ label,
 
 input,
 select {
-  background: #fbfaf7;
-  border: 1px solid #cfc7b7;
+  background: #fbfbfa;
+  border: 1px solid #d0ccc3;
   border-radius: 8px;
-  color: #1d2824;
+  color: #252525;
   min-height: 44px;
   padding: 10px 12px;
 }
@@ -231,10 +231,10 @@ select {
 
 .choice {
   align-items: flex-start;
-  background: #fbfaf7;
-  border: 1px solid #d8d1c4;
+  background: #fbfbfa;
+  border: 1px solid #d9d6cf;
   border-radius: 8px;
-  color: #1c2522;
+  color: #252525;
   display: grid;
   gap: 8px;
   min-height: 132px;
@@ -248,15 +248,15 @@ select {
 
 .choice.active,
 .chip.selected {
-  background: #eff8f4;
-  border-color: #277153;
-  box-shadow: inset 0 0 0 1px #277153;
+  background: #f0efec;
+  border-color: #6f766f;
+  box-shadow: inset 0 0 0 1px #6f766f;
 }
 
 .state-summary {
   align-items: flex-start;
-  background: #f2f6f1;
-  border-left: 4px solid #277153;
+  background: #f3f2ef;
+  border-left: 4px solid #6f766f;
   border-radius: 8px;
   display: flex;
   gap: 12px;
@@ -269,7 +269,7 @@ select {
 }
 
 .segmented {
-  background: #ece7dc;
+  background: #e9e6df;
   border-radius: 8px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -287,7 +287,7 @@ select {
 
 .segmented button.active {
   background: #ffffff;
-  color: #183a35;
+  color: #2a2d2f;
   font-weight: 800;
 }
 
@@ -298,17 +298,17 @@ select {
 }
 
 .chip {
-  background: #fbfaf7;
-  border: 1px solid #d8d1c4;
+  background: #fbfbfa;
+  border: 1px solid #d9d6cf;
   border-radius: 999px;
-  color: #26312d;
+  color: #303234;
   min-height: 38px;
   padding: 8px 13px;
 }
 
 .asset-value-list {
-  background: #fbfaf7;
-  border: 1px solid #ded8ca;
+  background: #fbfbfa;
+  border: 1px solid #d9d6cf;
   border-radius: 8px;
   display: grid;
   gap: 12px;
@@ -334,7 +334,7 @@ select {
 }
 
 .asset-total {
-  color: #1f5f48;
+  color: #4d655c;
   font-weight: 800;
   margin-bottom: 0;
 }
@@ -359,8 +359,8 @@ select {
 
 .download-button {
   align-items: center;
-  background: #113b35;
-  border: 1px solid #113b35;
+  background: #2f3437;
+  border: 1px solid #2f3437;
   border-radius: 8px;
   color: #ffffff;
   display: inline-flex;
@@ -380,8 +380,8 @@ select {
 }
 
 .report-grid article {
-  background: #fbfaf7;
-  border: 1px solid #ded8ca;
+  background: #fbfbfa;
+  border: 1px solid #d9d6cf;
   border-radius: 8px;
   padding: 18px;
 }
@@ -402,9 +402,9 @@ li + li {
 .controls button {
   align-items: center;
   background: #ffffff;
-  border: 1px solid #cfc7b7;
+  border: 1px solid #d0ccc3;
   border-radius: 8px;
-  color: #1d2824;
+  color: #252525;
   display: inline-flex;
   gap: 8px;
   justify-content: center;
@@ -419,8 +419,8 @@ li + li {
 }
 
 .controls .primary {
-  background: #113b35;
-  border-color: #113b35;
+  background: #2f3437;
+  border-color: #2f3437;
   color: #ffffff;
 }
 
