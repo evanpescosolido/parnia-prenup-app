@@ -447,6 +447,85 @@ select {
   padding: 18px;
 }
 
+.cartoon-panel {
+  background: #ffffff;
+  border: 1px solid #d9d6cf;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.cartoon-panel svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.cartoon-bg {
+  fill: #f0efec;
+  stroke: #2f3437;
+  stroke-width: 3;
+}
+
+.cartoon-tornado {
+  fill: #d8d2c8;
+  opacity: 0.95;
+  stroke: #6b604f;
+  stroke-width: 4;
+}
+
+.cartoon-paper rect,
+.cartoon-house rect,
+.cartoon-money rect {
+  fill: #ffffff;
+  stroke: #2f3437;
+  stroke-width: 4;
+}
+
+.cartoon-paper path {
+  stroke: #6f766f;
+  stroke-linecap: round;
+  stroke-width: 5;
+}
+
+.cartoon-paper text,
+.cartoon-money text,
+.cartoon-caption {
+  fill: #2f3437;
+  font-family: inherit;
+  font-weight: 850;
+}
+
+.cartoon-house path {
+  fill: #b9afa0;
+  stroke: #2f3437;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.cartoon-house rect:nth-child(3) {
+  fill: #d8d2c8;
+}
+
+.cartoon-gavel rect {
+  fill: #6b4d47;
+  stroke: #2f3437;
+  stroke-width: 3;
+}
+
+.cartoon-money rect {
+  fill: #d8d2c8;
+}
+
+.cartoon-money text {
+  font-size: 28px;
+}
+
+.cartoon-caption {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
 .story-card p {
   color: #3f4b46;
   line-height: 1.55;
@@ -464,11 +543,17 @@ select {
   gap: 8px;
 }
 
+.stat-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
 .stat-row {
   background: #ffffff;
   border: 1px solid #d9d6cf;
   border-radius: 8px;
-  margin-bottom: 14px;
   padding: 14px;
 }
 
@@ -624,6 +709,7 @@ li + li {
   .consequence-grid,
   .income-grid,
   .report-grid,
+  .stat-grid,
   .mini-grid {
     grid-template-columns: 1fr;
   }

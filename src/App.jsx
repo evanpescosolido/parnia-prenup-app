@@ -151,14 +151,17 @@ const translations = {
     storyTitle: "If no agreement exists",
     statisticsTitle: "Divorce statistics context",
     statisticsDisclaimer:
-      "This is benchmark context, not a prediction. Relationship data cannot reliably calculate one couple's divorce odds from a short planning questionnaire.",
+      "This is state-specific planning context, not a prediction. Relationship data cannot reliably calculate one couple's divorce odds from a short questionnaire.",
     baselineRate:
-      "A commonly cited broad US benchmark is that roughly 40%-50% of first marriages eventually end in divorce, with estimates varying by cohort, age, education, prior marriages, and data source.",
+      "State divorce-rate benchmarks are shown as annual divorces per 1,000 residents, then adjusted only as an illustrative stressor lens.",
     complexityImpact:
-      "The answers here are better at estimating divorce complexity than divorce probability. More assets, debt, timing pressure, income growth, or international property usually means a messier separation if divorce happens.",
+      "The stressor adjustment is not a real actuarial forecast. It is meant to show that more financial complexity can make a divorce harder, more expensive, and more chaotic if it happens.",
     selectedStressors: "Selected stressors",
     noStressors: "No major stressors selected yet.",
     estimatedDisputeExposure: "Estimated dispute exposure",
+    stateBenchmark: "State benchmark",
+    stressAdjustedRate: "Stressor-adjusted context",
+    rateNote: "annual divorces per 1,000 residents",
     exposureLower: "Lower",
     exposureModerate: "Moderate",
     exposureHigh: "High",
@@ -468,6 +471,59 @@ const futureAssetOptions = [
   "Income from separate property"
 ];
 
+const stateDivorceBenchmarks = {
+  AL: 3.6,
+  AK: 3.5,
+  AZ: 2.4,
+  AR: 3.6,
+  CA: 1.6,
+  CO: 2.9,
+  CT: 1.6,
+  DE: 2.3,
+  FL: 3.2,
+  GA: 2.1,
+  HI: 1.4,
+  ID: 3.8,
+  IL: 1.3,
+  IN: 2.4,
+  IA: 1.7,
+  KS: 2.3,
+  KY: 3.1,
+  LA: 1.7,
+  ME: 2.8,
+  MD: 1.6,
+  MA: 1.0,
+  MI: 2.4,
+  MN: 1.6,
+  MS: 2.5,
+  MO: 2.7,
+  MT: 2.5,
+  NE: 2.6,
+  NV: 4.2,
+  NH: 2.6,
+  NJ: 2.2,
+  NM: 2.5,
+  NY: 1.8,
+  NC: 2.6,
+  ND: 2.5,
+  OH: 2.6,
+  OK: 3.8,
+  OR: 2.5,
+  PA: 2.3,
+  RI: 2.2,
+  SC: 2.5,
+  SD: 2.5,
+  TN: 3.3,
+  TX: 1.8,
+  UT: 3.0,
+  VT: 2.7,
+  VA: 2.9,
+  WA: 2.6,
+  WV: 3.2,
+  WI: 2.1,
+  WY: 3.3
+};
+
 function getCopy(language) {
   const selected = translations[language] ?? {};
   return {
@@ -741,30 +797,48 @@ function getConsequenceContext(answers, result, currentAssetTotal, futureAssetTo
   return { stressors, exposure };
 }
 
+function getDivorceRateContext(answers, consequenceContext) {
+  const baseRate = stateDivorceBenchmarks[answers.state] ?? 2.4;
+  const stressorWeight = consequenceContext.stressors.reduce((total, stressor) => {
+    if (stressor.includes("foreign") || stressor.includes("business") || stressor.includes("real estate")) return total + 0.25;
+    if (stressor.includes("income") || stressor.includes("career") || stressor.includes("debt")) return total + 0.18;
+    if (stressor.includes("pressure") || stressor.includes("future")) return total + 0.14;
+    return total + 0.08;
+  }, 0);
+  const adjustedRate = Math.min(baseRate + stressorWeight, baseRate + 1.4);
+  const roundedAdjustedRate = Math.round(adjustedRate * 10) / 10;
+
+  return {
+    baseRate,
+    adjustedRate: roundedAdjustedRate,
+    adjustment: Math.round((roundedAdjustedRate - baseRate) * 10) / 10
+  };
+}
+
 function getConsequenceStory(answers, rule, context, costEstimate) {
   const agreementName = answers.mode === "prenup" ? "prenup" : "postnup";
   const assetPhrase = answers.currentAssets.length
-    ? `The first argument starts with ${answers.currentAssets.slice(0, 3).join(", ").toLowerCase()}`
-    : "The first argument starts with a checking account, a vague memory of who paid for what, and one spreadsheet named FINAL-final-use-this-one.xlsx";
+    ? `The first argument starts with ${answers.currentAssets.slice(0, 3).join(", ").toLowerCase()}, then escalates until a perfectly normal bank statement is being treated like evidence from a submarine trial`
+    : "The first argument starts with a checking account, a vague memory of who paid for what, and one spreadsheet named FINAL-final-use-this-one.xlsx that everyone swears is the real one this time";
   const futurePhrase = answers.futureAssets.length
-    ? `Then someone remembers the ${answers.futureAssets.slice(0, 2).join(" and ").toLowerCase()} that was supposed to be simple. It is not simple.`
+    ? `Then someone remembers the ${answers.futureAssets.slice(0, 2).join(" and ").toLowerCase()} that was supposed to be simple. It immediately grows a mustache, hires a valuation expert, and becomes three separate arguments.`
     : "Then the conversation finds future money anyway, because future money has excellent timing and terrible manners.";
   const internationalPhrase =
     answers.internationalAssets === "yes" || answers.internationalAssets === "unsure"
-      ? `A foreign-asset issue appears, and suddenly the divorce has side quests in ${answers.foreignCountry || "another country"}.`
-      : "At least there is no foreign-asset side quest. Small mercy.";
+      ? `A foreign-asset issue appears, and suddenly the divorce has an international subplot in ${answers.foreignCountry || "another country"}, complete with time zones, stamps, and one document nobody can find.`
+      : "At least there is no foreign-asset subplot. Small mercy, though the paperwork still brought tap shoes.";
   const incomePhrase =
     answers.incomeGap === "yes" || getIncomeSnapshot(answers).length > 0
-      ? "Income growth becomes a debate about what was earned, what was expected, and whose sacrifices made the lifestyle possible."
-      : "Income is less dramatic here, which is good. The paperwork finds plenty of other ways to be annoying.";
+      ? "Income growth becomes a courtroom weather system: bonuses raining sideways, equity fog, and everyone arguing about who packed the umbrella."
+      : "Income is less dramatic here, which is good. The paperwork still finds a way to enter wearing a cape.";
 
   return [
-    `Imagine nobody signs a ${agreementName}. Years later, the relationship ends, and ${rule.name}'s default ${rule.propertySystem.toLowerCase()} rules walk into the room carrying a clipboard.`,
+    `Imagine nobody signs a ${agreementName}. Years later, the relationship ends, and ${rule.name}'s default ${rule.propertySystem.toLowerCase()} rules burst through the wall holding a clipboard and a tiny gavel.`,
     `${assetPhrase}. ${futurePhrase}`,
     `${internationalPhrase} ${incomePhrase}`,
-    `Instead of calmly pointing to a signed agreement, everyone pays lawyers to reconstruct intent from old emails, bank transfers, half-remembered conversations, and screenshots that somehow all have 3% battery.`,
-    `The estimated attorney-cost range for drafting now is ${costEstimate.range}. The cost of fighting later is not shown here because the app is educational, not cruel.`,
-    `Dispute exposure based on the current answers: ${context.exposure}. Translation: the ${agreementName} conversation may be awkward now, but future-you may consider that a bargain.`
+    `Instead of calmly pointing to a signed agreement, everyone pays lawyers to reconstruct intent from old emails, bank transfers, half-remembered conversations, and screenshots that somehow all have 3% battery and the emotional tone of a hostage note.`,
+    `The estimated attorney-cost range for drafting now is ${costEstimate.range}. The cost of fighting later is not shown here because the app is educational, not a haunted cash register.`,
+    `Dispute exposure based on the current answers: ${context.exposure}. Translation: the ${agreementName} conversation may be awkward now, but future-you may send present-you a fruit basket and a notarized thank-you card.`
   ];
 }
 
@@ -1071,6 +1145,38 @@ function YesNo({ copy, value, onChange }) {
   );
 }
 
+function DivorceCartoon({ exposure }) {
+  return (
+    <div className={`cartoon-panel ${exposure.toLowerCase()}`} aria-hidden="true">
+      <svg viewBox="0 0 420 220" role="img">
+        <rect className="cartoon-bg" x="8" y="8" width="404" height="204" rx="18" />
+        <path className="cartoon-tornado" d="M224 46 C294 35 330 72 265 91 C207 108 323 119 281 148 C247 172 184 157 210 133 C230 114 158 108 174 82 C184 64 200 53 224 46 Z" />
+        <g className="cartoon-paper">
+          <rect x="48" y="48" width="74" height="92" rx="6" />
+          <path d="M62 72 H108 M62 91 H103 M62 110 H96" />
+          <text x="67" y="133">PRE?</text>
+        </g>
+        <g className="cartoon-house">
+          <path d="M294 130 L342 92 L390 130 Z" />
+          <rect x="306" y="130" width="70" height="54" rx="4" />
+          <rect x="334" y="151" width="18" height="33" />
+        </g>
+        <g className="cartoon-money">
+          <rect x="185" y="32" width="62" height="32" rx="6" />
+          <text x="203" y="55">$</text>
+          <rect x="131" y="151" width="58" height="30" rx="6" />
+          <text x="149" y="173">$</text>
+        </g>
+        <g className="cartoon-gavel">
+          <rect x="254" y="50" width="12" height="74" rx="4" transform="rotate(43 260 87)" />
+          <rect x="268" y="34" width="58" height="24" rx="5" transform="rotate(43 297 46)" />
+        </g>
+        <text className="cartoon-caption" x="30" y="200">NO AGREEMENT? THE PAPERWORK GETS CREATIVE.</text>
+      </svg>
+    </div>
+  );
+}
+
 function App() {
   const [answers, setAnswers] = useState(initialAnswers);
   const [language, setLanguage] = useState("en");
@@ -1087,6 +1193,10 @@ function App() {
   const consequenceContext = useMemo(
     () => getConsequenceContext(answers, result, currentAssetTotal, futureAssetTotal),
     [answers, result, currentAssetTotal, futureAssetTotal]
+  );
+  const divorceRateContext = useMemo(
+    () => getDivorceRateContext(answers, consequenceContext),
+    [answers, consequenceContext]
   );
   const consequenceStory = useMemo(
     () => getConsequenceStory(answers, rule, consequenceContext, costEstimate),
@@ -1438,6 +1548,7 @@ function App() {
 
               <div className="consequence-grid">
                 <article className="story-card">
+                  <DivorceCartoon exposure={consequenceContext.exposure} />
                   <h3>{copy.storyTitle}</h3>
                   {consequenceStory.map((line) => (
                     <p key={line}>{line}</p>
@@ -1450,10 +1561,21 @@ function App() {
                     <BarChart3 size={20} aria-hidden="true" />
                     <h3>{copy.statisticsTitle}</h3>
                   </div>
-                  <div className="stat-row">
-                    <span>40%-50%</span>
-                    <p>{copy.baselineRate}</p>
+                  <div className="stat-grid">
+                    <div className="stat-row">
+                      <span>{divorceRateContext.baseRate.toFixed(1)}</span>
+                      <p>
+                        {rule.name} {copy.stateBenchmark}: {copy.rateNote}.
+                      </p>
+                    </div>
+                    <div className="stat-row">
+                      <span>{divorceRateContext.adjustedRate.toFixed(1)}</span>
+                      <p>
+                        {copy.stressAdjustedRate}: +{divorceRateContext.adjustment.toFixed(1)} from selected stressors.
+                      </p>
+                    </div>
                   </div>
+                  <p>{copy.baselineRate}</p>
                   <p>{copy.complexityImpact}</p>
                   <h3>{copy.selectedStressors}</h3>
                   {consequenceContext.stressors.length > 0 ? (
