@@ -114,6 +114,32 @@ button {
   margin-bottom: 24px;
 }
 
+.topbar-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.language-select {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.language-select span {
+  color: #5f6b65;
+  font-size: 0.82rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.language-select select {
+  min-height: 40px;
+  min-width: 132px;
+}
+
 .topbar .eyebrow,
 .report .eyebrow {
   color: #5f6b65;
@@ -456,6 +482,18 @@ li + li {
   .topbar,
   .report-header {
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .topbar-actions {
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .language-select {
+    align-items: stretch;
     flex-direction: column;
   }
 
