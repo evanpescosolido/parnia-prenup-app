@@ -372,6 +372,115 @@ select {
   grid-template-columns: minmax(120px, 180px) minmax(240px, 420px);
 }
 
+.consequences {
+  display: grid;
+  gap: 18px;
+}
+
+.consequence-hero {
+  align-items: flex-start;
+  background: #f3f2ef;
+  border: 1px solid #d9d6cf;
+  border-radius: 8px;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.consequence-hero h2 {
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+}
+
+.consequence-hero p:last-child,
+.story-card p:last-child,
+.stats-card p:last-child {
+  margin-bottom: 0;
+}
+
+.exposure-meter {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d9d6cf;
+  border-radius: 8px;
+  display: grid;
+  flex: 0 0 190px;
+  gap: 6px;
+  padding: 14px;
+}
+
+.exposure-meter span {
+  color: #5f6b65;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.exposure-meter strong {
+  font-size: 1.6rem;
+}
+
+.exposure-meter.high {
+  color: #6b4d47;
+}
+
+.exposure-meter.moderate {
+  color: #6b604f;
+}
+
+.exposure-meter.lower {
+  color: #6f766f;
+}
+
+.consequence-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+}
+
+.story-card,
+.stats-card {
+  background: #fbfbfa;
+  border: 1px solid #d9d6cf;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.story-card p {
+  color: #3f4b46;
+  line-height: 1.55;
+}
+
+.story-note {
+  color: #6f766f;
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+
+.stats-title {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.stat-row {
+  background: #ffffff;
+  border: 1px solid #d9d6cf;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
+.stat-row span {
+  color: #2f3437;
+  display: block;
+  font-size: 2rem;
+  font-weight: 850;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
 .report h2 {
   font-size: 1.75rem;
   margin-bottom: 0;
@@ -460,7 +569,7 @@ li + li {
   }
 
   .step-list {
-    grid-template-columns: repeat(5, minmax(48px, 1fr));
+    grid-template-columns: repeat(6, minmax(44px, 1fr));
   }
 
   .step {
@@ -502,8 +611,17 @@ li + li {
     flex-direction: column-reverse;
   }
 
+  .consequence-hero {
+    flex-direction: column;
+  }
+
+  .exposure-meter {
+    width: 100%;
+  }
+
   .asset-value-row,
   .choice-grid.two,
+  .consequence-grid,
   .income-grid,
   .report-grid,
   .mini-grid {

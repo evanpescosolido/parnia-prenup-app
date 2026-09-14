@@ -1,7 +1,9 @@
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
+  BarChart3,
   BriefcaseBusiness,
   CheckCircle2,
   CircleDollarSign,
@@ -49,6 +51,7 @@ const steps = [
   { id: "timing", label: "Timing", icon: Clock3 },
   { id: "assets", label: "Assets", icon: CircleDollarSign },
   { id: "complexity", label: "Complexity", icon: Globe2 },
+  { id: "consequences", label: "Consequences", icon: AlertTriangle },
   { id: "report", label: "Report", icon: FileText }
 ];
 
@@ -72,6 +75,7 @@ const translations = {
       timing: "Timing",
       assets: "Assets",
       complexity: "Complexity",
+      consequences: "Consequences",
       report: "Report"
     },
     yes: "Yes",
@@ -141,7 +145,24 @@ const translations = {
     ],
     assetSnapshot: "Asset value snapshot",
     assetEstimateNote: "These are planning estimates only and should be replaced with formal disclosure numbers before signing.",
-    sourceNotes: "Source notes"
+    sourceNotes: "Source notes",
+    consequencesTitle: "Consequences simulator",
+    storyEyebrow: "Slightly dramatic scenario",
+    storyTitle: "If no agreement exists",
+    statisticsTitle: "Divorce statistics context",
+    statisticsDisclaimer:
+      "This is benchmark context, not a prediction. Relationship data cannot reliably calculate one couple's divorce odds from a short planning questionnaire.",
+    baselineRate:
+      "A commonly cited broad US benchmark is that roughly 40%-50% of first marriages eventually end in divorce, with estimates varying by cohort, age, education, prior marriages, and data source.",
+    complexityImpact:
+      "The answers here are better at estimating divorce complexity than divorce probability. More assets, debt, timing pressure, income growth, or international property usually means a messier separation if divorce happens.",
+    selectedStressors: "Selected stressors",
+    noStressors: "No major stressors selected yet.",
+    estimatedDisputeExposure: "Estimated dispute exposure",
+    exposureLower: "Lower",
+    exposureModerate: "Moderate",
+    exposureHigh: "High",
+    storyRefreshNote: "The story updates as the answers change."
   },
   es: {
     brandTitle: "Planificador Prenupcial",
@@ -150,7 +171,7 @@ const translations = {
     prototype: "Prototipo v1",
     languageLabel: "Idioma",
     planningValue: "valor de planificación",
-    steps: { path: "Ruta", timing: "Tiempo", assets: "Activos", complexity: "Complejidad", report: "Reporte" },
+    steps: { path: "Ruta", timing: "Tiempo", assets: "Activos", complexity: "Complejidad", consequences: "Consecuencias", report: "Reporte" },
     yes: "Sí",
     no: "No",
     unsure: "No estoy seguro",
@@ -227,7 +248,7 @@ const translations = {
     prototype: "نموذج أولي v1",
     languageLabel: "اللغة",
     planningValue: "قيمة التخطيط",
-    steps: { path: "المسار", timing: "التوقيت", assets: "الأصول", complexity: "التعقيد", report: "التقرير" },
+    steps: { path: "المسار", timing: "التوقيت", assets: "الأصول", complexity: "التعقيد", consequences: "العواقب", report: "التقرير" },
     yes: "نعم",
     no: "لا",
     unsure: "غير متأكد",
@@ -304,7 +325,7 @@ const translations = {
     prototype: "原型 v1",
     languageLabel: "语言",
     planningValue: "规划价值",
-    steps: { path: "路径", timing: "时间", assets: "资产", complexity: "复杂度", report: "报告" },
+    steps: { path: "路径", timing: "时间", assets: "资产", complexity: "复杂度", consequences: "后果", report: "报告" },
     yes: "是",
     no: "否",
     unsure: "不确定",
@@ -448,7 +469,15 @@ const futureAssetOptions = [
 ];
 
 function getCopy(language) {
-  return translations[language] ?? translations.en;
+  const selected = translations[language] ?? {};
+  return {
+    ...translations.en,
+    ...selected,
+    steps: {
+      ...translations.en.steps,
+      ...(selected.steps ?? {})
+    }
+  };
 }
 
 function translateAsset(asset, language) {
@@ -684,6 +713,59 @@ function getCostEstimate(answers, result) {
     note:
       "This is a rough US private-attorney drafting and review estimate. Actual cost depends on location, lawyer rates, negotiation, disclosure quality, and whether each person hires separate counsel."
   };
+}
+
+function getConsequenceContext(answers, result, currentAssetTotal, futureAssetTotal) {
+  const stressors = [];
+
+  if (answers.mode === "postnup") stressors.push("planning after marriage has already started");
+  if (answers.pressure === "yes") stressors.push("rushed or pressured signing process");
+  if (answers.business === "yes") stressors.push("business ownership or future business growth");
+  if (answers.realEstate === "yes") stressors.push("real estate, title, mortgage, or appreciation disputes");
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") stressors.push("foreign assets or cross-border enforcement");
+  if (answers.incomeGap === "yes") stressors.push("meaningful income or wealth gap");
+  if (getIncomeSnapshot(answers).length > 0) stressors.push("expected income growth or changing lifestyle");
+  if (answers.debts === "yes") stressors.push("debt responsibility");
+  if (answers.children === "yes") stressors.push("children or family-planning financial needs");
+  if (answers.careerSacrifice === "yes") stressors.push("career sacrifice or support expectations");
+  if (answers.currentAssets.length > 0) stressors.push(`${answers.currentAssets.length} current asset/debt topic${answers.currentAssets.length === 1 ? "" : "s"}`);
+  if (answers.futureAssets.length > 0) stressors.push(`${answers.futureAssets.length} future asset topic${answers.futureAssets.length === 1 ? "" : "s"}`);
+  if (currentAssetTotal > 0 || futureAssetTotal > 0) {
+    const total = currentAssetTotal + futureAssetTotal;
+    stressors.push(`${formatCurrency(total)} in entered asset-value estimates`);
+  }
+
+  const exposureScore = result.score + Math.min(5, stressors.length);
+  const exposure = exposureScore >= 11 ? "High" : exposureScore >= 6 ? "Moderate" : "Lower";
+
+  return { stressors, exposure };
+}
+
+function getConsequenceStory(answers, rule, context, costEstimate) {
+  const agreementName = answers.mode === "prenup" ? "prenup" : "postnup";
+  const assetPhrase = answers.currentAssets.length
+    ? `The first argument starts with ${answers.currentAssets.slice(0, 3).join(", ").toLowerCase()}`
+    : "The first argument starts with a checking account, a vague memory of who paid for what, and one spreadsheet named FINAL-final-use-this-one.xlsx";
+  const futurePhrase = answers.futureAssets.length
+    ? `Then someone remembers the ${answers.futureAssets.slice(0, 2).join(" and ").toLowerCase()} that was supposed to be simple. It is not simple.`
+    : "Then the conversation finds future money anyway, because future money has excellent timing and terrible manners.";
+  const internationalPhrase =
+    answers.internationalAssets === "yes" || answers.internationalAssets === "unsure"
+      ? `A foreign-asset issue appears, and suddenly the divorce has side quests in ${answers.foreignCountry || "another country"}.`
+      : "At least there is no foreign-asset side quest. Small mercy.";
+  const incomePhrase =
+    answers.incomeGap === "yes" || getIncomeSnapshot(answers).length > 0
+      ? "Income growth becomes a debate about what was earned, what was expected, and whose sacrifices made the lifestyle possible."
+      : "Income is less dramatic here, which is good. The paperwork finds plenty of other ways to be annoying.";
+
+  return [
+    `Imagine nobody signs a ${agreementName}. Years later, the relationship ends, and ${rule.name}'s default ${rule.propertySystem.toLowerCase()} rules walk into the room carrying a clipboard.`,
+    `${assetPhrase}. ${futurePhrase}`,
+    `${internationalPhrase} ${incomePhrase}`,
+    `Instead of calmly pointing to a signed agreement, everyone pays lawyers to reconstruct intent from old emails, bank transfers, half-remembered conversations, and screenshots that somehow all have 3% battery.`,
+    `The estimated attorney-cost range for drafting now is ${costEstimate.range}. The cost of fighting later is not shown here because the app is educational, not cruel.`,
+    `Dispute exposure based on the current answers: ${context.exposure}. Translation: the ${agreementName} conversation may be awkward now, but future-you may consider that a bargain.`
+  ];
 }
 
 function getForeignLawContext(countryInput) {
@@ -1002,6 +1084,14 @@ function App() {
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
   const costEstimate = useMemo(() => getCostEstimate(answers, result), [answers, result]);
+  const consequenceContext = useMemo(
+    () => getConsequenceContext(answers, result, currentAssetTotal, futureAssetTotal),
+    [answers, result, currentAssetTotal, futureAssetTotal]
+  );
+  const consequenceStory = useMemo(
+    () => getConsequenceStory(answers, rule, consequenceContext, costEstimate),
+    [answers, rule, consequenceContext, costEstimate]
+  );
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
@@ -1329,6 +1419,55 @@ function App() {
                 <p>{rule.international}</p>
               </div>
             </FieldGroup>
+          )}
+
+          {step.id === "consequences" && (
+            <section className="consequences">
+              <div className="consequence-hero">
+                <div>
+                  <p className="eyebrow">{copy.storyEyebrow}</p>
+                  <h2>{copy.consequencesTitle}</h2>
+                  <p>{copy.statisticsDisclaimer}</p>
+                </div>
+                <div className={`exposure-meter ${consequenceContext.exposure.toLowerCase()}`}>
+                  <AlertTriangle size={20} aria-hidden="true" />
+                  <span>{copy.estimatedDisputeExposure}</span>
+                  <strong>{copy[`exposure${consequenceContext.exposure}`]}</strong>
+                </div>
+              </div>
+
+              <div className="consequence-grid">
+                <article className="story-card">
+                  <h3>{copy.storyTitle}</h3>
+                  {consequenceStory.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                  <p className="story-note">{copy.storyRefreshNote}</p>
+                </article>
+
+                <article className="stats-card">
+                  <div className="stats-title">
+                    <BarChart3 size={20} aria-hidden="true" />
+                    <h3>{copy.statisticsTitle}</h3>
+                  </div>
+                  <div className="stat-row">
+                    <span>40%-50%</span>
+                    <p>{copy.baselineRate}</p>
+                  </div>
+                  <p>{copy.complexityImpact}</p>
+                  <h3>{copy.selectedStressors}</h3>
+                  {consequenceContext.stressors.length > 0 ? (
+                    <ul>
+                      {consequenceContext.stressors.map((stressor) => (
+                        <li key={stressor}>{stressor}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{copy.noStressors}</p>
+                  )}
+                </article>
+              </div>
+            </section>
           )}
 
           {step.id === "report" && (
