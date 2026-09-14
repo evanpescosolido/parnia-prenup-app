@@ -149,18 +149,18 @@ const translations = {
     consequencesTitle: "Consequences simulator",
     storyEyebrow: "Slightly dramatic scenario",
     storyTitle: "If no agreement exists",
-    statisticsTitle: "Divorce statistics context",
+    statisticsTitle: "Divorce can happen context",
     statisticsDisclaimer:
-      "This is state-specific planning context, not a prediction. Relationship data cannot reliably calculate one couple's divorce odds from a short questionnaire.",
+      "This is a reality-check section, not a prediction. The point is simple: divorce can happen, and the messier the financial facts are, the more useful advance planning can be.",
     baselineRate:
-      "State divorce-rate benchmarks are shown as annual divorces per 1,000 residents, then adjusted only as an illustrative stressor lens.",
+      "The state benchmark is included only to keep the possibility concrete, not to estimate this couple's future.",
     complexityImpact:
-      "The stressor adjustment is not a real actuarial forecast. It is meant to show that more financial complexity can make a divorce harder, more expensive, and more chaotic if it happens.",
+      "The stressor signal is not a real divorce-probability forecast. It shows how easily a breakup could become harder, more expensive, and more chaotic if it happens.",
     selectedStressors: "Selected stressors",
     noStressors: "No major stressors selected yet.",
     estimatedDisputeExposure: "Estimated dispute exposure",
     stateBenchmark: "State benchmark",
-    stressAdjustedRate: "Stressor-adjusted context",
+    stressAdjustedRate: "Planning signal",
     rateNote: "annual divorces per 1,000 residents",
     exposureLower: "Lower",
     exposureModerate: "Moderate",
@@ -1569,9 +1569,9 @@ function App() {
                       </p>
                     </div>
                     <div className="stat-row">
-                      <span>{divorceRateContext.adjustedRate.toFixed(1)}</span>
+                      <span>+{divorceRateContext.adjustment.toFixed(1)}</span>
                       <p>
-                        {copy.stressAdjustedRate}: +{divorceRateContext.adjustment.toFixed(1)} from selected stressors.
+                        {copy.stressAdjustedRate}: caution points from selected stressors.
                       </p>
                     </div>
                   </div>
