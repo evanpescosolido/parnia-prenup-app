@@ -145,6 +145,13 @@ const translations = {
     ],
     assetSnapshot: "Asset value snapshot",
     assetEstimateNote: "These are planning estimates only and should be replaced with formal disclosure numbers before signing.",
+    lossExposureTitle: "What could be on the line without an agreement",
+    lossExposureIntro:
+      "Without a prenup or postnup, state default rules—not the couple's own written plan—may control how property, growth, debt, and support disputes are handled.",
+    lossExposureValueLabel: "Entered value connected to flagged topics",
+    lossExposureValueNote: "This is the value connected to the selected topics, not an estimate of what anyone would lose.",
+    lossExposureDisclaimer:
+      "Possible exposure does not mean automatic loss. The actual result depends on ownership, timing, tracing, state law, enforceability, and the facts at divorce.",
     sourceNotes: "Source notes",
     consequencesTitle: "Consequences simulator",
     storyEyebrow: "Slightly dramatic scenario",
@@ -242,6 +249,13 @@ const translations = {
     ],
     assetSnapshot: "Resumen de valores de activos",
     assetEstimateNote: "Estas son solo estimaciones de planificación y deben reemplazarse con cifras formales antes de firmar.",
+    lossExposureTitle: "Lo que podría estar en juego sin un acuerdo",
+    lossExposureIntro:
+      "Sin un acuerdo prenupcial o postnupcial, las reglas estatales predeterminadas—no el plan escrito de la pareja—pueden controlar las disputas sobre bienes, crecimiento, deudas y manutención.",
+    lossExposureValueLabel: "Valor ingresado relacionado con los temas señalados",
+    lossExposureValueNote: "Este es el valor relacionado con los temas seleccionados, no una estimación de lo que alguien perdería.",
+    lossExposureDisclaimer:
+      "La posible exposición no significa una pérdida automática. El resultado depende de la titularidad, el momento, el rastreo, la ley estatal, la validez del acuerdo y los hechos del divorcio.",
     sourceNotes: "Notas de fuente"
   },
   ar: {
@@ -319,6 +333,13 @@ const translations = {
     ],
     assetSnapshot: "ملخص قيمة الأصول",
     assetEstimateNote: "هذه تقديرات للتخطيط فقط ويجب استبدالها بأرقام إفصاح رسمية قبل التوقيع.",
+    lossExposureTitle: "ما الذي قد يكون معرضا للخطر من دون اتفاق",
+    lossExposureIntro:
+      "من دون اتفاق قبل الزواج أو بعده، قد تتحكم القواعد الافتراضية للولاية—لا الخطة المكتوبة للزوجين—في نزاعات الممتلكات والنمو والديون والدعم.",
+    lossExposureValueLabel: "القيمة المدخلة المرتبطة بالمواضيع المحددة",
+    lossExposureValueNote: "هذه هي القيمة المرتبطة بالمواضيع المختارة، وليست تقديرا لما قد يخسره أي طرف.",
+    lossExposureDisclaimer:
+      "التعرض المحتمل لا يعني خسارة تلقائية. تعتمد النتيجة على الملكية والتوقيت وإثبات المصدر وقانون الولاية وقابلية التنفيذ ووقائع الطلاق.",
     sourceNotes: "ملاحظات المصادر"
   },
   zh: {
@@ -396,6 +417,13 @@ const translations = {
     ],
     assetSnapshot: "资产价值摘要",
     assetEstimateNote: "这些只是规划估计，签署前应以正式披露数字替代。",
+    lossExposureTitle: "没有协议时可能面临的损失",
+    lossExposureIntro:
+      "如果没有婚前或婚后协议，财产、增值、债务和扶养争议可能由州默认规则处理，而不是由双方自己的书面计划决定。",
+    lossExposureValueLabel: "与已标记事项相关的输入价值",
+    lossExposureValueNote: "这是与所选事项相关的价值，并不是任何一方可能损失金额的估计。",
+    lossExposureDisclaimer:
+      "潜在风险并不意味着必然损失。实际结果取决于所有权、时间、资金追踪、州法律、协议效力以及离婚时的具体事实。",
     sourceNotes: "资料说明"
   }
 };
@@ -636,6 +664,53 @@ function getRiskItems(answers, rule) {
   }
 
   return risks;
+}
+
+const lossExposureDescriptions = {
+  "Savings or investment accounts": "Some or all of the marital portion, growth, or commingled funds could become divisible or expensive to trace.",
+  "Retirement accounts": "Contributions and growth during the marriage could be divided, potentially reducing long-term retirement savings.",
+  "Real estate": "Equity, appreciation, mortgage contributions, or even control of the property could become disputed; a sale or buyout may be required.",
+  "Business ownership": "Business value, appreciation, income, and control could face claims, valuation costs, or pressure for a buyout.",
+  "Family gifts": "Family money could lose clean separate-property treatment if it is retitled, mixed, or used for shared expenses.",
+  "Expected inheritance": "Inherited property may become harder to protect if it is commingled, jointly titled, or used for marital purposes.",
+  "Student loans": "Responsibility for payments and the effect of debt on shared finances could become a point of dispute.",
+  "Credit card or personal debt": "A court may have to allocate disputed balances, and shared accounts can leave both people exposed to creditors.",
+  "Future inheritance": "Future inherited value could become disputed if the agreement does not set rules for tracing, growth, and commingling.",
+  "Foreign inheritance": "Ownership and enforcement may be contested across jurisdictions, adding local counsel, translation, and tracing costs.",
+  "Family business interest": "Family ownership, future growth, voting control, and buyout rights could be pulled into a divorce dispute.",
+  "Future home purchase": "The down payment, title, equity, mortgage contributions, and right to remain in the home could all become contested.",
+  "Appreciation of separate property": "Even if the original property stays separate, its growth could face marital or community-property claims.",
+  "Income from separate property": "Income may be treated differently from the underlying asset and could become divisible or affect support claims."
+};
+
+function getLossExposureItems(answers, language) {
+  const items = [...answers.currentAssets, ...answers.futureAssets].map((asset) => {
+    const value = answers.currentAssetValues[asset] ?? answers.futureAssetValues[asset];
+    const valueLabel = formatCurrency(value);
+    return `${translateAsset(asset, language)}${valueLabel ? ` (${valueLabel})` : ""}: ${lossExposureDescriptions[asset]}`;
+  });
+
+  if (answers.business === "yes" && !answers.currentAssets.includes("Business ownership") && !answers.futureAssets.includes("Family business interest")) {
+    items.push("Business interests: ownership, appreciation, income, valuation costs, or control could become disputed.");
+  }
+  if (answers.realEstate === "yes" && !answers.currentAssets.includes("Real estate") && !answers.futureAssets.includes("Future home purchase")) {
+    items.push("Real estate: equity, appreciation, title, mortgage contributions, or the need for a sale or buyout could be disputed.");
+  }
+  if (answers.incomeGap === "yes" || answers.careerSacrifice === "yes") {
+    items.push("Income and support: future earnings, lifestyle expectations, or compensation for career sacrifice could become part of a support dispute.");
+  }
+  if (answers.debts === "yes" && !answers.currentAssets.some((asset) => asset.includes("loan") || asset.includes("debt"))) {
+    items.push("Debt responsibility: disputed loans, credit cards, or personal obligations could affect both parties' cash flow and credit.");
+  }
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
+    items.push("Foreign property: value, title, access, and enforcement could require proceedings or legal help in more than one country.");
+  }
+
+  if (items.length === 0) {
+    items.push("Savings, earnings, property acquired during marriage, and debt may still be divided or allocated under state default rules.");
+  }
+
+  return items;
 }
 
 function getNextSteps(answers) {
@@ -982,7 +1057,9 @@ async function generateReportPdf({
   nextSteps,
   costEstimate,
   incomeSnapshot,
-  foreignLawContext
+  foreignLawContext,
+  lossExposureItems,
+  lossExposureValue
 }) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
@@ -1017,6 +1094,13 @@ async function generateReportPdf({
   y = addPdfSection(doc, copy.whyImportant, copy.whyImportantItems, y);
 
   y = addPdfSection(doc, copy.mostAtRisk, riskItems, y);
+
+  const lossExposureLines = [copy.lossExposureIntro, ...lossExposureItems];
+  if (lossExposureValue > 0) {
+    lossExposureLines.push(`${copy.lossExposureValueLabel}: ${formatCurrency(lossExposureValue)}. ${copy.lossExposureValueNote}`);
+  }
+  lossExposureLines.push(copy.lossExposureDisclaimer);
+  y = addPdfSection(doc, copy.lossExposureTitle, lossExposureLines, y);
 
   y = addPdfSection(doc, copy.recommendedNextSteps, nextSteps, y);
 
@@ -1188,6 +1272,8 @@ function App() {
   const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
   const incomeSnapshot = useMemo(() => getIncomeSnapshot(answers), [answers]);
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
+  const lossExposureItems = useMemo(() => getLossExposureItems(answers, language), [answers, language]);
+  const lossExposureValue = currentAssetTotal + futureAssetTotal;
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
   const costEstimate = useMemo(() => getCostEstimate(answers, result), [answers, result]);
   const consequenceContext = useMemo(
@@ -1615,7 +1701,9 @@ function App() {
                         nextSteps,
                         costEstimate,
                         incomeSnapshot,
-                        foreignLawContext
+                        foreignLawContext,
+                        lossExposureItems,
+                        lossExposureValue
                       })
                     }
                   >
@@ -1634,6 +1722,27 @@ function App() {
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
+                </article>
+
+                <article className="loss-exposure-card">
+                  <div className="loss-exposure-heading">
+                    <AlertTriangle size={22} aria-hidden="true" />
+                    <h3>{copy.lossExposureTitle}</h3>
+                  </div>
+                  <p>{copy.lossExposureIntro}</p>
+                  {lossExposureValue > 0 && (
+                    <div className="loss-exposure-value">
+                      <span>{copy.lossExposureValueLabel}</span>
+                      <strong>{formatCurrency(lossExposureValue)}</strong>
+                      <small>{copy.lossExposureValueNote}</small>
+                    </div>
+                  )}
+                  <ul>
+                    {lossExposureItems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  <p className="loss-exposure-disclaimer">{copy.lossExposureDisclaimer}</p>
                 </article>
 
                 <article>
