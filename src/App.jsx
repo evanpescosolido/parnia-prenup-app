@@ -14,6 +14,8 @@ import {
   HeartHandshake,
   Home,
   Landmark,
+  MapPin,
+  ExternalLink,
   Scale,
   ShieldCheck,
   Sparkles
@@ -24,6 +26,7 @@ import { stateRules } from "./data/stateRules";
 const initialAnswers = {
   mode: "prenup",
   state: "MA",
+  locality: "",
   relationshipStage: "",
   coupleType: "",
   citizenshipStatus: "",
@@ -106,6 +109,8 @@ const translations = {
     citizenshipCountriesQuestion: "Countries of citizenship or cross-border context (optional)",
     citizenshipCountriesPlaceholder: "Example: United States and Canada",
     marriageLicenseState: "What state will the marriage license get filed?",
+    localityQuestion: "City or ZIP code (optional — used only to build local lawyer links)",
+    localityPlaceholder: "Example: Boston or 02108",
     timingPrenup: "Wedding timing and process",
     timingPostnup: "Postnup process readiness",
     weddingMonths: "How many months away is the wedding?",
@@ -193,6 +198,13 @@ const translations = {
     stateAdjustment: "State adjustment:",
     costDriverLabel: "Main cost drivers:",
     attorneyTopics: "Attorney discussion topics",
+    localLawyersTitle: "Find local family-law attorneys",
+    localLawyersIntro: "Search links are based on the selected state and optional city or ZIP code.",
+    localLawyersMap: "Search nearby prenup/postnup attorneys",
+    localLawyersDirectory: "Browse the state family-law directory",
+    localLawyersBar: "Find a bar-sponsored referral service",
+    localLawyersDisclaimer:
+      "These are search and referral links, not endorsements. Verify licensing, current standing, relevant agreement experience, fees, and conflicts. Each partner should consider separate counsel.",
     attorneyTopicItems: [
       "Whether independent counsel is recommended for each person.",
       "What financial disclosure should be prepared before negotiation.",
@@ -262,6 +274,8 @@ const translations = {
     citizenshipCountriesQuestion: "Países de ciudadanía o contexto internacional (opcional)",
     citizenshipCountriesPlaceholder: "Ejemplo: Estados Unidos y Canadá",
     marriageLicenseState: "¿En qué estado se presentará la licencia de matrimonio?",
+    localityQuestion: "Ciudad o código postal (opcional; solo se usa para crear enlaces a abogados locales)",
+    localityPlaceholder: "Ejemplo: Boston o 02108",
     timingPrenup: "Tiempo de la boda y proceso",
     timingPostnup: "Preparación del proceso postnupcial",
     weddingMonths: "¿Cuántos meses faltan para la boda?",
@@ -349,6 +363,13 @@ const translations = {
     stateAdjustment: "Ajuste estatal:",
     costDriverLabel: "Factores principales de costo:",
     attorneyTopics: "Temas para hablar con el abogado",
+    localLawyersTitle: "Buscar abogados locales de derecho familiar",
+    localLawyersIntro: "Los enlaces se basan en el estado seleccionado y la ciudad o código postal opcional.",
+    localLawyersMap: "Buscar abogados cercanos de acuerdos prenupciales/postnupciales",
+    localLawyersDirectory: "Consultar el directorio estatal de derecho familiar",
+    localLawyersBar: "Buscar un servicio de referencia del colegio de abogados",
+    localLawyersDisclaimer:
+      "Estos son enlaces de búsqueda y referencia, no recomendaciones. Verifica licencia, estado profesional, experiencia, honorarios y conflictos. Cada pareja debe considerar abogado independiente.",
     attorneyTopicItems: [
       "Si se recomienda abogado independiente para cada persona.",
       "Qué declaración financiera debe prepararse antes de negociar.",
@@ -398,6 +419,8 @@ const translations = {
     citizenshipCountriesQuestion: "دول الجنسية أو السياق العابر للحدود (اختياري)",
     citizenshipCountriesPlaceholder: "مثال: الولايات المتحدة وكندا",
     marriageLicenseState: "في أي ولاية سيتم تقديم رخصة الزواج؟",
+    localityQuestion: "المدينة أو الرمز البريدي (اختياري — يستخدم فقط لإنشاء روابط لمحامين محليين)",
+    localityPlaceholder: "مثال: بوسطن أو 02108",
     timingPrenup: "توقيت الزفاف والإجراءات",
     timingPostnup: "جاهزية إجراءات ما بعد الزواج",
     weddingMonths: "كم شهرا تبقى على الزفاف؟",
@@ -485,6 +508,13 @@ const translations = {
     stateAdjustment: "تعديل الولاية:",
     costDriverLabel: "عوامل التكلفة الرئيسية:",
     attorneyTopics: "مواضيع النقاش مع المحامي",
+    localLawyersTitle: "العثور على محامي أسرة محليين",
+    localLawyersIntro: "تعتمد روابط البحث على الولاية المختارة والمدينة أو الرمز البريدي الاختياري.",
+    localLawyersMap: "البحث عن محامي اتفاقات قبل/بعد الزواج بالقرب منك",
+    localLawyersDirectory: "تصفح دليل محامي الأسرة في الولاية",
+    localLawyersBar: "العثور على خدمة إحالة تابعة لنقابة المحامين",
+    localLawyersDisclaimer:
+      "هذه روابط للبحث والإحالة وليست تزكية. تحقق من الترخيص والوضع المهني والخبرة والرسوم وتعارض المصالح. ينبغي لكل طرف التفكير في محام مستقل.",
     attorneyTopicItems: [
       "ما إذا كان يوصى بمحام مستقل لكل طرف.",
       "ما الإفصاح المالي الذي يجب تحضيره قبل التفاوض.",
@@ -534,6 +564,8 @@ const translations = {
     citizenshipCountriesQuestion: "公民所属国家或跨境背景（可选）",
     citizenshipCountriesPlaceholder: "例如：美国和加拿大",
     marriageLicenseState: "结婚许可证将在哪个州提交？",
+    localityQuestion: "城市或邮政编码（可选；仅用于生成本地律师链接）",
+    localityPlaceholder: "例如：Boston 或 02108",
     timingPrenup: "婚礼时间与流程",
     timingPostnup: "婚后协议流程准备度",
     weddingMonths: "距离婚礼还有几个月？",
@@ -621,6 +653,13 @@ const translations = {
     stateAdjustment: "州调整：",
     costDriverLabel: "主要费用因素：",
     attorneyTopics: "与律师讨论的事项",
+    localLawyersTitle: "查找当地家庭法律师",
+    localLawyersIntro: "搜索链接会根据所选州以及可选的城市或邮政编码生成。",
+    localLawyersMap: "搜索附近的婚前/婚后协议律师",
+    localLawyersDirectory: "浏览本州家庭法律师名录",
+    localLawyersBar: "查找律师协会推荐服务",
+    localLawyersDisclaimer:
+      "这些是搜索和推荐服务链接，不代表背书。请核实执业资格、当前状态、相关协议经验、费用和利益冲突。双方应考虑分别聘请律师。",
     attorneyTopicItems: [
       "是否建议双方各自聘请独立律师。",
       "谈判前应准备哪些财务披露。",
@@ -779,6 +818,40 @@ function getCopy(language) {
 function getStepLabel(copy, stepId, mode) {
   if (stepId === "path") return mode === "postnup" ? copy.postnupStep : copy.prenupStep;
   return copy.steps[stepId];
+}
+
+function slugifyLocation(value) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function getLocalLawyerLinks(answers, rule) {
+  const location = [answers.locality.trim(), rule.name].filter(Boolean).join(", ");
+  const searchQuery = `prenup postnup family law attorney ${location}`;
+
+  return {
+    location,
+    links: [
+      {
+        key: "map",
+        labelKey: "localLawyersMap",
+        url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`
+      },
+      {
+        key: "directory",
+        labelKey: "localLawyersDirectory",
+        url: `https://www.justia.com/lawyers/family-law/${slugifyLocation(rule.name)}`
+      },
+      {
+        key: "bar",
+        labelKey: "localLawyersBar",
+        url: "https://www.americanbar.org/groups/legal_services/flh-home/flh-bar-directories-and-lawyer-finders/"
+      }
+    ]
+  };
 }
 
 function getConversationScript(answers, copy, language) {
@@ -1415,7 +1488,8 @@ async function generateReportPdf({
   foreignLawContext,
   coupleForeignChecks,
   lossExposureItems,
-  lossExposureValue
+  lossExposureValue,
+  localLawyerLinks
 }) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
@@ -1510,6 +1584,12 @@ async function generateReportPdf({
   }
 
   y = addPdfSection(doc, copy.attorneyTopics, copy.attorneyTopicItems, y);
+
+  y = addPdfSection(doc, copy.localLawyersTitle, [
+    `${copy.localLawyersIntro} ${localLawyerLinks.location}.`,
+    ...localLawyerLinks.links.map((link) => `${copy[link.labelKey]}: ${link.url}`),
+    copy.localLawyersDisclaimer
+  ], y);
 
   y = addPdfSection(doc, copy.sourceNotes, rule.sourceNotes, y);
 
@@ -1682,6 +1762,7 @@ function App() {
   const conversationScript = useMemo(() => getConversationScript(answers, copy, language), [answers, copy, language]);
   const coupleForeignChecks = useMemo(() => getCoupleSpecificForeignChecks(answers), [answers]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
+  const localLawyerLinks = useMemo(() => getLocalLawyerLinks(answers, rule), [answers.locality, rule]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
   const toggleAsset = (groupKey, valueKey, asset) => {
@@ -1853,6 +1934,16 @@ function App() {
                     </option>
                   ))}
                 </select>
+              </label>
+
+              <label>
+                {copy.localityQuestion}
+                <input
+                  type="text"
+                  value={answers.locality}
+                  onChange={(event) => setAnswer("locality", event.target.value)}
+                  placeholder={copy.localityPlaceholder}
+                />
               </label>
 
               <div className="state-summary">
@@ -2187,7 +2278,8 @@ function App() {
                         foreignLawContext,
                         coupleForeignChecks,
                         lossExposureItems,
-                        lossExposureValue
+                        lossExposureValue,
+                        localLawyerLinks
                       })
                     }
                   >
@@ -2361,6 +2453,27 @@ function App() {
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
+                </article>
+
+                <article className="local-lawyer-card">
+                  <div className="local-lawyer-heading">
+                    <MapPin size={22} aria-hidden="true" />
+                    <div>
+                      <h3>{copy.localLawyersTitle}</h3>
+                      <p>
+                        {copy.localLawyersIntro} <strong>{localLawyerLinks.location}</strong>.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="lawyer-link-list">
+                    {localLawyerLinks.links.map((link) => (
+                      <a className="lawyer-link" href={link.url} key={link.key} target="_blank" rel="noreferrer">
+                        <span>{copy[link.labelKey]}</span>
+                        <ExternalLink size={17} aria-hidden="true" />
+                      </a>
+                    ))}
+                  </div>
+                  <p className="local-lawyer-disclaimer">{copy.localLawyersDisclaimer}</p>
                 </article>
 
                 {(currentAssetTotal > 0 || futureAssetTotal > 0) && (

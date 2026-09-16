@@ -837,6 +837,58 @@ select {
   grid-column: 1 / -1;
 }
 
+.report-grid .local-lawyer-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
+  border-color: #93c5fd;
+  grid-column: 1 / -1;
+}
+
+.local-lawyer-heading {
+  align-items: flex-start;
+  color: #12304d;
+  display: flex;
+  gap: 10px;
+}
+
+.local-lawyer-heading h3,
+.local-lawyer-heading p {
+  margin-top: 0;
+}
+
+.lawyer-link-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 16px 0;
+}
+
+.lawyer-link {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1d4ed8;
+  display: flex;
+  font-weight: 750;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 13px 14px;
+  text-decoration: none;
+}
+
+.lawyer-link:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+.local-lawyer-disclaimer {
+  border-top: 1px solid #bfdbfe;
+  color: #526579;
+  font-size: 0.84rem;
+  margin-bottom: 0;
+  padding-top: 12px;
+}
+
 .foreign-law-card > h3 {
   color: #12304d;
   font-size: 1.1rem;
@@ -992,6 +1044,7 @@ li + li {
   .consequence-grid,
   .foreign-law-grid,
   .income-grid,
+  .lawyer-link-list,
   .report-grid,
   .stat-grid,
   .mini-grid {
