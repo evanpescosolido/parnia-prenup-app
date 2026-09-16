@@ -195,8 +195,9 @@ const translations = {
     whyNeedPlanning: "Why this case may need planning",
     recommendedNextSteps: "Recommended next steps",
     estimatedCost: "Estimated attorney cost",
-    stateAdjustment: "State adjustment:",
+    stateAdjustment: "State-specific benchmark:",
     costDriverLabel: "Main cost drivers:",
+    costSourceLabel: "Rate benchmark source",
     attorneyTopics: "Attorney discussion topics",
     localLawyersTitle: "Find local family-law attorneys",
     localLawyersIntro: "Search links are based on the selected state and optional city or ZIP code.",
@@ -360,8 +361,9 @@ const translations = {
     whyNeedPlanning: "Por qué este caso puede necesitar planificación",
     recommendedNextSteps: "Próximos pasos recomendados",
     estimatedCost: "Costo estimado de abogado",
-    stateAdjustment: "Ajuste estatal:",
+    stateAdjustment: "Referencia específica del estado:",
     costDriverLabel: "Factores principales de costo:",
+    costSourceLabel: "Fuente de la referencia de tarifas",
     attorneyTopics: "Temas para hablar con el abogado",
     localLawyersTitle: "Buscar abogados locales de derecho familiar",
     localLawyersIntro: "Los enlaces se basan en el estado seleccionado y la ciudad o código postal opcional.",
@@ -505,8 +507,9 @@ const translations = {
     whyNeedPlanning: "لماذا قد تحتاج هذه الحالة إلى تخطيط",
     recommendedNextSteps: "الخطوات التالية المقترحة",
     estimatedCost: "التكلفة المقدرة للمحامي",
-    stateAdjustment: "تعديل الولاية:",
+    stateAdjustment: "المعيار الخاص بالولاية:",
     costDriverLabel: "عوامل التكلفة الرئيسية:",
+    costSourceLabel: "مصدر معيار الأتعاب",
     attorneyTopics: "مواضيع النقاش مع المحامي",
     localLawyersTitle: "العثور على محامي أسرة محليين",
     localLawyersIntro: "تعتمد روابط البحث على الولاية المختارة والمدينة أو الرمز البريدي الاختياري.",
@@ -650,8 +653,9 @@ const translations = {
     whyNeedPlanning: "为什么此情况可能需要规划",
     recommendedNextSteps: "建议的下一步",
     estimatedCost: "律师费用估计",
-    stateAdjustment: "州调整：",
+    stateAdjustment: "州级费用基准：",
     costDriverLabel: "主要费用因素：",
+    costSourceLabel: "费率基准来源",
     attorneyTopics: "与律师讨论的事项",
     localLawyersTitle: "查找当地家庭法律师",
     localLawyersIntro: "搜索链接会根据所选州以及可选的城市或邮政编码生成。",
@@ -1102,47 +1106,81 @@ function formatCostRange(low, high, plus = false) {
   return `${formatCurrency(low)}-${formatCurrency(high)}${plus ? "+" : ""}`;
 }
 
+const stateAttorneyRateBenchmarks = {
+  AL: 208,
+  AK: 349,
+  AZ: 266,
+  AR: 242,
+  CA: 344,
+  CO: 261,
+  CT: 342,
+  DE: 344,
+  FL: 297,
+  GA: 286,
+  HI: 339,
+  ID: 233,
+  IL: 305,
+  IN: 242,
+  IA: 202,
+  KS: 227,
+  KY: 204,
+  LA: 245,
+  ME: 193,
+  MD: 310,
+  MA: 285,
+  MI: 266,
+  MN: 271,
+  MS: 217,
+  MO: 249,
+  MT: 199,
+  NE: 218,
+  NV: 311,
+  NH: 248,
+  NJ: 306,
+  NM: 242,
+  NY: 358,
+  NC: 254,
+  ND: 253,
+  OH: 224,
+  OK: 235,
+  OR: 255,
+  PA: 288,
+  RI: 240,
+  SC: 249,
+  SD: 199,
+  TN: 233,
+  TX: 300,
+  UT: 250,
+  VT: 226,
+  VA: 295,
+  WA: 288,
+  WV: 162,
+  WI: 231,
+  WY: 241
+};
+
+const attorneyRateSourceUrl = "https://www.lawpay.com/about/blog/lawyer-hourly-rate-by-state/";
+
 function getStateCostAdjustment(stateCode) {
-  const highCostStates = new Set(["CA", "CT", "IL", "MA", "MD", "NJ", "NY", "VA", "WA"]);
-  const lowerCostStates = new Set([
-    "AL",
-    "AR",
-    "IA",
-    "ID",
-    "IN",
-    "KS",
-    "KY",
-    "LA",
-    "MO",
-    "MS",
-    "NE",
-    "ND",
-    "OK",
-    "SD",
-    "WV",
-    "WY"
-  ]);
-
-  if (highCostStates.has(stateCode)) {
-    return {
-      multiplier: 1.25,
-      label: "higher-cost legal market",
-      note: "The selected state is treated as a higher-cost legal market, so the estimate is adjusted upward."
-    };
-  }
-
-  if (lowerCostStates.has(stateCode)) {
-    return {
-      multiplier: 0.85,
-      label: "lower-cost legal market",
-      note: "The selected state is treated as a lower-cost legal market, so the estimate is adjusted downward."
-    };
-  }
+  const benchmarkRate = stateAttorneyRateBenchmarks[stateCode] ?? 257;
+  const isClioSupplement = stateCode === "AK" || stateCode === "HI";
+  const nationalComparisonRate = isClioSupplement ? 349 : 257;
+  const multiplier = benchmarkRate / nationalComparisonRate;
+  const benchmarkYear = isClioSupplement ? 2025 : 2023;
+  const sourceUrl = isClioSupplement
+    ? `https://www.clio.com/resources/legal-trends/compare-lawyer-rates/${stateCode.toLowerCase()}/`
+    : attorneyRateSourceUrl;
 
   return {
-    multiplier: 1,
-    label: "typical-cost legal market",
-    note: "The selected state is treated as a typical-cost legal market for this rough estimate."
+    multiplier,
+    benchmarkRate,
+    benchmarkYear,
+    sourceUrl,
+    label: `${formatCurrency(benchmarkRate)}/hour statewide lawyer-rate benchmark (${benchmarkYear})`,
+    note:
+      stateCode === "AK"
+        ? "Alaska's displayed rate is an illustrative midpoint of Clio's published practice-area range because a single statewide average was not available."
+        : "The geography adjustment uses a published statewide all-practice lawyer-rate benchmark; it is not a family-law quote and city rates can differ substantially."
   };
 }
 
@@ -1191,7 +1229,7 @@ function getCostEstimate(answers, result) {
     stateCost,
     factors: factors.length > 0 ? factors : ["no major complexity factor selected yet"],
     note:
-      "This is a rough US private-attorney drafting and review estimate. Actual cost depends on location, lawyer rates, negotiation, disclosure quality, and whether each person hires separate counsel."
+      "This is a rough private-attorney drafting and review estimate, not a quote. Actual cost depends on the city, lawyer, billing model, negotiation, disclosure quality, and whether each person hires separate counsel."
   };
 }
 
@@ -1536,10 +1574,11 @@ async function generateReportPdf({
 
   y = addPdfSection(doc, copy.estimatedCost, [
     `Estimated range: ${costEstimate.range}.`,
-    `${copy.stateAdjustment} ${rule.name} is treated as a ${costEstimate.stateCost.label}.`,
+    `${copy.stateAdjustment} ${rule.name} uses a ${costEstimate.stateCost.label}.`,
     costEstimate.summary,
     `${copy.costDriverLabel} ${costEstimate.factors.join(", ")}.`,
     costEstimate.stateCost.note,
+    `${copy.costSourceLabel}: ${costEstimate.stateCost.sourceUrl}`,
     costEstimate.note
   ], y);
 
@@ -2438,11 +2477,16 @@ function App() {
                     <strong>{costEstimate.range}</strong>
                   </p>
                   <p>
-                    {copy.stateAdjustment} {rule.name} is treated as a {costEstimate.stateCost.label}.
+                    {copy.stateAdjustment} {rule.name} uses a {costEstimate.stateCost.label}.
                   </p>
                   <p>{costEstimate.summary}</p>
                   <p>{copy.costDriverLabel} {costEstimate.factors.join(", ")}.</p>
                   <p>{costEstimate.stateCost.note}</p>
+                  <p>
+                    <a href={costEstimate.stateCost.sourceUrl} target="_blank" rel="noreferrer">
+                      {copy.costSourceLabel}
+                    </a>
+                  </p>
                   <p>{costEstimate.note}</p>
                 </article>
 
