@@ -25,6 +25,9 @@ const initialAnswers = {
   mode: "prenup",
   state: "MA",
   relationshipStage: "",
+  coupleType: "",
+  citizenshipStatus: "",
+  citizenshipCountries: "",
   weddingMonths: "",
   discussedWithPartner: "",
   counsel: "",
@@ -89,6 +92,18 @@ const translations = {
     prenupReadinessText: "For someone considering marriage or already engaged.",
     postnupReadiness: "Postnup readiness",
     postnupReadinessText: "For someone already married or in a legal partnership.",
+    coupleProfileTitle: "Couple profile (optional)",
+    coupleTypeQuestion: "How does the couple describe the relationship?",
+    coupleTypeDifferent: "Different-sex couple",
+    coupleTypeSame: "Same-sex couple",
+    coupleTypeAnother: "Another description",
+    preferNotToSay: "Prefer not to say",
+    citizenshipQuestion: "What is the couple's U.S. citizenship situation?",
+    citizenshipBoth: "Both are U.S. citizens",
+    citizenshipOne: "One is a U.S. citizen",
+    citizenshipNeither: "Neither is a U.S. citizen",
+    citizenshipCountriesQuestion: "Countries of citizenship or cross-border context (optional)",
+    citizenshipCountriesPlaceholder: "Example: United States and Canada",
     marriageLicenseState: "What state will the marriage license get filed?",
     timingPrenup: "Wedding timing and process",
     timingPostnup: "Postnup process readiness",
@@ -106,6 +121,16 @@ const translations = {
     conversationOpenPostnupFollowup: "Can we come back to the postnup conversation? I want to make sure we discuss it thoughtfully instead of letting it become a vague, uncomfortable cloud.",
     conversationCorePrenup: "I am not bringing this up because I expect us to fail or because I am planning an escape hatch. I care about us, and I would rather make financial expectations clear while we are on the same team than leave difficult decisions to default divorce law later.",
     conversationCorePostnup: "I am not bringing this up because I think something is wrong with us. I care about our marriage, and I think putting clear financial expectations in writing could protect both of us and prevent misunderstandings later.",
+    conversationAssetSpecific:
+      "I especially want us to make clear rules for {topics}, because those are easier to plan for together now than reconstruct during a dispute.",
+    conversationSameSex:
+      "As a same-sex couple, I also want our plan to reflect our relationship accurately and, where another country is involved, account for the fact that recognition and protections are not identical everywhere.",
+    conversationMixedCitizenship:
+      "Because our citizenship and legal ties may connect more than one country{countries}, I want us to make sure the agreement works across borders instead of assuming one set of rules follows us everywhere.",
+    conversationBothCitizensForeign:
+      "Even though we are both U.S. citizens, the foreign property or legal connection still needs its own planning because citizenship does not override another country's title or family-law rules.",
+    conversationFamilySpecific:
+      "I also want us to be thoughtful about children, housing, support, and any career sacrifices, so the agreement protects the person making those contributions too.",
     conversationFairness: "I want the process and the agreement to be fair to both of us—not a way for one person to ‘win.’ We should both be honest about finances, have time to think, and be able to get our own legal advice.",
     conversationRush: "Because the timing is tight, I do not want either of us to feel pressured. If there is not enough time to handle this properly, we should ask lawyers what a fair timeline looks like instead of forcing a rushed signature.",
     conversationAsk: "Would you be open to talking about what each of us would want protected, what would feel fair, and what questions we should bring to separate attorneys?",
@@ -156,6 +181,7 @@ const translations = {
     foreignFormalities: "Local formalities that may matter",
     foreignWatchItems: "Issues to verify",
     foreignQuestions: "Questions for local counsel",
+    foreignCoupleChecks: "Couple-specific cross-border checks",
     foreignSources: "Verification sources",
     foreignDisclaimer:
       "This is a jurisdiction-specific issue checklist, not a legal opinion. Local law, residence, nationality, asset location, and the forum hearing a future case can change the result.",
@@ -221,6 +247,18 @@ const translations = {
     prenupReadinessText: "Para alguien que está considerando casarse o ya está comprometido.",
     postnupReadiness: "Preparación postnupcial",
     postnupReadinessText: "Para alguien que ya está casado o en una unión legal.",
+    coupleProfileTitle: "Perfil de la pareja (opcional)",
+    coupleTypeQuestion: "¿Cómo describe la pareja su relación?",
+    coupleTypeDifferent: "Pareja de distinto sexo",
+    coupleTypeSame: "Pareja del mismo sexo",
+    coupleTypeAnother: "Otra descripción",
+    preferNotToSay: "Prefiero no decirlo",
+    citizenshipQuestion: "¿Cuál es la situación de ciudadanía estadounidense de la pareja?",
+    citizenshipBoth: "Ambos son ciudadanos de EE. UU.",
+    citizenshipOne: "Uno es ciudadano de EE. UU.",
+    citizenshipNeither: "Ninguno es ciudadano de EE. UU.",
+    citizenshipCountriesQuestion: "Países de ciudadanía o contexto internacional (opcional)",
+    citizenshipCountriesPlaceholder: "Ejemplo: Estados Unidos y Canadá",
     marriageLicenseState: "¿En qué estado se presentará la licencia de matrimonio?",
     timingPrenup: "Tiempo de la boda y proceso",
     timingPostnup: "Preparación del proceso postnupcial",
@@ -238,6 +276,16 @@ const translations = {
     conversationOpenPostnupFollowup: "¿Podemos retomar la conversación sobre el acuerdo postnupcial? Quiero que lo hablemos con cuidado en vez de dejar que se convierta en una nube incómoda.",
     conversationCorePrenup: "No lo planteo porque espere que fracasemos ni porque esté planeando una salida. Me importa nuestra relación y prefiero aclarar las expectativas financieras mientras estamos en el mismo equipo, en vez de dejar decisiones difíciles a la ley de divorcio predeterminada.",
     conversationCorePostnup: "No lo planteo porque crea que algo va mal entre nosotros. Me importa nuestro matrimonio y creo que poner expectativas financieras claras por escrito puede protegernos a ambos y evitar malentendidos.",
+    conversationAssetSpecific:
+      "Quiero que establezcamos reglas claras especialmente para {topics}, porque es más fácil planificarlo juntos ahora que reconstruirlo durante una disputa.",
+    conversationSameSex:
+      "Como pareja del mismo sexo, también quiero que nuestro plan refleje bien nuestra relación y, si interviene otro país, tenga en cuenta que el reconocimiento y las protecciones no son iguales en todas partes.",
+    conversationMixedCitizenship:
+      "Como nuestra ciudadanía y vínculos legales pueden conectar a más de un país{countries}, quiero asegurarme de que el acuerdo funcione internacionalmente en vez de suponer que las mismas reglas nos siguen a todas partes.",
+    conversationBothCitizensForeign:
+      "Aunque ambos seamos ciudadanos estadounidenses, la propiedad o conexión extranjera necesita su propia planificación porque la ciudadanía no reemplaza las reglas de propiedad o familia de otro país.",
+    conversationFamilySpecific:
+      "También quiero que pensemos bien en los hijos, la vivienda, la manutención y cualquier sacrificio profesional, para que el acuerdo proteja también a quien haga esas contribuciones.",
     conversationFairness: "Quiero que el proceso y el acuerdo sean justos para ambos, no una manera de que una persona ‘gane’. Los dos debemos ser honestos sobre las finanzas, tener tiempo para pensar y poder recibir asesoría legal independiente.",
     conversationRush: "Como el tiempo es ajustado, no quiero que ninguno se sienta presionado. Si no hay tiempo suficiente para hacerlo bien, debemos preguntar a abogados cuál sería un plazo justo en vez de forzar una firma apresurada.",
     conversationAsk: "¿Estarías dispuesto/a a hablar sobre qué querría proteger cada uno, qué nos parecería justo y qué preguntas deberíamos llevar a abogados separados?",
@@ -288,6 +336,7 @@ const translations = {
     foreignFormalities: "Formalidades locales relevantes",
     foreignWatchItems: "Cuestiones para verificar",
     foreignQuestions: "Preguntas para el abogado local",
+    foreignCoupleChecks: "Verificaciones internacionales específicas de la pareja",
     foreignSources: "Fuentes de verificación",
     foreignDisclaimer:
       "Esta es una lista de cuestiones específicas de la jurisdicción, no una opinión legal. La residencia, nacionalidad, ubicación del activo y el tribunal que conozca un caso futuro pueden cambiar el resultado.",
@@ -333,6 +382,18 @@ const translations = {
     prenupReadinessText: "لمن يفكر في الزواج أو مخطوب بالفعل.",
     postnupReadiness: "جاهزية اتفاق ما بعد الزواج",
     postnupReadinessText: "لمن هو متزوج بالفعل أو في شراكة قانونية.",
+    coupleProfileTitle: "ملف الزوجين (اختياري)",
+    coupleTypeQuestion: "كيف يصف الزوجان علاقتهما؟",
+    coupleTypeDifferent: "زوجان من جنسين مختلفين",
+    coupleTypeSame: "زوجان من الجنس نفسه",
+    coupleTypeAnother: "وصف آخر",
+    preferNotToSay: "أفضل عدم الإجابة",
+    citizenshipQuestion: "ما وضع الجنسية الأمريكية للزوجين؟",
+    citizenshipBoth: "كلاهما مواطن أمريكي",
+    citizenshipOne: "أحدهما مواطن أمريكي",
+    citizenshipNeither: "لا أحد منهما مواطن أمريكي",
+    citizenshipCountriesQuestion: "دول الجنسية أو السياق العابر للحدود (اختياري)",
+    citizenshipCountriesPlaceholder: "مثال: الولايات المتحدة وكندا",
     marriageLicenseState: "في أي ولاية سيتم تقديم رخصة الزواج؟",
     timingPrenup: "توقيت الزفاف والإجراءات",
     timingPostnup: "جاهزية إجراءات ما بعد الزواج",
@@ -350,6 +411,16 @@ const translations = {
     conversationOpenPostnupFollowup: "هل يمكننا العودة إلى حديث اتفاق ما بعد الزواج؟ أريد أن نناقشه بهدوء بدلا من تركه يتحول إلى غيمة غامضة ومزعجة.",
     conversationCorePrenup: "لا أطرح هذا لأنني أتوقع فشلنا أو أخطط لمخرج. أنا أهتم بعلاقتنا، وأفضل أن نوضح التوقعات المالية ونحن في فريق واحد بدلا من ترك القرارات الصعبة لقواعد الطلاق الافتراضية لاحقا.",
     conversationCorePostnup: "لا أطرح هذا لأنني أعتقد أن هناك خطأ في زواجنا. أنا أهتم بزواجنا، وأرى أن كتابة توقعات مالية واضحة قد تحمينا معا وتمنع سوء الفهم لاحقا.",
+    conversationAssetSpecific:
+      "أريد بصورة خاصة أن نضع قواعد واضحة بشأن {topics}، لأن التخطيط لها معا الآن أسهل من إعادة بناء التفاصيل أثناء نزاع.",
+    conversationSameSex:
+      "وبصفتنا زوجين من الجنس نفسه، أريد أن تعكس خطتنا علاقتنا بدقة، وإذا كانت هناك دولة أخرى معنية، أن نراعي أن الاعتراف والحماية ليسا متماثلين في كل مكان.",
+    conversationMixedCitizenship:
+      "لأن جنسيتنا وروابطنا القانونية قد تصلنا بأكثر من دولة{countries}، أريد أن نتأكد من أن الاتفاق يعمل عبر الحدود بدلا من افتراض أن مجموعة قواعد واحدة تتبعنا في كل مكان.",
+    conversationBothCitizensForeign:
+      "حتى مع كوننا مواطنين أمريكيين، فإن الملكية أو الصلة الأجنبية تحتاج إلى تخطيط مستقل لأن الجنسية لا تلغي قواعد الملكية أو الأسرة في دولة أخرى.",
+    conversationFamilySpecific:
+      "أريد أيضا أن نفكر بعناية في الأطفال والسكن والدعم وأي تضحيات مهنية، لكي يحمي الاتفاق الطرف الذي يقدم تلك المساهمات أيضا.",
     conversationFairness: "أريد أن تكون العملية والاتفاق عادلين لكلينا، لا وسيلة لكي «يفوز» طرف. ينبغي أن نكون صريحين بشأن المال، وأن نحصل على وقت للتفكير، وأن يتمكن كل منا من طلب مشورة قانونية مستقلة.",
     conversationRush: "لأن الوقت ضيق، لا أريد أن يشعر أي منا بالضغط. إذا لم يكن هناك وقت كاف للقيام بهذا بشكل صحيح، فلنسأل المحامين عن جدول زمني عادل بدلا من فرض توقيع متسرع.",
     conversationAsk: "هل أنت مستعد/ة للحديث عما يريد كل منا حمايته، وما الذي يبدو عادلا، وما الأسئلة التي ينبغي أن نطرحها على محاميين مستقلين؟",
@@ -400,6 +471,7 @@ const translations = {
     foreignFormalities: "الإجراءات المحلية التي قد تكون مهمة",
     foreignWatchItems: "مسائل يجب التحقق منها",
     foreignQuestions: "أسئلة للمحامي المحلي",
+    foreignCoupleChecks: "فحوص عابرة للحدود خاصة بالزوجين",
     foreignSources: "مصادر التحقق",
     foreignDisclaimer:
       "هذه قائمة مسائل خاصة بالولاية القضائية وليست رأيا قانونيا. قد تغير الإقامة والجنسية وموقع الأصل والمحكمة التي تنظر القضية مستقبلا النتيجة.",
@@ -445,6 +517,18 @@ const translations = {
     prenupReadinessText: "适用于正在考虑结婚或已经订婚的人。",
     postnupReadiness: "婚后协议准备度",
     postnupReadinessText: "适用于已经结婚或处于法律伴侣关系的人。",
+    coupleProfileTitle: "伴侣情况（可选）",
+    coupleTypeQuestion: "双方如何描述这段关系？",
+    coupleTypeDifferent: "异性伴侣",
+    coupleTypeSame: "同性伴侣",
+    coupleTypeAnother: "其他描述",
+    preferNotToSay: "不愿说明",
+    citizenshipQuestion: "双方的美国公民身份情况是什么？",
+    citizenshipBoth: "双方都是美国公民",
+    citizenshipOne: "一方是美国公民",
+    citizenshipNeither: "双方都不是美国公民",
+    citizenshipCountriesQuestion: "公民所属国家或跨境背景（可选）",
+    citizenshipCountriesPlaceholder: "例如：美国和加拿大",
     marriageLicenseState: "结婚许可证将在哪个州提交？",
     timingPrenup: "婚礼时间与流程",
     timingPostnup: "婚后协议流程准备度",
@@ -462,6 +546,16 @@ const translations = {
     conversationOpenPostnupFollowup: "我们可以继续聊聊婚后协议吗？我希望我们认真讨论，而不是让它变成一团模糊又尴尬的乌云。",
     conversationCorePrenup: "我提出这件事，不是因为我觉得我们会失败，也不是因为我在准备退路。我在乎我们，也希望趁我们站在同一边时把财务预期说清楚，而不是以后把困难决定全部交给默认离婚法律。",
     conversationCorePostnup: "我提出这件事，不是因为我觉得我们的婚姻出了问题。我在乎我们的婚姻，也认为把清楚的财务预期写下来，可以保护我们双方并减少以后的误会。",
+    conversationAssetSpecific:
+      "我尤其希望我们为{topics}制定清楚规则，因为现在一起规划，比发生争议后再重建事实容易得多。",
+    conversationSameSex:
+      "作为同性伴侣，我也希望这份计划准确反映我们的关系；如果涉及其他国家，还要考虑各地对婚姻的承认和保护并不完全相同。",
+    conversationMixedCitizenship:
+      "由于我们的公民身份和法律联系可能涉及多个国家{countries}，我希望协议真正能应对跨境情况，而不是假设同一套规则会跟随我们到任何地方。",
+    conversationBothCitizensForeign:
+      "即使我们双方都是美国公民，外国财产或法律联系仍需要单独规划，因为公民身份不会取代另一个国家的产权或家庭法规则。",
+    conversationFamilySpecific:
+      "我也希望我们认真考虑子女、住房、扶养和任何职业牺牲，让协议也能保护作出这些贡献的一方。",
     conversationFairness: "我希望过程和协议对我们双方都公平，而不是让某一个人“赢”。我们都应该诚实披露财务情况，有时间思考，并且可以分别获得自己的法律建议。",
     conversationRush: "因为时间比较紧，我不希望任何一方感到被逼迫。如果时间不足以妥善处理，我们应该问律师怎样的时间安排才公平，而不是仓促签字。",
     conversationAsk: "你愿意和我一起谈谈我们各自想保护什么、怎样才算公平，以及我们应该分别向律师提出哪些问题吗？",
@@ -512,6 +606,7 @@ const translations = {
     foreignFormalities: "可能重要的当地手续",
     foreignWatchItems: "需要核实的问题",
     foreignQuestions: "向当地律师提出的问题",
+    foreignCoupleChecks: "针对双方情况的跨境核实事项",
     foreignSources: "核实资料来源",
     foreignDisclaimer:
       "这是针对该司法辖区的问题清单，不是法律意见。居住地、国籍、资产所在地以及未来审理案件的法院都可能改变结果。",
@@ -677,11 +772,16 @@ function getCopy(language) {
   };
 }
 
-function getConversationScript(answers, copy) {
+function getConversationScript(answers, copy, language) {
   const isFollowUp = answers.discussedWithPartner === "yes";
   const isPrenup = answers.mode === "prenup";
   const weddingTimingIsTight =
     isPrenup && answers.weddingMonths !== "" && Number(answers.weddingMonths) >= 0 && Number(answers.weddingMonths) <= 3;
+  const topicSet = new Set([...answers.currentAssets, ...answers.futureAssets]);
+  if (answers.business === "yes") topicSet.add("Business ownership");
+  if (answers.realEstate === "yes") topicSet.add("Real estate");
+  if (answers.debts === "yes") topicSet.add("Credit card or personal debt");
+  const selectedTopics = [...topicSet].slice(0, 3).map((topic) => translateAsset(topic, language));
   const lines = [
     isPrenup
       ? isFollowUp
@@ -690,13 +790,45 @@ function getConversationScript(answers, copy) {
       : isFollowUp
         ? copy.conversationOpenPostnupFollowup
         : copy.conversationOpenPostnupFirst,
-    isPrenup ? copy.conversationCorePrenup : copy.conversationCorePostnup,
-    copy.conversationFairness
+    isPrenup ? copy.conversationCorePrenup : copy.conversationCorePostnup
   ];
 
+  if (selectedTopics.length > 0) {
+    lines.push(copy.conversationAssetSpecific.replace("{topics}", selectedTopics.join(", ")));
+  }
+  if (answers.coupleType === "same-sex") lines.push(copy.conversationSameSex);
+  if (answers.citizenshipStatus === "one-us" || answers.citizenshipStatus === "neither-us") {
+    const countries = answers.citizenshipCountries.trim() ? ` (${answers.citizenshipCountries.trim()})` : "";
+    lines.push(copy.conversationMixedCitizenship.replace("{countries}", countries));
+  } else if (
+    answers.citizenshipStatus === "both-us" &&
+    (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure")
+  ) {
+    lines.push(copy.conversationBothCitizensForeign);
+  }
+  if (answers.children === "yes" || answers.careerSacrifice === "yes") lines.push(copy.conversationFamilySpecific);
+  lines.push(copy.conversationFairness);
   if (answers.pressure === "yes" || weddingTimingIsTight) lines.push(copy.conversationRush);
   lines.push(copy.conversationAsk);
   return lines;
+}
+
+function getCoupleSpecificForeignChecks(answers) {
+  const checks = [];
+  if (answers.coupleType === "same-sex") {
+    checks.push("Confirm that the foreign jurisdiction recognizes the marriage, a same-sex divorce, and marital agreements between the spouses; recognition is not uniform worldwide.");
+  }
+  if (answers.citizenshipStatus === "one-us") {
+    checks.push("One spouse is a US citizen and one is not: confirm how each spouse's nationality, domicile, residence, and immigration status affect governing law and enforcement.");
+  } else if (answers.citizenshipStatus === "neither-us") {
+    checks.push("Neither spouse is a US citizen: confirm why the selected US state and any foreign jurisdiction would have authority over the agreement or a future dispute.");
+  } else if (answers.citizenshipStatus === "both-us") {
+    checks.push("Both spouses are US citizens, but US citizenship does not override foreign real-estate, registration, inheritance, tax, or enforcement rules.");
+  }
+  if (answers.citizenshipCountries.trim()) {
+    checks.push(`Citizenship or cross-border context entered: ${answers.citizenshipCountries.trim()}. Local counsel should verify every listed country's connection.`);
+  }
+  return checks;
 }
 
 function translateAsset(asset, language) {
@@ -1272,6 +1404,7 @@ async function generateReportPdf({
   costEstimate,
   incomeSnapshot,
   foreignLawContext,
+  coupleForeignChecks,
   lossExposureItems,
   lossExposureValue
 }) {
@@ -1347,6 +1480,9 @@ async function generateReportPdf({
       `${copy.foreignWatchItems}: ${foreignLawContext.watchItems.join("; ")}.`,
       `${copy.foreignQuestions}: ${foreignLawContext.questions.join("; ")}.`
     ];
+    if (coupleForeignChecks.length > 0) {
+      foreignLawLines.push(`${copy.foreignCoupleChecks}: ${coupleForeignChecks.join("; ")}.`);
+    }
     if (foreignLawContext.sources.length > 0) {
       foreignLawLines.push(
         `${copy.foreignSources}: ${foreignLawContext.sources.map((source) => `${source.label} — ${source.url}`).join("; ")}.`
@@ -1514,7 +1650,8 @@ function App() {
     () => getConsequenceStory(answers, rule, consequenceContext, costEstimate),
     [answers, rule, consequenceContext, costEstimate]
   );
-  const conversationScript = useMemo(() => getConversationScript(answers, copy), [answers, copy]);
+  const conversationScript = useMemo(() => getConversationScript(answers, copy, language), [answers, copy, language]);
+  const coupleForeignChecks = useMemo(() => getCoupleSpecificForeignChecks(answers), [answers]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
@@ -1623,6 +1760,61 @@ function App() {
                   <span>{copy.postnupReadinessText}</span>
                 </ChoiceButton>
               </div>
+
+              <section className="couple-profile-card">
+                <h3>{copy.coupleProfileTitle}</h3>
+                <div>
+                  <p className="label-text">{copy.coupleTypeQuestion}</p>
+                  <div className="chip-grid">
+                    {[
+                      ["different-sex", copy.coupleTypeDifferent],
+                      ["same-sex", copy.coupleTypeSame],
+                      ["another", copy.coupleTypeAnother],
+                      ["prefer-not", copy.preferNotToSay]
+                    ].map(([value, label]) => (
+                      <button
+                        className={answers.coupleType === value ? "chip selected" : "chip"}
+                        key={value}
+                        type="button"
+                        onClick={() => setAnswer("coupleType", value)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="label-text">{copy.citizenshipQuestion}</p>
+                  <div className="chip-grid">
+                    {[
+                      ["both-us", copy.citizenshipBoth],
+                      ["one-us", copy.citizenshipOne],
+                      ["neither-us", copy.citizenshipNeither],
+                      ["prefer-not", copy.preferNotToSay]
+                    ].map(([value, label]) => (
+                      <button
+                        className={answers.citizenshipStatus === value ? "chip selected" : "chip"}
+                        key={value}
+                        type="button"
+                        onClick={() => setAnswer("citizenshipStatus", value)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {(answers.citizenshipStatus === "one-us" || answers.citizenshipStatus === "neither-us") && (
+                  <label>
+                    {copy.citizenshipCountriesQuestion}
+                    <input
+                      type="text"
+                      value={answers.citizenshipCountries}
+                      onChange={(event) => setAnswer("citizenshipCountries", event.target.value)}
+                      placeholder={copy.citizenshipCountriesPlaceholder}
+                    />
+                  </label>
+                )}
+              </section>
 
               <label>
                 {copy.marriageLicenseState}
@@ -1965,6 +2157,7 @@ function App() {
                         costEstimate,
                         incomeSnapshot,
                         foreignLawContext,
+                        coupleForeignChecks,
                         lossExposureItems,
                         lossExposureValue
                       })
@@ -2059,6 +2252,16 @@ function App() {
                           ))}
                         </ul>
                       </section>
+                      {coupleForeignChecks.length > 0 && (
+                        <section>
+                          <h4>{copy.foreignCoupleChecks}</h4>
+                          <ul>
+                            {coupleForeignChecks.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </section>
+                      )}
                       {foreignLawContext.sources.length > 0 && (
                         <section>
                           <h4>{copy.foreignSources}</h4>
