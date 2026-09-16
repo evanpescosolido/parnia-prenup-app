@@ -578,62 +578,121 @@ select {
   stroke-width: 3;
 }
 
-.cartoon-tornado {
-  fill: #bfdbfe;
-  opacity: 0.95;
-  stroke: #4f8fe8;
+.cartoon-floor,
+.cartoon-motion {
+  fill: none;
+  stroke: #7aa7d6;
+  stroke-linecap: round;
   stroke-width: 4;
 }
 
-.cartoon-paper rect,
-.cartoon-house rect,
-.cartoon-money rect {
+.cartoon-body {
+  fill: #93c5fd;
+  stroke: #12304d;
+  stroke-width: 4;
+}
+
+.cartoon-head,
+.cartoon-hand {
+  fill: #f6c7a5;
+  stroke: #12304d;
+  stroke-width: 4;
+}
+
+.cartoon-hair {
+  fill: #12304d;
+  stroke: #12304d;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.cartoon-eye,
+.cartoon-arm {
+  fill: none;
+  stroke: #12304d;
+  stroke-linecap: round;
+  stroke-width: 4;
+}
+
+.cartoon-mouth {
   fill: #ffffff;
   stroke: #12304d;
   stroke-width: 4;
 }
 
-.cartoon-paper path {
-  stroke: #2563eb;
+.cartoon-tear-stream {
+  fill: none;
+  stroke: #38bdf8;
   stroke-linecap: round;
-  stroke-width: 5;
+  stroke-width: 6;
 }
 
-.cartoon-paper text,
-.cartoon-money text,
-.cartoon-caption {
-  fill: #12304d;
-  font-family: inherit;
-  font-weight: 850;
+.cartoon-tear-drop {
+  fill: #38bdf8;
+  stroke: #12304d;
+  stroke-width: 2;
 }
 
-.cartoon-house path {
-  fill: #93c5fd;
+.cartoon-wallet rect {
+  fill: #8b5e3c;
+  stroke: #12304d;
+  stroke-width: 4;
+}
+
+.cartoon-wallet path {
+  stroke: #12304d;
+  stroke-width: 3;
+}
+
+.cartoon-wallet circle {
+  fill: #fbbf24;
+}
+
+.cartoon-speech rect,
+.cartoon-speech path {
+  fill: #ffffff;
   stroke: #12304d;
   stroke-linejoin: round;
   stroke-width: 4;
 }
 
-.cartoon-house rect:nth-child(3) {
-  fill: #dbeafe;
+.cartoon-speech text,
+.cartoon-flying-paper text,
+.cartoon-flying-money text,
+.cartoon-caption {
+  fill: #12304d;
+  font-family: inherit;
+  font-weight: 900;
 }
 
-.cartoon-gavel rect {
-  fill: #d97706;
+.cartoon-speech text {
+  font-size: 24px;
+}
+
+.cartoon-flying-paper rect,
+.cartoon-flying-money rect {
   stroke: #12304d;
-  stroke-width: 3;
+  stroke-width: 4;
 }
 
-.cartoon-money rect {
-  fill: #dbeafe;
+.cartoon-flying-paper rect {
+  fill: #ffffff;
 }
 
-.cartoon-money text {
-  font-size: 28px;
+.cartoon-flying-paper text {
+  font-size: 13px;
+}
+
+.cartoon-flying-money rect {
+  fill: #bbf7d0;
+}
+
+.cartoon-flying-money text {
+  font-size: 30px;
 }
 
 .cartoon-caption {
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0;
 }
 

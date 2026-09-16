@@ -1593,30 +1593,50 @@ function YesNo({ copy, value, onChange }) {
 function DivorceCartoon({ exposure }) {
   return (
     <div className={`cartoon-panel ${exposure.toLowerCase()}`} aria-hidden="true">
-      <svg viewBox="0 0 420 220" role="img">
-        <rect className="cartoon-bg" x="8" y="8" width="404" height="204" rx="18" />
-        <path className="cartoon-tornado" d="M224 46 C294 35 330 72 265 91 C207 108 323 119 281 148 C247 172 184 157 210 133 C230 114 158 108 174 82 C184 64 200 53 224 46 Z" />
-        <g className="cartoon-paper">
-          <rect x="48" y="48" width="74" height="92" rx="6" />
-          <path d="M62 72 H108 M62 91 H103 M62 110 H96" />
-          <text x="67" y="133">PRE?</text>
+      <svg viewBox="0 0 520 280" role="img">
+        <rect className="cartoon-bg" x="8" y="8" width="504" height="264" rx="18" />
+        <path className="cartoon-floor" d="M28 224 H492" />
+
+        <g className="cartoon-person">
+          <path className="cartoon-body" d="M66 220 C70 180 93 161 128 161 C163 161 187 181 194 220 Z" />
+          <circle className="cartoon-head" cx="128" cy="112" r="52" />
+          <path className="cartoon-hair" d="M82 111 C73 65 105 48 139 57 C176 66 183 94 171 116 C161 91 145 82 113 84 C99 84 91 94 82 111 Z" />
+          <path className="cartoon-eye" d="M99 112 Q109 102 119 112 M138 112 Q148 102 158 112" />
+          <ellipse className="cartoon-mouth" cx="129" cy="139" rx="15" ry="12" />
+          <path className="cartoon-tear-stream" d="M108 116 C108 131 101 139 103 154 M149 116 C149 132 157 140 154 156" />
+          <path className="cartoon-tear-drop" d="M101 156 C93 167 96 175 103 175 C111 175 113 166 101 156 Z M155 158 C146 170 150 178 157 177 C165 176 166 168 155 158 Z" />
+          <path className="cartoon-arm" d="M82 179 C53 172 44 153 35 141 M174 181 C201 174 207 151 216 141" />
+          <circle className="cartoon-hand" cx="33" cy="138" r="9" />
+          <circle className="cartoon-hand" cx="218" cy="138" r="9" />
         </g>
-        <g className="cartoon-house">
-          <path d="M294 130 L342 92 L390 130 Z" />
-          <rect x="306" y="130" width="70" height="54" rx="4" />
-          <rect x="334" y="151" width="18" height="33" />
+
+        <g className="cartoon-wallet" transform="rotate(-9 58 193)">
+          <rect x="31" y="178" width="54" height="35" rx="7" />
+          <path d="M55 178 V213" />
+          <circle cx="61" cy="195" r="3" />
         </g>
-        <g className="cartoon-money">
-          <rect x="185" y="32" width="62" height="32" rx="6" />
-          <text x="203" y="55">$</text>
-          <rect x="131" y="151" width="58" height="30" rx="6" />
-          <text x="149" y="173">$</text>
+
+        <g className="cartoon-speech">
+          <rect x="220" y="28" width="272" height="94" rx="18" />
+          <path d="M240 116 L211 143 L256 120 Z" />
+          <text x="356" y="67" textAnchor="middle">WHERE’D ALL MY</text>
+          <text x="356" y="100" textAnchor="middle">MONEY GO?!</text>
         </g>
-        <g className="cartoon-gavel">
-          <rect x="254" y="50" width="12" height="74" rx="4" transform="rotate(43 260 87)" />
-          <rect x="268" y="34" width="58" height="24" rx="5" transform="rotate(43 297 46)" />
+
+        <g className="cartoon-flying-paper" transform="rotate(11 306 159)">
+          <rect x="269" y="137" width="74" height="48" rx="5" />
+          <text x="306" y="157" textAnchor="middle">LEGAL</text>
+          <text x="306" y="176" textAnchor="middle">FEES</text>
         </g>
-        <text className="cartoon-caption" x="30" y="200">NO AGREEMENT? THE PAPERWORK GETS CREATIVE.</text>
+        <g className="cartoon-flying-money" transform="rotate(-12 403 171)">
+          <rect x="369" y="151" width="68" height="40" rx="6" />
+          <text x="403" y="180" textAnchor="middle">$</text>
+        </g>
+        <path className="cartoon-motion" d="M252 167 Q236 158 229 147 M351 192 Q341 204 323 207 M448 139 Q465 134 475 121" />
+
+        <text className="cartoon-caption" x="260" y="250" textAnchor="middle">
+          NO AGREEMENT: A FINANCIAL MYSTERY IN SIX BILLABLE HOURS.
+        </text>
       </svg>
     </div>
   );
