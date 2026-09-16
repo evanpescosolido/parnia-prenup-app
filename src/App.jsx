@@ -68,7 +68,7 @@ const languages = {
 
 const translations = {
   en: {
-    brandTitle: "Prenup Planner",
+    brandTitle: "Should I Prenup?",
     brandSubtitle: "Readiness and issue spotting",
     boundaryNote: "Educational planning only. This tool does not draft an agreement or replace legal counsel.",
     languageLabel: "Language",
@@ -86,6 +86,8 @@ const translations = {
     unsure: "Unsure",
     back: "Back",
     next: "Next",
+    prenupStep: "Prenup",
+    postnupStep: "Postnup",
     pathTitle: "Marital status",
     prenupReadiness: "Prenup readiness",
     prenupReadinessText: "For someone considering marriage or already engaged.",
@@ -229,7 +231,7 @@ const translations = {
     storyRefreshNote: "The story updates as the answers change."
   },
   es: {
-    brandTitle: "Planificador Prenupcial",
+    brandTitle: "¿Necesito un acuerdo prenupcial?",
     brandSubtitle: "Preparación e identificación de temas",
     boundaryNote: "Solo planificación educativa. Esta herramienta no redacta un acuerdo ni reemplaza a un abogado.",
     languageLabel: "Idioma",
@@ -240,6 +242,8 @@ const translations = {
     unsure: "No estoy seguro",
     back: "Atrás",
     next: "Siguiente",
+    prenupStep: "Prenupcial",
+    postnupStep: "Postnupcial",
     pathTitle: "Estado civil",
     prenupReadiness: "Preparación prenupcial",
     prenupReadinessText: "Para alguien que está considerando casarse o ya está comprometido.",
@@ -363,7 +367,7 @@ const translations = {
     sourceNotes: "Notas de fuente"
   },
   ar: {
-    brandTitle: "مخطط اتفاق ما قبل الزواج",
+    brandTitle: "هل أحتاج إلى اتفاق قبل الزواج؟",
     brandSubtitle: "تقييم الجاهزية وتحديد المسائل",
     boundaryNote: "للتخطيط التعليمي فقط. هذه الأداة لا تصيغ اتفاقا ولا تغني عن الاستشارة القانونية.",
     languageLabel: "اللغة",
@@ -374,6 +378,8 @@ const translations = {
     unsure: "غير متأكد",
     back: "السابق",
     next: "التالي",
+    prenupStep: "قبل الزواج",
+    postnupStep: "بعد الزواج",
     pathTitle: "الحالة الزوجية",
     prenupReadiness: "جاهزية اتفاق ما قبل الزواج",
     prenupReadinessText: "لمن يفكر في الزواج أو مخطوب بالفعل.",
@@ -497,7 +503,7 @@ const translations = {
     sourceNotes: "ملاحظات المصادر"
   },
   zh: {
-    brandTitle: "婚前协议规划器",
+    brandTitle: "我需要婚前协议吗？",
     brandSubtitle: "准备度与问题识别",
     boundaryNote: "仅用于教育性规划。本工具不会起草协议，也不能替代律师建议。",
     languageLabel: "语言",
@@ -508,6 +514,8 @@ const translations = {
     unsure: "不确定",
     back: "返回",
     next: "下一步",
+    prenupStep: "婚前协议",
+    postnupStep: "婚后协议",
     pathTitle: "婚姻状态",
     prenupReadiness: "婚前协议准备度",
     prenupReadinessText: "适用于正在考虑结婚或已经订婚的人。",
@@ -766,6 +774,11 @@ function getCopy(language) {
       ...(selected.steps ?? {})
     }
   };
+}
+
+function getStepLabel(copy, stepId, mode) {
+  if (stepId === "path") return mode === "postnup" ? copy.postnupStep : copy.prenupStep;
+  return copy.steps[stepId];
 }
 
 function getConversationScript(answers, copy, language) {
@@ -1716,7 +1729,7 @@ function App() {
         <nav className="step-list" aria-label="Planner sections">
           {steps.map((item, index) => {
             const Icon = item.icon;
-            const label = copy.steps[item.id];
+            const label = getStepLabel(copy, item.id, answers.mode);
             return (
               <button
                 className={index === stepIndex ? "step active" : "step"}
@@ -1740,7 +1753,7 @@ function App() {
       <section className="workspace">
         <header className="topbar">
           <div>
-            <h1>{copy.steps[step.id]}</h1>
+            <h1>{getStepLabel(copy, step.id, answers.mode)}</h1>
           </div>
           <div className="topbar-actions">
             <label className="language-select">

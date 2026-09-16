@@ -1,4 +1,4 @@
-# Prenup Planner
+# Should I Prenup?
 
 Prototype web app for prenup and postnup readiness planning. The app is educational and issue-spotting oriented. It does not draft legal agreements or replace attorney review.
 
