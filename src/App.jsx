@@ -7,6 +7,7 @@ import {
   BriefcaseBusiness,
   CheckCircle2,
   CircleDollarSign,
+  Copy as CopyIcon,
   Clock3,
   FileText,
   Globe2,
@@ -96,6 +97,26 @@ const translations = {
     counsel: "Has either person spoken with an attorney?",
     disclosureStarted: "Have financial disclosures or documents been started?",
     pressure: "Is anyone feeling rushed or pressured?",
+    conversationEyebrow: "Conversation starter",
+    conversationTitle: "How to bring it up without making dinner weird",
+    conversationIntro: "Use this as a starting point and make it sound like you. Calm, early, and mutual beats perfect wording.",
+    conversationOpenPrenupFirst: "Okay, I have a wildly romantic agenda item: paperwork. I want to talk about a prenup.",
+    conversationOpenPrenupFollowup: "Can we pick back up on the prenup conversation? I promise this is not my attempt to turn our relationship into a terms-and-conditions page.",
+    conversationOpenPostnupFirst: "I know ‘postnup’ is not usually competing with flowers for most romantic word of the year, but I want to talk about one.",
+    conversationOpenPostnupFollowup: "Can we come back to the postnup conversation? I want to make sure we discuss it thoughtfully instead of letting it become a vague, uncomfortable cloud.",
+    conversationCorePrenup: "I am not bringing this up because I expect us to fail or because I am planning an escape hatch. I care about us, and I would rather make financial expectations clear while we are on the same team than leave difficult decisions to default divorce law later.",
+    conversationCorePostnup: "I am not bringing this up because I think something is wrong with us. I care about our marriage, and I think putting clear financial expectations in writing could protect both of us and prevent misunderstandings later.",
+    conversationFairness: "I want the process and the agreement to be fair to both of us—not a way for one person to ‘win.’ We should both be honest about finances, have time to think, and be able to get our own legal advice.",
+    conversationRush: "Because the timing is tight, I do not want either of us to feel pressured. If there is not enough time to handle this properly, we should ask lawyers what a fair timeline looks like instead of forcing a rushed signature.",
+    conversationAsk: "Would you be open to talking about what each of us would want protected, what would feel fair, and what questions we should bring to separate attorneys?",
+    conversationTipsTitle: "Delivery notes",
+    conversationTips: [
+      "Choose a calm, private time—not during an argument, in front of family, or five minutes before a wedding appointment.",
+      "Lead with protecting both people and creating clarity; avoid opening with ‘I need to protect my stuff.’",
+      "Treat the first talk as a conversation, not a demand for an immediate answer or signature."
+    ],
+    copyScript: "Copy script",
+    copiedScript: "Copied",
     assetsTitle: "Current and future assets",
     currentTopics: "Current financial topics",
     estimatedCurrentValues: "Estimated current values",
@@ -200,6 +221,26 @@ const translations = {
     counsel: "¿Alguna de las personas ha hablado con un abogado?",
     disclosureStarted: "¿Ya comenzaron las declaraciones o documentos financieros?",
     pressure: "¿Alguien se siente apurado o presionado?",
+    conversationEyebrow: "Inicio de conversación",
+    conversationTitle: "Cómo plantearlo sin volver incómoda la cena",
+    conversationIntro: "Úsalo como punto de partida y adáptalo a tu forma de hablar. Es mejor hablar con calma, temprano y como equipo que buscar palabras perfectas.",
+    conversationOpenPrenupFirst: "Bueno, tengo un tema tremendamente romántico para la agenda: papeleo. Quiero hablar sobre un acuerdo prenupcial.",
+    conversationOpenPrenupFollowup: "¿Podemos retomar la conversación sobre el acuerdo prenupcial? Prometo que no intento convertir nuestra relación en una página de términos y condiciones.",
+    conversationOpenPostnupFirst: "Sé que ‘acuerdo postnupcial’ no compite con las flores por la palabra más romántica del año, pero quiero hablar sobre uno.",
+    conversationOpenPostnupFollowup: "¿Podemos retomar la conversación sobre el acuerdo postnupcial? Quiero que lo hablemos con cuidado en vez de dejar que se convierta en una nube incómoda.",
+    conversationCorePrenup: "No lo planteo porque espere que fracasemos ni porque esté planeando una salida. Me importa nuestra relación y prefiero aclarar las expectativas financieras mientras estamos en el mismo equipo, en vez de dejar decisiones difíciles a la ley de divorcio predeterminada.",
+    conversationCorePostnup: "No lo planteo porque crea que algo va mal entre nosotros. Me importa nuestro matrimonio y creo que poner expectativas financieras claras por escrito puede protegernos a ambos y evitar malentendidos.",
+    conversationFairness: "Quiero que el proceso y el acuerdo sean justos para ambos, no una manera de que una persona ‘gane’. Los dos debemos ser honestos sobre las finanzas, tener tiempo para pensar y poder recibir asesoría legal independiente.",
+    conversationRush: "Como el tiempo es ajustado, no quiero que ninguno se sienta presionado. Si no hay tiempo suficiente para hacerlo bien, debemos preguntar a abogados cuál sería un plazo justo en vez de forzar una firma apresurada.",
+    conversationAsk: "¿Estarías dispuesto/a a hablar sobre qué querría proteger cada uno, qué nos parecería justo y qué preguntas deberíamos llevar a abogados separados?",
+    conversationTipsTitle: "Consejos para decirlo",
+    conversationTips: [
+      "Elige un momento tranquilo y privado, no durante una discusión, frente a la familia ni cinco minutos antes de una cita de boda.",
+      "Empieza hablando de proteger a ambos y crear claridad; evita abrir con ‘necesito proteger mis cosas’.",
+      "Trata la primera charla como una conversación, no como una exigencia de respuesta o firma inmediata."
+    ],
+    copyScript: "Copiar guion",
+    copiedScript: "Copiado",
     assetsTitle: "Activos actuales y futuros",
     currentTopics: "Temas financieros actuales",
     estimatedCurrentValues: "Valores actuales estimados",
@@ -284,6 +325,26 @@ const translations = {
     counsel: "هل تحدث أي من الطرفين مع محام؟",
     disclosureStarted: "هل بدأت الإفصاحات أو المستندات المالية؟",
     pressure: "هل يشعر أحد بالاستعجال أو الضغط؟",
+    conversationEyebrow: "بداية للمحادثة",
+    conversationTitle: "كيف تطرح الموضوع من دون أن تجعل العشاء غريبا",
+    conversationIntro: "استخدم هذا كنقطة بداية وعدله ليشبه أسلوبك. الهدوء والبدء مبكرا والتعامل كفريق أهم من الكلمات المثالية.",
+    conversationOpenPrenupFirst: "حسنا، لدي موضوع رومانسي للغاية على جدول الأعمال: الأوراق. أريد أن نتحدث عن اتفاق ما قبل الزواج.",
+    conversationOpenPrenupFollowup: "هل يمكننا العودة إلى حديث اتفاق ما قبل الزواج؟ أعدك أنني لا أحاول تحويل علاقتنا إلى صفحة شروط وأحكام.",
+    conversationOpenPostnupFirst: "أعرف أن «اتفاق ما بعد الزواج» لا ينافس الزهور على لقب أكثر كلمات السنة رومانسية، لكنني أريد أن نتحدث عنه.",
+    conversationOpenPostnupFollowup: "هل يمكننا العودة إلى حديث اتفاق ما بعد الزواج؟ أريد أن نناقشه بهدوء بدلا من تركه يتحول إلى غيمة غامضة ومزعجة.",
+    conversationCorePrenup: "لا أطرح هذا لأنني أتوقع فشلنا أو أخطط لمخرج. أنا أهتم بعلاقتنا، وأفضل أن نوضح التوقعات المالية ونحن في فريق واحد بدلا من ترك القرارات الصعبة لقواعد الطلاق الافتراضية لاحقا.",
+    conversationCorePostnup: "لا أطرح هذا لأنني أعتقد أن هناك خطأ في زواجنا. أنا أهتم بزواجنا، وأرى أن كتابة توقعات مالية واضحة قد تحمينا معا وتمنع سوء الفهم لاحقا.",
+    conversationFairness: "أريد أن تكون العملية والاتفاق عادلين لكلينا، لا وسيلة لكي «يفوز» طرف. ينبغي أن نكون صريحين بشأن المال، وأن نحصل على وقت للتفكير، وأن يتمكن كل منا من طلب مشورة قانونية مستقلة.",
+    conversationRush: "لأن الوقت ضيق، لا أريد أن يشعر أي منا بالضغط. إذا لم يكن هناك وقت كاف للقيام بهذا بشكل صحيح، فلنسأل المحامين عن جدول زمني عادل بدلا من فرض توقيع متسرع.",
+    conversationAsk: "هل أنت مستعد/ة للحديث عما يريد كل منا حمايته، وما الذي يبدو عادلا، وما الأسئلة التي ينبغي أن نطرحها على محاميين مستقلين؟",
+    conversationTipsTitle: "ملاحظات عند طرح الموضوع",
+    conversationTips: [
+      "اختر وقتا هادئا وخاصا، لا أثناء شجار أو أمام العائلة أو قبل موعد متعلق بالزفاف بخمس دقائق.",
+      "ابدأ بفكرة حماية الطرفين وخلق الوضوح؛ وتجنب البدء بعبارة «أحتاج إلى حماية ممتلكاتي».",
+      "تعامل مع الحديث الأول كمحادثة، لا كمطالبة بإجابة أو توقيع فوري."
+    ],
+    copyScript: "نسخ النص",
+    copiedScript: "تم النسخ",
     assetsTitle: "الأصول الحالية والمستقبلية",
     currentTopics: "المواضيع المالية الحالية",
     estimatedCurrentValues: "القيم الحالية المقدرة",
@@ -368,6 +429,26 @@ const translations = {
     counsel: "任一方是否已经咨询过律师？",
     disclosureStarted: "是否已经开始准备财务披露或文件？",
     pressure: "是否有人感到仓促或受压？",
+    conversationEyebrow: "谈话开场",
+    conversationTitle: "怎样提出这个话题，而不让晚餐突然尴尬",
+    conversationIntro: "把这当作起点，再改成你自己的说话方式。冷静、尽早、共同面对，比措辞完美更重要。",
+    conversationOpenPrenupFirst: "好吧，我有一个极其浪漫的议题：文书工作。我想和你谈谈婚前协议。",
+    conversationOpenPrenupFollowup: "我们可以继续聊聊婚前协议吗？我保证，我不是想把我们的关系变成一页“条款与条件”。",
+    conversationOpenPostnupFirst: "我知道“婚后协议”大概不会和鲜花竞争年度最浪漫词汇，但我想和你谈谈这件事。",
+    conversationOpenPostnupFollowup: "我们可以继续聊聊婚后协议吗？我希望我们认真讨论，而不是让它变成一团模糊又尴尬的乌云。",
+    conversationCorePrenup: "我提出这件事，不是因为我觉得我们会失败，也不是因为我在准备退路。我在乎我们，也希望趁我们站在同一边时把财务预期说清楚，而不是以后把困难决定全部交给默认离婚法律。",
+    conversationCorePostnup: "我提出这件事，不是因为我觉得我们的婚姻出了问题。我在乎我们的婚姻，也认为把清楚的财务预期写下来，可以保护我们双方并减少以后的误会。",
+    conversationFairness: "我希望过程和协议对我们双方都公平，而不是让某一个人“赢”。我们都应该诚实披露财务情况，有时间思考，并且可以分别获得自己的法律建议。",
+    conversationRush: "因为时间比较紧，我不希望任何一方感到被逼迫。如果时间不足以妥善处理，我们应该问律师怎样的时间安排才公平，而不是仓促签字。",
+    conversationAsk: "你愿意和我一起谈谈我们各自想保护什么、怎样才算公平，以及我们应该分别向律师提出哪些问题吗？",
+    conversationTipsTitle: "表达建议",
+    conversationTips: [
+      "选择安静、私密的时间；不要在争吵时、家人面前，或婚礼安排前五分钟提出。",
+      "先强调保护双方和建立清晰预期；避免一开口就说“我需要保护我的东西”。",
+      "把第一次谈话当成交流，而不是要求对方立刻回答或签字。"
+    ],
+    copyScript: "复制话术",
+    copiedScript: "已复制",
     assetsTitle: "当前和未来资产",
     currentTopics: "当前财务事项",
     estimatedCurrentValues: "当前估值",
@@ -562,6 +643,28 @@ function getCopy(language) {
       ...(selected.steps ?? {})
     }
   };
+}
+
+function getConversationScript(answers, copy) {
+  const isFollowUp = answers.discussedWithPartner === "yes";
+  const isPrenup = answers.mode === "prenup";
+  const weddingTimingIsTight =
+    isPrenup && answers.weddingMonths !== "" && Number(answers.weddingMonths) >= 0 && Number(answers.weddingMonths) <= 3;
+  const lines = [
+    isPrenup
+      ? isFollowUp
+        ? copy.conversationOpenPrenupFollowup
+        : copy.conversationOpenPrenupFirst
+      : isFollowUp
+        ? copy.conversationOpenPostnupFollowup
+        : copy.conversationOpenPostnupFirst,
+    isPrenup ? copy.conversationCorePrenup : copy.conversationCorePostnup,
+    copy.conversationFairness
+  ];
+
+  if (answers.pressure === "yes" || weddingTimingIsTight) lines.push(copy.conversationRush);
+  lines.push(copy.conversationAsk);
+  return lines;
 }
 
 function translateAsset(asset, language) {
@@ -1265,6 +1368,7 @@ function App() {
   const [answers, setAnswers] = useState(initialAnswers);
   const [language, setLanguage] = useState("en");
   const [stepIndex, setStepIndex] = useState(0);
+  const [scriptCopied, setScriptCopied] = useState(false);
   const copy = getCopy(language);
   const rule = stateRules[answers.state];
   const result = useMemo(() => scoreAnswers(answers), [answers]);
@@ -1288,6 +1392,7 @@ function App() {
     () => getConsequenceStory(answers, rule, consequenceContext, costEstimate),
     [answers, rule, consequenceContext, costEstimate]
   );
+  const conversationScript = useMemo(() => getConversationScript(answers, copy), [answers, copy]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
@@ -1311,6 +1416,15 @@ function App() {
         [asset]: value
       }
     }));
+  const copyConversationScript = async () => {
+    try {
+      await navigator.clipboard.writeText(conversationScript.join("\n\n"));
+      setScriptCopied(true);
+      window.setTimeout(() => setScriptCopied(false), 1800);
+    } catch {
+      setScriptCopied(false);
+    }
+  };
   const step = steps[stepIndex];
 
   return (
@@ -1443,6 +1557,33 @@ function App() {
                 {copy.pressure}
                 <YesNo copy={copy} value={answers.pressure} onChange={(value) => setAnswer("pressure", value)} />
               </label>
+
+              <section className="conversation-starter">
+                <div className="conversation-heading">
+                  <div>
+                    <p className="conversation-eyebrow">{copy.conversationEyebrow}</p>
+                    <h3>{copy.conversationTitle}</h3>
+                  </div>
+                  <button className="copy-script-button" type="button" onClick={copyConversationScript}>
+                    {scriptCopied ? <CheckCircle2 size={17} aria-hidden="true" /> : <CopyIcon size={17} aria-hidden="true" />}
+                    {scriptCopied ? copy.copiedScript : copy.copyScript}
+                  </button>
+                </div>
+                <p className="conversation-intro">{copy.conversationIntro}</p>
+                <blockquote className="conversation-script">
+                  {conversationScript.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </blockquote>
+                <div className="conversation-tips">
+                  <strong>{copy.conversationTipsTitle}</strong>
+                  <ul>
+                    {copy.conversationTips.map((tip) => (
+                      <li key={tip}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
             </FieldGroup>
           )}
 
