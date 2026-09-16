@@ -151,6 +151,14 @@ const translations = {
     mostAtRisk: "What may be most at risk",
     stateContext: "State context",
     foreignLawNote: "Foreign asset controlling-law note",
+    foreignAgreementTreatment: "How agreements are treated",
+    foreignPropertyRules: "Property and inheritance rules",
+    foreignFormalities: "Local formalities that may matter",
+    foreignWatchItems: "Issues to verify",
+    foreignQuestions: "Questions for local counsel",
+    foreignSources: "Verification sources",
+    foreignDisclaimer:
+      "This is a jurisdiction-specific issue checklist, not a legal opinion. Local law, residence, nationality, asset location, and the forum hearing a future case can change the result.",
     incomeAndGrowth: "Expected income and growth",
     whyNeedPlanning: "Why this case may need planning",
     recommendedNextSteps: "Recommended next steps",
@@ -275,6 +283,14 @@ const translations = {
     mostAtRisk: "Lo que puede estar en mayor riesgo",
     stateContext: "Contexto estatal",
     foreignLawNote: "Nota sobre ley aplicable a activos extranjeros",
+    foreignAgreementTreatment: "Cómo se tratan los acuerdos",
+    foreignPropertyRules: "Reglas de bienes y herencia",
+    foreignFormalities: "Formalidades locales relevantes",
+    foreignWatchItems: "Cuestiones para verificar",
+    foreignQuestions: "Preguntas para el abogado local",
+    foreignSources: "Fuentes de verificación",
+    foreignDisclaimer:
+      "Esta es una lista de cuestiones específicas de la jurisdicción, no una opinión legal. La residencia, nacionalidad, ubicación del activo y el tribunal que conozca un caso futuro pueden cambiar el resultado.",
     incomeAndGrowth: "Ingresos esperados y crecimiento",
     whyNeedPlanning: "Por qué este caso puede necesitar planificación",
     recommendedNextSteps: "Próximos pasos recomendados",
@@ -379,6 +395,14 @@ const translations = {
     mostAtRisk: "ما قد يكون أكثر عرضة للخطر",
     stateContext: "سياق الولاية",
     foreignLawNote: "ملاحظة عن القانون الحاكم للأصول الأجنبية",
+    foreignAgreementTreatment: "كيفية التعامل مع الاتفاقات",
+    foreignPropertyRules: "قواعد الملكية والميراث",
+    foreignFormalities: "الإجراءات المحلية التي قد تكون مهمة",
+    foreignWatchItems: "مسائل يجب التحقق منها",
+    foreignQuestions: "أسئلة للمحامي المحلي",
+    foreignSources: "مصادر التحقق",
+    foreignDisclaimer:
+      "هذه قائمة مسائل خاصة بالولاية القضائية وليست رأيا قانونيا. قد تغير الإقامة والجنسية وموقع الأصل والمحكمة التي تنظر القضية مستقبلا النتيجة.",
     incomeAndGrowth: "الدخل المتوقع والنمو",
     whyNeedPlanning: "لماذا قد تحتاج هذه الحالة إلى تخطيط",
     recommendedNextSteps: "الخطوات التالية المقترحة",
@@ -483,6 +507,14 @@ const translations = {
     mostAtRisk: "最可能存在风险的事项",
     stateContext: "州法律背景",
     foreignLawNote: "外国资产适用法律提示",
+    foreignAgreementTreatment: "当地如何对待协议",
+    foreignPropertyRules: "财产与继承规则",
+    foreignFormalities: "可能重要的当地手续",
+    foreignWatchItems: "需要核实的问题",
+    foreignQuestions: "向当地律师提出的问题",
+    foreignSources: "核实资料来源",
+    foreignDisclaimer:
+      "这是针对该司法辖区的问题清单，不是法律意见。居住地、国籍、资产所在地以及未来审理案件的法院都可能改变结果。",
     incomeAndGrowth: "预期收入和增长",
     whyNeedPlanning: "为什么此情况可能需要规划",
     recommendedNextSteps: "建议的下一步",
@@ -1025,94 +1057,173 @@ function getForeignLawContext(countryInput) {
   if (!country) {
     return {
       label: "Foreign jurisdiction not specified",
-      summary:
-        "Foreign assets may be governed by the law of the place where the asset is located, especially for real estate, title, inheritance, tax, and local enforcement.",
-      nextStep: "List each foreign country or jurisdiction before meeting with counsel so the attorney can check whether local legal advice is needed."
+      overview: "The relevant country—and often the province, state, territory, or emirate—must be identified before anyone can meaningfully analyze the asset.",
+      agreementTreatment: "A US prenup or postnup may be evidence of the couple's intent, but it may not be recognized or enforced on the same terms abroad.",
+      propertyRules: "Real estate is commonly affected by the law where it is located. Bank accounts, businesses, inheritances, and marital-property rights may follow different conflict-of-law rules.",
+      formalities: "Some jurisdictions require a notary, public deed, witnesses, registration, certified translation, apostille, or independent local advice.",
+      watchItems: ["Exact country and subnational jurisdiction", "Asset type, title holder, and acquisition date", "Residence and nationality of each spouse", "Inheritance, tax, currency, and enforcement rules"],
+      questions: ["Which country's law would a local court apply to this asset?", "Would the US agreement be recognized, or is a local agreement or filing needed?", "What signing, translation, notarization, registration, or disclosure rules apply?"],
+      sources: []
     };
   }
 
   const normalized = country.toLowerCase();
   const matches = [
     {
-      terms: ["canada"],
-      label: "Canada",
-      summary:
-        "Canadian family-property rules vary by province, so the controlling law question may depend on where the asset is located and where the spouses live.",
-      nextStep: "Identify the province connected to the asset and ask whether Canadian provincial counsel should review title, inheritance, and enforceability."
+      terms: ["scotland"],
+      label: "Scotland",
+      overview: "Scotland has its own family-law system and should not be analyzed as though it were England and Wales.",
+      agreementTreatment: "Agreements on financial provision can carry substantial contractual weight, but a Scottish court may set aside or vary an agreement that was not fair and reasonable when made.",
+      propertyRules: "The Family Law (Scotland) Act 1985 governs financial provision on divorce. Asset classification, valuation dates, source of funds, and whether property is matrimonial property can be decisive.",
+      formalities: "Use Scottish drafting and independent advice, with full financial disclosure and enough time to avoid pressure. A US choice-of-law clause does not by itself guarantee the result in Scotland.",
+      watchItems: ["Whether either spouse is domiciled or habitually resident in Scotland", "Whether Scottish real estate or business interests are matrimonial property", "Fairness at the date of signing", "Interaction with aliment, succession, and pension rights"],
+      questions: ["Could a Scottish court set aside or vary these terms under the 1985 Act?", "Should the couple sign a Scottish-law agreement or schedule?", "How should Scottish land, pensions, or business interests be valued and documented?"],
+      sources: [{ label: "Family Law (Scotland) Act 1985", url: "https://www.legislation.gov.uk/ukpga/1985/37/contents" }]
     },
     {
-      terms: ["england", "wales", "united kingdom", "uk", "scotland"],
-      label: "United Kingdom",
-      summary:
-        "UK treatment can differ by jurisdiction, and nuptial agreements may be evaluated differently than in many US states. Local law may matter for property and enforcement.",
-      nextStep: "Clarify whether the asset is in England and Wales, Scotland, or Northern Ireland and ask about local advice before relying on US agreement language."
+      terms: ["canada"],
+      label: "Canada",
+      overview: "Canada does not have one nationwide marital-property code. Property division and domestic-contract rules are primarily provincial or territorial.",
+      agreementTreatment: "Marriage contracts and similar domestic agreements are recognized under provincial law, but disclosure, voluntariness, independent advice, support waivers, and court review differ by province.",
+      propertyRules: "The province or territory may control division of family property, while the federal Divorce Act addresses divorce, support, and parenting. Real estate location and the spouses' residence can point to different laws.",
+      formalities: "Written signatures and witnessing are common, but local requirements vary. Full disclosure and separate Canadian advice are especially important if the agreement waives property or support rights.",
+      watchItems: ["Province or territory connected to each asset", "Matrimonial-home rules, which may receive special treatment", "Pension division and beneficiary designations", "Inheritance, gifts, excluded property, and growth in value"],
+      questions: ["Which province's domestic-contract law applies?", "Can property or spousal-support rights be waived in that province?", "Does a matrimonial home, pension, or inheritance require special language or a separate filing?"],
+      sources: [{ label: "Justice Canada — Dividing Property", url: "https://www.justice.gc.ca/eng/fl-df/divorce/prop.html" }]
+    },
+    {
+      terms: ["england", "wales", "united kingdom", "uk", "northern ireland"],
+      label: "England and Wales / United Kingdom",
+      overview: "The United Kingdom contains separate legal systems. This summary addresses England and Wales; Scotland and Northern Ireland require their own review.",
+      agreementTreatment: "In England and Wales, a nuptial agreement is not automatically binding like an ordinary commercial contract. Courts retain statutory discretion, but may give decisive weight to an agreement freely entered with full appreciation of its implications unless enforcement would be unfair.",
+      propertyRules: "Courts can make broad financial orders under the Matrimonial Causes Act 1973, including orders affecting property and maintenance. Needs—especially housing and children—can outweigh the agreement.",
+      formalities: "Independent advice, material financial disclosure, clear drafting, and signing well before the wedding strengthen weight. Foreign-law wording alone does not remove the English court's discretion.",
+      watchItems: ["Whether England and Wales could hear the divorce", "Needs of either spouse and children", "Foreign real estate and practical enforcement abroad", "Pensions, trusts, inherited wealth, and non-marital property"],
+      questions: ["Would this agreement receive weight under Radmacher in England and Wales?", "Do needs or child-related terms make any clause vulnerable?", "Should an English-law mirror agreement be signed?"],
+      sources: [
+        { label: "UK Supreme Court — Radmacher v Granatino", url: "https://www.supremecourt.uk/cases/uksc-2009-0031" },
+        { label: "Matrimonial Causes Act 1973", url: "https://www.legislation.gov.uk/ukpga/1973/18" }
+      ]
     },
     {
       terms: ["mexico"],
       label: "Mexico",
-      summary:
-        "Mexican property and marital-regime issues can depend on the state, title records, and whether the property is real estate or another asset type.",
-      nextStep: "Identify the Mexican state and asset type, then ask whether Mexican counsel should review title, marital-property treatment, and enforcement."
+      overview: "Mexican family and civil law is state-specific, so the Mexican state tied to the marriage or asset matters.",
+      agreementTreatment: "Mexican capitulaciones matrimoniales can establish or regulate sociedad conyugal or separación de bienes. A US prenup may not substitute for locally compliant capitulaciones.",
+      propertyRules: "The elected marital regime, state civil code, deed, and land registry can determine ownership. Ejido or restricted-zone interests, trusts, businesses, and inheritances need asset-specific review.",
+      formalities: "A public deed may be required when the arrangement transfers or shares property for which that form is legally required. Registration or annotation may also be needed to affect third parties.",
+      watchItems: ["Mexican state and marital regime", "Deed and Public Registry status", "Restricted-zone trust or ejido issues", "Whether a transfer triggers tax, notarial, or registration consequences"],
+      questions: ["Do we need Mexican capitulaciones or a notarial deed in addition to the US agreement?", "Which state civil code governs?", "Will the agreement affect title or third parties without local registration?"],
+      sources: [{ label: "Mexico Federal Civil Code — Articles 178–185", url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/CCF.pdf" }]
     },
     {
       terms: ["india"],
       label: "India",
-      summary:
-        "Indian law can raise separate questions around property title, inheritance, family law, religion-based personal law, and practical enforceability.",
-      nextStep: "Ask counsel whether Indian local advice is needed for ownership, inheritance, and whether the US agreement would be recognized in practice."
+      overview: "India does not offer one uniform US-style prenup regime. The governing marriage, divorce, maintenance, and succession rules can depend on personal law, religion, and the statute under which the marriage is registered.",
+      agreementTreatment: "A premarital agreement may be considered as a contract or evidence of intent, but it should not be presented as automatically controlling statutory maintenance, divorce, or public-policy rights.",
+      propertyRules: "Title, source of funds, joint ownership, gifts at marriage, maintenance statutes, and religion-specific succession law can matter more than US marital-property labels.",
+      formalities: "Indian counsel should check contract validity, stamp or registration issues, notarization, and whether a local document would improve evidentiary value. Terms contrary to personal law or public policy may not be enforced.",
+      watchItems: ["Marriage statute and each spouse's applicable personal law", "Title and source of purchase funds", "Maintenance and residence rights that may not be waivable", "Inheritance, gifts, family property, and foreign-exchange rules"],
+      questions: ["Which personal and statutory laws apply to this couple?", "Would an Indian court treat the US agreement as enforceable, persuasive, or only evidentiary?", "Should any property declaration be stamped, registered, or separately documented in India?"],
+      sources: [{ label: "India Code — Hindu Marriage Act 1955", url: "https://www.indiacode.nic.in/handle/123456789/16839?view_type=browse" }]
     },
     {
-      terms: ["china", "hong kong"],
-      label: "China / Hong Kong",
-      summary:
-        "Property located in China or Hong Kong may involve local ownership, transfer, inheritance, currency, and enforcement rules that a US agreement alone may not control.",
-      nextStep: "Separate mainland China and Hong Kong assets and ask counsel whether local advice is needed for title, transfer restrictions, and enforcement."
+      terms: ["hong kong"],
+      label: "Hong Kong",
+      overview: "Hong Kong has a legal system separate from mainland China, so its property and matrimonial rules require a separate analysis.",
+      agreementTreatment: "Nuptial agreements may be influential but do not automatically eliminate the Hong Kong court's statutory power to order financial provision. Fairness, disclosure, advice, timing, and needs remain important.",
+      propertyRules: "The Matrimonial Proceedings and Property Ordinance gives courts powers over financial relief. Local title, pensions, company interests, trusts, and cross-border assets may require separate enforcement steps.",
+      formalities: "Use Hong Kong advice, full disclosure, clear governing-law language, and enough time for independent review. Mainland Chinese documentation does not automatically solve Hong Kong issues, or vice versa.",
+      watchItems: ["Hong Kong jurisdiction over a future divorce", "Housing and child-related needs", "Companies, trusts, and beneficial ownership", "Recognition and enforcement in mainland China or another country"],
+      questions: ["How much weight would a Hong Kong court give this US agreement?", "Should the parties sign a Hong Kong-law agreement?", "How would an order or agreement be enforced against assets outside Hong Kong?"],
+      sources: [{ label: "Hong Kong Cap. 192 — Matrimonial Proceedings and Property Ordinance", url: "https://www.elegislation.gov.hk/hk/cap192" }]
+    },
+    {
+      terms: ["china", "prc", "mainland"],
+      label: "Mainland China",
+      overview: "Mainland China should be analyzed separately from Hong Kong, Macau, and Taiwan.",
+      agreementTreatment: "Article 1065 of the PRC Civil Code permits spouses to agree in writing that premarital or marital property will be separately owned, jointly owned, or partly each. A US agreement still needs local review for recognition and scope.",
+      propertyRules: "Title registration is critical for real estate and companies. Separate-property status, marital income, debts, inheritance, and gifts are addressed by the Civil Code, while transfer and foreign-exchange rules can affect practical control.",
+      formalities: "The property agreement must be written. Chinese-language drafting, notarization or authentication, registration changes, and proof that third parties knew of a debt arrangement may matter depending on the issue.",
+      watchItems: ["Registered owner and source of purchase funds", "Company equity and nominee ownership", "Foreign-exchange and outbound-transfer restrictions", "Inheritance, gifts, and cross-border enforcement"],
+      questions: ["Does Article 1065 cover each proposed term?", "Is a Chinese-language property agreement, notarization, or registry filing advisable?", "Can the agreement affect creditors or third parties without notice?"],
+      sources: [{ label: "PRC Civil Code Article 1065 overview", url: "https://en.by.gov.cn/2024-02/18/c_963399.htm" }]
     },
     {
       terms: ["france"],
       label: "France",
-      summary:
-        "French marital-property and inheritance rules can differ substantially from US default rules, especially for real property and forced-heirship issues.",
-      nextStep: "Ask whether French counsel should review real estate, inheritance expectations, marital regime, and whether any separate French agreement is needed."
+      overview: "France uses formal marital-property regimes rather than treating a US prenup as a drop-in replacement for a French contrat de mariage.",
+      agreementTreatment: "Couples may select a marital regime by contrat de mariage. Without one, the French legal regime generally applies, commonly communauté réduite aux acquêts for marriages governed by French law.",
+      propertyRules: "The chosen regime affects acquisitions and debts. French real estate, succession, reserved-heirship rights, lifetime gifts, and estate planning require separate analysis.",
+      formalities: "A French contrat de mariage is executed through a notaire before marriage; later changes follow additional procedures. A US agreement may need a coordinated French instrument rather than translation alone.",
+      watchItems: ["Applicable marital regime and date of marriage", "French real estate and notarial title", "Reserved-heirship and succession planning", "EU/private-international-law choice-of-law rules"],
+      questions: ["Which marital regime currently applies?", "Is a French notarial contract or later regime change needed?", "How do succession and reserved-heirship rules interact with the agreement?"],
+      sources: [{ label: "French Civil Code Article 1394", url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006439143" }]
     },
     {
       terms: ["italy"],
       label: "Italy",
-      summary:
-        "Italian law may matter for real property, marital-property regime, inheritance, and local recording or enforcement issues.",
-      nextStep: "Ask counsel whether Italian advice is needed for property title, inheritance, and any local formalities."
+      overview: "Italian law uses a statutory marital-property regime and formal convenzioni matrimoniali, so local classification matters.",
+      agreementTreatment: "The default regime is generally comunione legale for qualifying acquisitions during marriage. Spouses may choose or modify a different regime, including separation of property, through a locally valid marital convention.",
+      propertyRules: "Italian real estate records, business interests, gifts, inheritances, and succession rules remain locally governed. Not every US-style divorce term will fit an Italian marital convention.",
+      formalities: "A different marital-property convention generally requires an atto pubblico before a notary and appropriate annotation or publicity to affect third parties.",
+      watchItems: ["Current Italian marital regime", "Annotation on the marriage record and land records", "Italian real estate or family-company interests", "Forced-heirship and succession consequences"],
+      questions: ["Is the couple currently in comunione legale or separazione dei beni?", "Is an Italian public deed or annotation required?", "Which US provisions would not be recognized as part of an Italian marital convention?"],
+      sources: [{ label: "Italian Ministry of Justice — Marital Property Regime", url: "https://www.giustizia.it/giustizia/page/it/coppie_di_nazionalita_diverse_regime_patrimoniale" }]
     },
     {
       terms: ["germany"],
       label: "Germany",
-      summary:
-        "German marital-property, inheritance, and notarial/formality rules may affect how foreign assets are treated or documented.",
-      nextStep: "Ask whether German counsel or a notary is needed for property, inheritance, and enforceability questions."
+      overview: "Germany's default regime is Zugewinngemeinschaft: spouses generally keep separate ownership during marriage, with accrued gains potentially equalized when the regime ends.",
+      agreementTreatment: "Spouses may modify or replace the statutory regime by Ehevertrag, before or after marriage. German courts can still scrutinize extreme terms under mandatory-law and fairness principles.",
+      propertyRules: "Initial assets, final assets, inheritances, gifts, business valuations, pensions, and real estate can affect equalization or other claims even when title is separate.",
+      formalities: "A German Ehevertrag must be recorded by a notary while both parties are present. A privately signed US agreement may not satisfy that German form requirement.",
+      watchItems: ["Initial and final asset documentation", "Business valuation and retained earnings", "German pensions and real estate", "Inheritance/gift adjustments and choice-of-law issues"],
+      questions: ["Is a German notarized Ehevertrag required?", "How would Zugewinnausgleich apply to the listed assets?", "Could any support, pension, or divorce waiver fail German mandatory-law review?"],
+      sources: [
+        { label: "German Civil Code § 1363", url: "https://www.gesetze-im-internet.de/bgb/__1363.html" },
+        { label: "German Civil Code §§ 1408 and 1410", url: "https://www.gesetze-im-internet.de/bgb/__1410.html" }
+      ]
     },
     {
       terms: ["uae", "united arab emirates", "dubai", "abu dhabi"],
       label: "United Arab Emirates",
-      summary:
-        "UAE assets can involve local property ownership, inheritance, family-law, and forum issues that may not track US assumptions.",
-      nextStep: "Identify the emirate connected to the asset and ask whether UAE counsel should review ownership, inheritance, and enforcement."
+      overview: "The UAE analysis can change with the emirate, each spouse's nationality and religion, whether the marriage is civil or religious, and which personal-status system applies.",
+      agreementTreatment: "A US prenup should not be assumed to control a UAE court. Non-Muslim civil-marriage regimes and Muslim personal-status rules may treat contractual terms, maintenance, inheritance, and divorce differently.",
+      propertyRules: "Registered title is important for UAE real estate and companies. Personal-status choice-of-law rules, free-zone structures, wills, inheritance, and the forum hearing the dispute can change the outcome.",
+      formalities: "Local Arabic translation, notarization, legalization, court or notarial registration, and an emirate-specific document may be required or advisable.",
+      watchItems: ["Emirate, religion, nationality, and marriage type", "Mainland vs. free-zone company interests", "Real-estate title and mortgage", "UAE wills, inheritance, and guardianship planning"],
+      questions: ["Which UAE personal-status regime and court would apply?", "Can the agreement be registered or mirrored locally?", "Are Arabic translation, notarization, legalization, or a UAE will needed?"],
+      sources: [{ label: "Official UAE Government — Divorce in the UAE", url: "https://u.ae/en/information-and-services/social-affairs/divorce-in-the-uae" }]
     },
     {
       terms: ["australia"],
       label: "Australia",
-      summary:
-        "Australian family-law treatment and enforceability may differ from US state law, and property location can still matter.",
-      nextStep: "Ask whether Australian counsel should review the agreement if meaningful assets, residence, or enforcement questions connect to Australia."
+      overview: "Australia uses statutory financial agreements under the Family Law Act rather than simply importing a US prenup or postnup.",
+      agreementTreatment: "Financial agreements may be made before, during, or after marriage under sections 90B, 90C, and 90D. Binding status depends on statutory requirements, and courts may set agreements aside on listed grounds.",
+      propertyRules: "Without a binding financial agreement, Australian courts apply the Family Law Act to property and maintenance. Australian real estate, superannuation, trusts, companies, and foreign assets may all be considered.",
+      formalities: "The agreement must be signed and each party must receive independent legal advice about its effect and advantages/disadvantages, with the required lawyer statements and copies handled correctly.",
+      watchItems: ["Strict compliance with Part VIIIA", "Superannuation splitting requirements", "Fraud, non-disclosure, impracticability, unconscionability, or changed child-related circumstances", "Australian jurisdiction and foreign enforcement"],
+      questions: ["Should the parties sign an Australian section 90B or 90C agreement?", "Does each spouse's independent advice satisfy section 90G?", "Could any statutory set-aside ground apply?"],
+      sources: [{ label: "Australia Family Law Act 1975 — Part VIIIA", url: "https://www.legislation.gov.au/C2004A00275/latest" }]
     }
   ];
 
-  const match = matches.find((item) => item.terms.some((term) => normalized.includes(term)));
+  const normalizedWords = normalized.split(/[^a-z]+/).filter(Boolean);
+  const match = matches.find((item) =>
+    item.terms.some((term) => (term.length <= 3 ? normalizedWords.includes(term) : normalized.includes(term)))
+  );
   if (match) return match;
 
   return {
     label: country,
-    summary:
-      `${country} may have its own rules for property title, inheritance, tax, marital-property classification, and whether a US prenup or postnup will be recognized.`,
-    nextStep: `Ask counsel to check whether local legal advice is needed in ${country}, especially if the asset is real estate, family property, business ownership, or inheritance-related.`
+    overview: `${country} is not yet in the app's researched jurisdiction set, so the app should not guess at its substantive law.`,
+    agreementTreatment: `Confirm whether ${country} recognizes foreign premarital or marital agreements, what issues spouses may contract about, and what standards allow a court to disregard terms.`,
+    propertyRules: `Identify how ${country} classifies real estate, business interests, accounts, inheritances, gifts, debts, and property acquired during marriage.`,
+    formalities: "Check writing, witnesses, disclosure, independent advice, notarial form, translation, legalization, registration, and governing-law requirements.",
+    watchItems: ["Exact local jurisdiction and court", "Asset type, title, source of funds, and acquisition date", "Residence, domicile, nationality, and marriage type", "Tax, inheritance, currency, and enforcement rules"],
+    questions: [`Would a court in ${country} recognize and enforce the US agreement?`, `Is a local agreement, deed, filing, translation, or registration needed in ${country}?`, "Which mandatory rights cannot be waived?"],
+    sources: []
   };
 }
 
@@ -1228,10 +1339,21 @@ async function generateReportPdf({
   ], y);
 
   if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
-    y = addPdfSection(doc, copy.foreignLawNote, [
-      `${foreignLawContext.label}: ${foreignLawContext.summary}`,
-      foreignLawContext.nextStep
-    ], y);
+    const foreignLawLines = [
+      `${foreignLawContext.label}: ${foreignLawContext.overview}`,
+      `${copy.foreignAgreementTreatment}: ${foreignLawContext.agreementTreatment}`,
+      `${copy.foreignPropertyRules}: ${foreignLawContext.propertyRules}`,
+      `${copy.foreignFormalities}: ${foreignLawContext.formalities}`,
+      `${copy.foreignWatchItems}: ${foreignLawContext.watchItems.join("; ")}.`,
+      `${copy.foreignQuestions}: ${foreignLawContext.questions.join("; ")}.`
+    ];
+    if (foreignLawContext.sources.length > 0) {
+      foreignLawLines.push(
+        `${copy.foreignSources}: ${foreignLawContext.sources.map((source) => `${source.label} — ${source.url}`).join("; ")}.`
+      );
+    }
+    foreignLawLines.push(copy.foreignDisclaimer);
+    y = addPdfSection(doc, copy.foreignLawNote, foreignLawLines, y);
   }
 
   if (currentAssetTotal > 0 || futureAssetTotal > 0) {
@@ -1902,13 +2024,57 @@ function App() {
                 </article>
 
                 {(answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") && (
-                  <article>
+                  <article className="foreign-law-card">
                     <h3>{copy.foreignLawNote}</h3>
                     <p>
                       <strong>{foreignLawContext.label}: </strong>
-                      {foreignLawContext.summary}
+                      {foreignLawContext.overview}
                     </p>
-                    <p>{foreignLawContext.nextStep}</p>
+                    <div className="foreign-law-grid">
+                      <section>
+                        <h4>{copy.foreignAgreementTreatment}</h4>
+                        <p>{foreignLawContext.agreementTreatment}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignPropertyRules}</h4>
+                        <p>{foreignLawContext.propertyRules}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignFormalities}</h4>
+                        <p>{foreignLawContext.formalities}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignWatchItems}</h4>
+                        <ul>
+                          {foreignLawContext.watchItems.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignQuestions}</h4>
+                        <ul>
+                          {foreignLawContext.questions.map((question) => (
+                            <li key={question}>{question}</li>
+                          ))}
+                        </ul>
+                      </section>
+                      {foreignLawContext.sources.length > 0 && (
+                        <section>
+                          <h4>{copy.foreignSources}</h4>
+                          <ul>
+                            {foreignLawContext.sources.map((source) => (
+                              <li key={source.url}>
+                                <a href={source.url} target="_blank" rel="noreferrer">
+                                  {source.label}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </section>
+                      )}
+                    </div>
+                    <p className="foreign-law-disclaimer">{copy.foreignDisclaimer}</p>
                   </article>
                 )}
 

@@ -753,6 +753,57 @@ select {
   padding-top: 12px;
 }
 
+.report-grid .foreign-law-card {
+  background: #f7fbff;
+  border-color: #b8d4f0;
+  grid-column: 1 / -1;
+}
+
+.foreign-law-card > h3 {
+  color: #12304d;
+  font-size: 1.1rem;
+}
+
+.foreign-law-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.foreign-law-grid section {
+  background: #ffffff;
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.foreign-law-grid h4 {
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.foreign-law-grid p:last-child {
+  margin-bottom: 0;
+}
+
+.foreign-law-grid a {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.foreign-law-disclaimer {
+  border-top: 1px solid #c7dbef;
+  color: #526579;
+  font-size: 0.84rem;
+  margin-bottom: 0;
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
 ul {
   margin: 0;
   padding-left: 20px;
@@ -861,6 +912,7 @@ li + li {
   .asset-value-row,
   .choice-grid.two,
   .consequence-grid,
+  .foreign-law-grid,
   .income-grid,
   .report-grid,
   .stat-grid,
