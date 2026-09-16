@@ -71,7 +71,6 @@ const translations = {
     brandTitle: "Prenup Planner",
     brandSubtitle: "Readiness and issue spotting",
     boundaryNote: "Educational planning only. This tool does not draft an agreement or replace legal counsel.",
-    prototype: "Prototype v1",
     languageLabel: "Language",
     planningValue: "planning value",
     steps: {
@@ -233,7 +232,6 @@ const translations = {
     brandTitle: "Planificador Prenupcial",
     brandSubtitle: "Preparación e identificación de temas",
     boundaryNote: "Solo planificación educativa. Esta herramienta no redacta un acuerdo ni reemplaza a un abogado.",
-    prototype: "Prototipo v1",
     languageLabel: "Idioma",
     planningValue: "valor de planificación",
     steps: { path: "Ruta", timing: "Tiempo", assets: "Activos", complexity: "Complejidad", consequences: "Consecuencias", report: "Reporte" },
@@ -368,7 +366,6 @@ const translations = {
     brandTitle: "مخطط اتفاق ما قبل الزواج",
     brandSubtitle: "تقييم الجاهزية وتحديد المسائل",
     boundaryNote: "للتخطيط التعليمي فقط. هذه الأداة لا تصيغ اتفاقا ولا تغني عن الاستشارة القانونية.",
-    prototype: "نموذج أولي v1",
     languageLabel: "اللغة",
     planningValue: "قيمة التخطيط",
     steps: { path: "المسار", timing: "التوقيت", assets: "الأصول", complexity: "التعقيد", consequences: "العواقب", report: "التقرير" },
@@ -503,7 +500,6 @@ const translations = {
     brandTitle: "婚前协议规划器",
     brandSubtitle: "准备度与问题识别",
     boundaryNote: "仅用于教育性规划。本工具不会起草协议，也不能替代律师建议。",
-    prototype: "原型 v1",
     languageLabel: "语言",
     planningValue: "规划价值",
     steps: { path: "路径", timing: "时间", assets: "资产", complexity: "复杂度", consequences: "后果", report: "报告" },
@@ -1744,7 +1740,6 @@ function App() {
       <section className="workspace">
         <header className="topbar">
           <div>
-            <p className="eyebrow">{copy.prototype}</p>
             <h1>{copy.steps[step.id]}</h1>
           </div>
           <div className="topbar-actions">
