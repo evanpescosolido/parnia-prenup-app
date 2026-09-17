@@ -173,12 +173,23 @@ const translations = {
     valueInDiscussing: "value in discussing an agreement",
     downloadPdf: "Download PDF",
     whyImportant: "Why a prenup can be important",
+    whyPostnupImportant: "Why a postnup can be important",
     whyImportantItems: [
-      "A prenup lets both people decide some financial rules in advance instead of leaving everything to default divorce law.",
-      "It can protect separate property, family gifts, inheritances, business interests, and debt expectations if the relationship later ends.",
-      "The process can force clearer disclosure and reduce surprises, which can matter even when the couple never divorces.",
-      "It is not just about protecting the wealthier person; it can also create expectations for support, housing, or career sacrifices."
+      "It replaces private assumptions with written expectations about ownership, sharing, debt, and support.",
+      "It can define what stays separate, what becomes marital or community property, and how commingling or joint contributions will be treated.",
+      "It can address future growth—not just today's balances—including business appreciation, investment gains, raises, bonuses, and property equity.",
+      "It can allocate responsibility for existing and future debt, major expenses, taxes, and jointly acquired property.",
+      "It can protect the less-wealthy partner too by addressing housing, support, career sacrifice, caregiving, or a transition period after separation.",
+      "The disclosure and negotiation process can surface financial expectations early, while the couple is cooperating rather than already in conflict.",
+      "Clear terms can reduce uncertainty, legal fees, and the number of issues left for a court to decide—although no agreement can eliminate every dispute."
     ],
+    whyImportantStateTemplate:
+      "Without an agreement, {state}'s default rules—not the couple's informal understanding—may control many financial questions.",
+    whyImportantSelectedTemplate: "For this couple, the agreement could address {topics} before values, ownership, or expectations become harder to untangle.",
+    whyImportantFamily:
+      "Because children, caregiving, or career sacrifice may be involved, the conversation can include mutual protections rather than focusing only on asset shielding.",
+    whyImportantInternational:
+      "Cross-border assets or citizenship connections make governing law, recognition, title, inheritance, and enforcement worth addressing before a dispute.",
     mostAtRisk: "What may be most at risk",
     stateContext: "State context",
     foreignLawNote: "Foreign asset controlling-law note",
@@ -339,12 +350,24 @@ const translations = {
     valueInDiscussing: "valor al discutir un acuerdo",
     downloadPdf: "Descargar PDF",
     whyImportant: "Por qué un acuerdo prenupcial puede ser importante",
+    whyPostnupImportant: "Por qué un acuerdo postnupcial puede ser importante",
     whyImportantItems: [
-      "Un acuerdo prenupcial permite que ambas personas decidan algunas reglas financieras por adelantado en vez de depender de la ley de divorcio predeterminada.",
-      "Puede proteger bienes separados, regalos familiares, herencias, intereses de negocio y expectativas sobre deudas si la relación termina.",
-      "El proceso puede exigir declaraciones más claras y reducir sorpresas, incluso si la pareja nunca se divorcia.",
-      "No se trata solo de proteger a la persona con más patrimonio; también puede fijar expectativas sobre apoyo, vivienda o sacrificios profesionales."
+      "Sustituye suposiciones privadas por expectativas escritas sobre propiedad, reparto, deudas y apoyo.",
+      "Puede definir qué permanece separado, qué se vuelve bien matrimonial o comunitario y cómo se tratarán la mezcla de fondos y las contribuciones conjuntas.",
+      "Puede abordar el crecimiento futuro, no solo los saldos actuales: aumento de valor de negocios, inversiones, salarios, bonos y plusvalía inmobiliaria.",
+      "Puede asignar responsabilidad por deudas actuales y futuras, gastos importantes, impuestos y bienes adquiridos conjuntamente.",
+      "También puede proteger a la persona con menos patrimonio mediante vivienda, apoyo, sacrificio profesional, cuidados o un período de transición tras la separación.",
+      "La divulgación y negociación pueden revelar expectativas financieras mientras la pareja coopera, antes de que exista un conflicto.",
+      "Términos claros pueden reducir incertidumbre, honorarios y asuntos que decidiría un tribunal, aunque ningún acuerdo elimina toda disputa."
     ],
+    whyImportantStateTemplate:
+      "Sin un acuerdo, las reglas predeterminadas de {state}, no el entendimiento informal de la pareja, pueden controlar muchas cuestiones financieras.",
+    whyImportantSelectedTemplate:
+      "Para esta pareja, el acuerdo podría abordar {topics} antes de que los valores, la propiedad o las expectativas sean más difíciles de separar.",
+    whyImportantFamily:
+      "Si hay hijos, cuidados o sacrificio profesional, la conversación puede incluir protecciones mutuas y no solo protección de activos.",
+    whyImportantInternational:
+      "Los activos o conexiones internacionales hacen importante aclarar ley aplicable, reconocimiento, título, herencia y ejecución antes de una disputa.",
     mostAtRisk: "Lo que puede estar en mayor riesgo",
     stateContext: "Contexto estatal",
     foreignLawNote: "Nota sobre ley aplicable a activos extranjeros",
@@ -485,12 +508,24 @@ const translations = {
     valueInDiscussing: "قيمة في مناقشة اتفاق",
     downloadPdf: "تنزيل PDF",
     whyImportant: "لماذا قد يكون اتفاق ما قبل الزواج مهما",
+    whyPostnupImportant: "لماذا قد يكون اتفاق ما بعد الزواج مهما",
     whyImportantItems: [
-      "يسمح اتفاق ما قبل الزواج للطرفين بتحديد بعض القواعد المالية مسبقا بدلا من الاعتماد على قواعد الطلاق الافتراضية.",
-      "يمكنه حماية الملكية المنفصلة والهدايا العائلية والميراث والمصالح التجارية وتوقعات الديون إذا انتهت العلاقة.",
-      "يمكن أن يفرض إفصاحا أوضح ويقلل المفاجآت، حتى إذا لم يحدث طلاق.",
-      "الأمر لا يتعلق فقط بحماية الطرف الأكثر ثراء؛ يمكنه أيضا تحديد توقعات الدعم أو السكن أو التضحيات المهنية."
+      "يستبدل الافتراضات الخاصة بتوقعات مكتوبة حول الملكية والمشاركة والديون والدعم.",
+      "يمكنه تحديد ما يبقى ملكية منفصلة وما يصبح ملكية زوجية أو مشتركة وكيف تعالج مساهمات الطرفين وخلط الأموال.",
+      "يمكنه تناول النمو المستقبلي لا الأرصدة الحالية فقط، بما في ذلك نمو الأعمال والاستثمارات والرواتب والمكافآت وحقوق العقار.",
+      "يمكنه توزيع المسؤولية عن الديون الحالية والمستقبلية والنفقات الكبيرة والضرائب والممتلكات المشتركة.",
+      "يمكنه حماية الطرف الأقل ثراء أيضا من خلال السكن أو الدعم أو التضحية المهنية أو الرعاية أو فترة انتقال بعد الانفصال.",
+      "قد يكشف الإفصاح والتفاوض التوقعات المالية مبكرا بينما يتعاون الطرفان وقبل نشوء نزاع.",
+      "قد تقلل الشروط الواضحة عدم اليقين والرسوم القانونية والمسائل التي يقررها القضاء، مع أن أي اتفاق لا يمنع كل نزاع."
     ],
+    whyImportantStateTemplate:
+      "من دون اتفاق، قد تحكم القواعد الافتراضية في {state} كثيرا من المسائل المالية بدلا من التفاهم غير الرسمي بين الطرفين.",
+    whyImportantSelectedTemplate:
+      "لهذا الزوجين، يمكن للاتفاق معالجة {topics} قبل أن تصبح القيم أو الملكية أو التوقعات أصعب في الفصل.",
+    whyImportantFamily:
+      "إذا كان هناك أطفال أو رعاية أو تضحية مهنية، يمكن للمناقشة أن تشمل حماية متبادلة لا حماية الأصول وحدها.",
+    whyImportantInternational:
+      "تجعل الأصول أو الروابط العابرة للحدود القانون الحاكم والاعتراف والملكية والميراث والتنفيذ مسائل تستحق المعالجة قبل النزاع.",
     mostAtRisk: "ما قد يكون أكثر عرضة للخطر",
     stateContext: "سياق الولاية",
     foreignLawNote: "ملاحظة عن القانون الحاكم للأصول الأجنبية",
@@ -631,12 +666,24 @@ const translations = {
     valueInDiscussing: "讨论协议的价值",
     downloadPdf: "下载 PDF",
     whyImportant: "为什么婚前协议可能重要",
+    whyPostnupImportant: "为什么婚后协议可能重要",
     whyImportantItems: [
-      "婚前协议让双方提前决定部分财务规则，而不是完全依赖离婚时的默认法律。",
-      "如果关系结束，它可以保护个人财产、家庭赠与、继承、企业权益和债务预期。",
-      "这个过程可以促使更清楚的披露并减少意外，即使夫妻最终从未离婚。",
-      "它不只是保护更富有的一方；也可以设定扶养、住房或职业牺牲方面的预期。"
+      "它以书面约定取代双方对所有权、共享、债务和扶养问题的私下假设。",
+      "它可以界定哪些财产保持个人所有、哪些成为婚内或共同财产，以及混同资金和共同投入如何处理。",
+      "它可以处理未来增长，而不只是当前余额，包括企业增值、投资收益、加薪、奖金和房产权益。",
+      "它可以分配现有及未来债务、重大支出、税务和共同购置财产的责任。",
+      "它也可以保护财力较弱的一方，例如约定住房、扶养、职业牺牲、照护或分居后的过渡安排。",
+      "披露和协商过程可以在双方仍合作时及早发现财务期待，而不是等到冲突发生后。",
+      "清晰条款可以减少不确定性、律师费和需要法院决定的问题，但任何协议都无法消除所有争议。"
     ],
+    whyImportantStateTemplate:
+      "如果没有协议，{state}的默认规则，而非双方的非正式理解，可能决定许多财务问题。",
+    whyImportantSelectedTemplate:
+      "就这对伴侣而言，协议可以在价值、所有权或期待变得更难厘清前处理{topics}。",
+    whyImportantFamily:
+      "如涉及子女、照护或职业牺牲，讨论可以包含双方保护，而不只是资产隔离。",
+    whyImportantInternational:
+      "跨境资产或国籍联系使适用法律、承认、产权、继承和执行问题值得在争议前处理。",
     mostAtRisk: "最可能存在风险的事项",
     stateContext: "州法律背景",
     foreignLawNote: "外国资产适用法律提示",
@@ -822,6 +869,31 @@ function getCopy(language) {
 function getStepLabel(copy, stepId, mode) {
   if (stepId === "path") return mode === "postnup" ? copy.postnupStep : copy.prenupStep;
   return copy.steps[stepId];
+}
+
+function getWhyImportantItems(answers, copy, language, rule) {
+  const items = [
+    copy.whyImportantStateTemplate.replace("{state}", rule.name),
+    ...copy.whyImportantItems
+  ];
+  const topics = new Set([...answers.currentAssets, ...answers.futureAssets]);
+
+  if (answers.business === "yes") topics.add("Business ownership");
+  if (answers.realEstate === "yes") topics.add("Real estate");
+  if (answers.debts === "yes") topics.add("Credit card or personal debt");
+
+  const selectedTopics = [...topics].slice(0, 4).map((topic) => translateAsset(topic, language));
+  if (selectedTopics.length > 0) {
+    items.push(copy.whyImportantSelectedTemplate.replace("{topics}", selectedTopics.join(", ")));
+  }
+  if (answers.children === "yes" || answers.careerSacrifice === "yes") {
+    items.push(copy.whyImportantFamily);
+  }
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
+    items.push(copy.whyImportantInternational);
+  }
+
+  return items;
 }
 
 function slugifyLocation(value) {
@@ -1527,7 +1599,8 @@ async function generateReportPdf({
   coupleForeignChecks,
   lossExposureItems,
   lossExposureValue,
-  localLawyerLinks
+  localLawyerLinks,
+  whyImportantItems
 }) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
@@ -1559,7 +1632,12 @@ async function generateReportPdf({
   doc.text(scoreLabel, 18, 49);
 
   let y = 60;
-  y = addPdfSection(doc, copy.whyImportant, copy.whyImportantItems, y);
+  y = addPdfSection(
+    doc,
+    answers.mode === "postnup" ? copy.whyPostnupImportant : copy.whyImportant,
+    whyImportantItems,
+    y
+  );
 
   y = addPdfSection(doc, copy.mostAtRisk, riskItems, y);
 
@@ -1782,6 +1860,10 @@ function App() {
   const futureAssetTotal = useMemo(() => getAssetTotal(answers.futureAssetValues), [answers.futureAssetValues]);
   const incomeSnapshot = useMemo(() => getIncomeSnapshot(answers), [answers]);
   const riskItems = useMemo(() => getRiskItems(answers, rule), [answers, rule]);
+  const whyImportantItems = useMemo(
+    () => getWhyImportantItems(answers, copy, language, rule),
+    [answers, copy, language, rule]
+  );
   const lossExposureItems = useMemo(() => getLossExposureItems(answers, language), [answers, language]);
   const lossExposureValue = currentAssetTotal + futureAssetTotal;
   const nextSteps = useMemo(() => getNextSteps(answers), [answers]);
@@ -2318,7 +2400,8 @@ function App() {
                         coupleForeignChecks,
                         lossExposureItems,
                         lossExposureValue,
-                        localLawyerLinks
+                        localLawyerLinks,
+                        whyImportantItems
                       })
                     }
                   >
@@ -2330,10 +2413,13 @@ function App() {
               </div>
 
               <div className="report-grid">
-                <article>
-                  <h3>{copy.whyImportant}</h3>
+                <article className="why-important-card">
+                  <div className="why-important-heading">
+                    <ShieldCheck size={22} aria-hidden="true" />
+                    <h3>{answers.mode === "postnup" ? copy.whyPostnupImportant : copy.whyImportant}</h3>
+                  </div>
                   <ul>
-                    {copy.whyImportantItems.map((item) => (
+                    {whyImportantItems.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>

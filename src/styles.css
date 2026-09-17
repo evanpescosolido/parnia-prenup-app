@@ -776,6 +776,37 @@ select {
   padding: 18px;
 }
 
+.report-grid .why-important-card {
+  background: linear-gradient(135deg, #eaf3ff 0%, #f8fbff 100%);
+  border-color: #93c5fd;
+  box-shadow: inset 4px 0 0 #1d4ed8;
+  grid-column: 1 / -1;
+  padding: 22px;
+}
+
+.why-important-heading {
+  align-items: center;
+  color: #12304d;
+  display: flex;
+  gap: 9px;
+}
+
+.why-important-heading h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.why-important-card ul {
+  display: grid;
+  gap: 10px 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.why-important-card li {
+  padding-inline-start: 2px;
+}
+
 .report-grid .loss-exposure-card {
   background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
   border-color: #93c5fd;
@@ -1048,6 +1079,10 @@ li + li {
   .report-grid,
   .stat-grid,
   .mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-important-card ul {
     grid-template-columns: 1fr;
   }
 
