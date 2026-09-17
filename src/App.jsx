@@ -210,6 +210,22 @@ const translations = {
     costDriverLabel: "Main cost drivers:",
     costSourceLabel: "Rate benchmark source",
     attorneyTopics: "Attorney discussion topics",
+    materialsTitle: "Documents and materials to gather",
+    materialsIntro: "Bring recent, complete records for both partners when possible. Your attorney may ask for a different time period or additional documents.",
+    materialsCoreItems: [
+      "Government ID, contact information, wedding date or marriage certificate, and any prior marriage, divorce, support, or property agreements.",
+      "Recent statements for checking, savings, brokerage, cryptocurrency, and other financial accounts, including account ownership and approximate opening dates.",
+      "Retirement and deferred-compensation records: 401(k), IRA, pension, stock options, restricted stock, bonuses, and employer benefit summaries.",
+      "The last two or three years of tax returns, recent pay stubs, employment agreements, and documents showing other income.",
+      "Current debt statements for mortgages, student loans, credit cards, personal loans, tax debt, guarantees, and other obligations.",
+      "A written list of valuable personal property, expected gifts or inheritances, and anything either person believes should remain separate."
+    ],
+    materialsBusiness: "Business records: formation and governing documents, ownership or cap table, buy-sell agreements, recent financial statements and tax returns, valuations, and outstanding loans.",
+    materialsRealEstate: "Real-estate records: deeds, purchase and closing documents, mortgage statements, appraisals, leases, and records of down payments, renovations, or other contributions.",
+    materialsEstate: "Estate and family-wealth records: trust documents, wills, gift or inheritance records, beneficiary designations, and relevant family letters or restrictions.",
+    materialsInternational: "Cross-border records: foreign titles, account statements, marriage or citizenship documents, tax records, existing agreements, and certified translations when needed.",
+    materialsPostnup: "Postnup records: documents showing major transfers or purchases during the marriage, joint-account history, existing estate documents, and any prior written financial promises.",
+    materialsPrivacyNote: "Use a secure portal or another method approved by the attorney; do not email sensitive account numbers or identity documents casually.",
     localLawyersTitle: "Find local family-law attorneys",
     localLawyersIntro: "Search links are based on the selected state and optional city or ZIP code.",
     localLawyersMap: "Search nearby prenup/postnup attorneys",
@@ -218,10 +234,16 @@ const translations = {
     localLawyersDisclaimer:
       "These are search and referral links, not endorsements. Verify licensing, current standing, relevant agreement experience, fees, and conflicts. Each partner should consider separate counsel.",
     attorneyTopicItems: [
-      "Whether independent counsel is recommended for each person.",
-      "What financial disclosure should be prepared before negotiation.",
-      "How future inheritances, gifts, appreciation, and commingling should be handled.",
-      "Whether international assets require local counsel in another country."
+      "Which state law should govern, what execution formalities apply, and how early the agreement should be completed.",
+      "Whether each partner should have separate counsel and how to document voluntary, informed negotiation without pressure.",
+      "What financial disclosure is required, how values will be confirmed, and whether schedules of assets and debts should be attached.",
+      "Which current assets and debts are separate, marital, or community property—and how tracing, refinancing, retitling, or commingling could change that.",
+      "How future earnings, bonuses, equity compensation, business appreciation, investment gains, retirement contributions, and real-estate equity will be treated.",
+      "Whether and how to address spousal support, housing, caregiving, disability, education, or compensation for career sacrifice.",
+      "How business control, valuation, buyouts, distributions, professional practices, and family-business restrictions should be handled.",
+      "How the agreement should coordinate with wills, trusts, life insurance, beneficiary designations, and rights at death.",
+      "Whether to include review dates, sunset provisions, amendment rules, mediation, fee provisions, or other dispute-resolution terms.",
+      "Whether tax, immigration, foreign-property, or cross-border enforcement issues require another specialist or local counsel."
     ],
     assetSnapshot: "Asset value snapshot",
     assetEstimateNote: "These are planning estimates only and should be replaced with formal disclosure numbers before signing.",
@@ -388,6 +410,22 @@ const translations = {
     costDriverLabel: "Factores principales de costo:",
     costSourceLabel: "Fuente de la referencia de tarifas",
     attorneyTopics: "Temas para hablar con el abogado",
+    materialsTitle: "Documentos y materiales que conviene reunir",
+    materialsIntro: "Cuando sea posible, lleven registros recientes y completos de ambas personas. El abogado puede pedir otro período o documentos adicionales.",
+    materialsCoreItems: [
+      "Identificación oficial, datos de contacto, fecha de boda o certificado de matrimonio y acuerdos anteriores de matrimonio, divorcio, manutención o bienes.",
+      "Estados recientes de cuentas bancarias, inversión, criptomonedas y otras cuentas, con titularidad y fecha aproximada de apertura.",
+      "Documentos de jubilación y compensación diferida: 401(k), IRA, pensión, opciones, acciones restringidas, bonos y beneficios laborales.",
+      "Declaraciones de impuestos de los últimos dos o tres años, recibos de sueldo, contratos laborales y prueba de otros ingresos.",
+      "Estados actuales de hipotecas, préstamos estudiantiles, tarjetas, préstamos personales, deuda fiscal, garantías y otras obligaciones.",
+      "Lista escrita de bienes personales valiosos, regalos o herencias esperadas y aquello que cada persona considera separado."
+    ],
+    materialsBusiness: "Documentos de negocio: constitución y gobierno, propiedad o tabla de capitalización, acuerdos de compraventa, estados financieros e impuestos recientes, valoraciones y préstamos.",
+    materialsRealEstate: "Documentos inmobiliarios: escrituras, compra y cierre, hipotecas, tasaciones, arrendamientos y pruebas de anticipos, reformas u otras contribuciones.",
+    materialsEstate: "Documentos patrimoniales: fideicomisos, testamentos, regalos o herencias, beneficiarios y cartas o restricciones familiares relevantes.",
+    materialsInternational: "Documentos internacionales: títulos extranjeros, estados de cuenta, documentos de matrimonio o ciudadanía, impuestos, acuerdos existentes y traducciones certificadas cuando hagan falta.",
+    materialsPostnup: "Para un postnup: documentos de transferencias o compras importantes durante el matrimonio, historial de cuentas conjuntas, documentos sucesorios y promesas financieras escritas.",
+    materialsPrivacyNote: "Usa un portal seguro u otro método aprobado por el abogado; no envíes números de cuenta o documentos de identidad por correo electrónico sin protección.",
     localLawyersTitle: "Buscar abogados locales de derecho familiar",
     localLawyersIntro: "Los enlaces se basan en el estado seleccionado y la ciudad o código postal opcional.",
     localLawyersMap: "Buscar abogados cercanos de acuerdos prenupciales/postnupciales",
@@ -396,10 +434,16 @@ const translations = {
     localLawyersDisclaimer:
       "Estos son enlaces de búsqueda y referencia, no recomendaciones. Verifica licencia, estado profesional, experiencia, honorarios y conflictos. Cada pareja debe considerar abogado independiente.",
     attorneyTopicItems: [
-      "Si se recomienda abogado independiente para cada persona.",
-      "Qué declaración financiera debe prepararse antes de negociar.",
-      "Cómo manejar herencias futuras, regalos, apreciación y mezcla de fondos.",
-      "Si los activos internacionales requieren abogado local en otro país."
+      "Qué ley estatal debe regir, qué formalidades se exigen y con cuánta anticipación debe terminarse el acuerdo.",
+      "Si cada persona debe tener abogado independiente y cómo documentar una negociación voluntaria e informada sin presión.",
+      "Qué divulgación financiera se requiere, cómo confirmar valores y si deben adjuntarse listas de activos y deudas.",
+      "Qué bienes y deudas son separados, matrimoniales o comunitarios y cómo la mezcla de fondos, el título o una refinanciación pueden cambiarlo.",
+      "Cómo tratar ingresos futuros, bonos, acciones, crecimiento del negocio, inversiones, jubilación y plusvalía inmobiliaria.",
+      "Cómo abordar manutención, vivienda, cuidados, discapacidad, educación o compensación por sacrificio profesional.",
+      "Cómo manejar control empresarial, valoración, compra de participaciones, distribuciones y restricciones de negocios familiares.",
+      "Cómo coordinar el acuerdo con testamentos, fideicomisos, seguros de vida, beneficiarios y derechos al fallecer.",
+      "Si convienen revisiones periódicas, caducidad, reglas de modificación, mediación, honorarios u otros mecanismos de disputa.",
+      "Si asuntos fiscales, migratorios, extranjeros o de ejecución internacional requieren otro especialista o abogado local."
     ],
     assetSnapshot: "Resumen de valores de activos",
     assetEstimateNote: "Estas son solo estimaciones de planificación y deben reemplazarse con cifras formales antes de firmar.",
@@ -546,6 +590,22 @@ const translations = {
     costDriverLabel: "عوامل التكلفة الرئيسية:",
     costSourceLabel: "مصدر معيار الأتعاب",
     attorneyTopics: "مواضيع النقاش مع المحامي",
+    materialsTitle: "المستندات والمواد المطلوب جمعها",
+    materialsIntro: "أحضرا سجلات حديثة وكاملة للطرفين قدر الإمكان. قد يطلب المحامي فترة زمنية مختلفة أو مستندات إضافية.",
+    materialsCoreItems: [
+      "هوية رسمية ومعلومات الاتصال وتاريخ الزفاف أو شهادة الزواج وأي اتفاقات سابقة متعلقة بالزواج أو الطلاق أو الدعم أو الملكية.",
+      "كشوف حديثة للحسابات الجارية والادخار والاستثمار والعملات الرقمية وغيرها، مع بيان الملكية وتاريخ الفتح التقريبي.",
+      "سجلات التقاعد والتعويض المؤجل، بما فيها المعاش وخيارات الأسهم والمكافآت ومزايا العمل.",
+      "الإقرارات الضريبية لآخر سنتين أو ثلاث وقسائم الرواتب الحديثة وعقود العمل ومستندات الدخل الآخر.",
+      "كشوف الديون الحالية للرهن والقروض الطلابية وبطاقات الائتمان والقروض الشخصية والضرائب والضمانات والالتزامات الأخرى.",
+      "قائمة بالممتلكات الشخصية القيمة والهدايا أو الميراث المتوقع وكل ما يرى أي طرف أنه يجب أن يبقى منفصلا."
+    ],
+    materialsBusiness: "سجلات الأعمال: وثائق التأسيس والإدارة والملكية واتفاقات البيع والشراء والبيانات المالية والضريبية الحديثة والتقييمات والقروض.",
+    materialsRealEstate: "سجلات العقار: السندات ووثائق الشراء والإغلاق وكشوف الرهن والتقييمات وعقود الإيجار وإثبات الدفعات أو التجديدات أو المساهمات.",
+    materialsEstate: "سجلات التركة وثروة الأسرة: وثائق الائتمان والوصايا والهدايا أو الميراث وتعيينات المستفيدين والقيود العائلية ذات الصلة.",
+    materialsInternational: "السجلات العابرة للحدود: سندات أجنبية وكشوف حساب ووثائق الزواج أو الجنسية والضرائب والاتفاقات القائمة والترجمات المعتمدة عند الحاجة.",
+    materialsPostnup: "لسياق ما بعد الزواج: مستندات التحويلات أو المشتريات الكبيرة أثناء الزواج وتاريخ الحسابات المشتركة ووثائق التركة وأي وعود مالية مكتوبة.",
+    materialsPrivacyNote: "استخدما بوابة آمنة أو وسيلة يعتمدها المحامي؛ لا ترسلا أرقام الحسابات أو وثائق الهوية عبر بريد إلكتروني عادي.",
     localLawyersTitle: "العثور على محامي أسرة محليين",
     localLawyersIntro: "تعتمد روابط البحث على الولاية المختارة والمدينة أو الرمز البريدي الاختياري.",
     localLawyersMap: "البحث عن محامي اتفاقات قبل/بعد الزواج بالقرب منك",
@@ -554,10 +614,16 @@ const translations = {
     localLawyersDisclaimer:
       "هذه روابط للبحث والإحالة وليست تزكية. تحقق من الترخيص والوضع المهني والخبرة والرسوم وتعارض المصالح. ينبغي لكل طرف التفكير في محام مستقل.",
     attorneyTopicItems: [
-      "ما إذا كان يوصى بمحام مستقل لكل طرف.",
-      "ما الإفصاح المالي الذي يجب تحضيره قبل التفاوض.",
-      "كيفية التعامل مع الميراث والهدايا والزيادة في القيمة واختلاط الأموال.",
-      "ما إذا كانت الأصول الدولية تتطلب محاميا محليا في دولة أخرى."
+      "قانون الولاية الذي ينبغي أن يحكم والإجراءات الشكلية المطلوبة والموعد المناسب لإكمال الاتفاق.",
+      "ما إذا كان لكل طرف محام مستقل وكيف يوثق تفاوض طوعي ومستنير من دون ضغط.",
+      "الإفصاح المالي المطلوب وكيفية تأكيد القيم وما إذا كان يجب إرفاق جداول للأصول والديون.",
+      "تصنيف الأصول والديون وكيف قد يغير خلط الأموال أو إعادة التمويل أو تغيير العنوان ذلك التصنيف.",
+      "معالجة الأرباح والمكافآت والأسهم ونمو الأعمال والاستثمارات والتقاعد وحقوق العقار مستقبلا.",
+      "معالجة الدعم والسكن والرعاية والإعاقة والتعليم أو التعويض عن التضحية المهنية.",
+      "إدارة السيطرة على الأعمال والتقييم والشراء والتوزيعات والقيود على الأعمال العائلية.",
+      "تنسيق الاتفاق مع الوصايا والائتمانات والتأمين على الحياة والمستفيدين والحقوق عند الوفاة.",
+      "إضافة مواعيد مراجعة أو انتهاء أو قواعد تعديل أو وساطة أو أتعاب أو آليات أخرى لحل النزاع.",
+      "ما إذا كانت مسائل الضرائب أو الهجرة أو الملكية الأجنبية أو التنفيذ عبر الحدود تحتاج إلى متخصص آخر أو محام محلي."
     ],
     assetSnapshot: "ملخص قيمة الأصول",
     assetEstimateNote: "هذه تقديرات للتخطيط فقط ويجب استبدالها بأرقام إفصاح رسمية قبل التوقيع.",
@@ -704,6 +770,22 @@ const translations = {
     costDriverLabel: "主要费用因素：",
     costSourceLabel: "费率基准来源",
     attorneyTopics: "与律师讨论的事项",
+    materialsTitle: "需要准备的文件和材料",
+    materialsIntro: "尽可能准备双方近期且完整的记录。律师可能要求不同期间或其他补充文件。",
+    materialsCoreItems: [
+      "政府签发的身份证明、联系方式、婚礼日期或结婚证，以及以往婚姻、离婚、扶养或财产协议。",
+      "近期银行、储蓄、投资、加密货币及其他账户对账单，并注明账户所有人和大致开户时间。",
+      "退休及递延薪酬资料，包括养老金、股票期权、限制性股票、奖金和雇主福利摘要。",
+      "最近两至三年的报税表、近期工资单、雇佣合同及其他收入证明。",
+      "房贷、学生贷款、信用卡、个人贷款、税务债务、担保及其他义务的当前对账单。",
+      "贵重个人财产、预期赠与或继承，以及双方认为应保持个人所有的财产清单。"
+    ],
+    materialsBusiness: "企业资料：设立和治理文件、股权或资本表、买卖协议、近期财务报表和报税表、估值及未偿贷款。",
+    materialsRealEstate: "房地产资料：产权证、购买和交割文件、房贷对账单、评估、租约及首付、装修或其他投入记录。",
+    materialsEstate: "遗产和家族财富资料：信托、遗嘱、赠与或继承记录、受益人指定及相关家族限制。",
+    materialsInternational: "跨境资料：外国产权文件、账户对账单、婚姻或公民身份文件、税务资料、现有协议及必要的认证翻译。",
+    materialsPostnup: "婚后协议资料：婚姻期间重大转让或购买文件、共同账户历史、现有遗产规划文件及任何书面财务承诺。",
+    materialsPrivacyNote: "使用律师批准的安全门户或其他方式；不要通过普通电子邮件随意发送账号或身份证明。",
     localLawyersTitle: "查找当地家庭法律师",
     localLawyersIntro: "搜索链接会根据所选州以及可选的城市或邮政编码生成。",
     localLawyersMap: "搜索附近的婚前/婚后协议律师",
@@ -712,10 +794,16 @@ const translations = {
     localLawyersDisclaimer:
       "这些是搜索和推荐服务链接，不代表背书。请核实执业资格、当前状态、相关协议经验、费用和利益冲突。双方应考虑分别聘请律师。",
     attorneyTopicItems: [
-      "是否建议双方各自聘请独立律师。",
-      "谈判前应准备哪些财务披露。",
-      "如何处理未来继承、赠与、增值和资金混同。",
-      "国际资产是否需要其他国家的当地律师。"
+      "应适用哪个州的法律、签署需要哪些手续，以及应提前多久完成协议。",
+      "双方是否应各自聘请律师，以及如何记录自愿、知情且无压力的协商过程。",
+      "需要哪些财务披露、如何确认估值，以及是否应附资产和债务清单。",
+      "现有资产和债务如何分类，以及追踪、再融资、更名或资金混同会如何改变分类。",
+      "未来收入、奖金、股权薪酬、企业增值、投资收益、退休金和房产权益如何处理。",
+      "如何处理配偶扶养、住房、照护、残疾、教育或职业牺牲补偿。",
+      "企业控制、估值、股权回购、分配、专业业务和家族企业限制如何处理。",
+      "协议如何与遗嘱、信托、人寿保险、受益人指定和死亡时权利协调。",
+      "是否加入复审日期、失效条款、修改规则、调解、费用或其他争议解决条款。",
+      "税务、移民、外国财产或跨境执行问题是否需要其他专家或当地律师。"
     ],
     assetSnapshot: "资产价值摘要",
     assetEstimateNote: "这些只是规划估计，签署前应以正式披露数字替代。",
@@ -892,6 +980,28 @@ function getWhyImportantItems(answers, copy, language, rule) {
   if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
     items.push(copy.whyImportantInternational);
   }
+
+  return items;
+}
+
+function getMaterialsChecklist(answers, copy) {
+  const selectedAssets = [...answers.currentAssets, ...answers.futureAssets];
+  const items = [...copy.materialsCoreItems];
+  const hasBusiness =
+    answers.business === "yes" || selectedAssets.some((asset) => asset === "Business ownership" || asset === "Family business interest");
+  const hasRealEstate =
+    answers.realEstate === "yes" || selectedAssets.some((asset) => asset === "Real estate" || asset === "Future home purchase");
+  const hasEstateOrFamilyWealth = selectedAssets.some(
+    (asset) => asset.includes("inheritance") || asset === "Family gifts" || asset === "Family business interest"
+  );
+
+  if (hasBusiness) items.push(copy.materialsBusiness);
+  if (hasRealEstate) items.push(copy.materialsRealEstate);
+  if (hasEstateOrFamilyWealth) items.push(copy.materialsEstate);
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
+    items.push(copy.materialsInternational);
+  }
+  if (answers.mode === "postnup") items.push(copy.materialsPostnup);
 
   return items;
 }
@@ -1600,7 +1710,8 @@ async function generateReportPdf({
   lossExposureItems,
   lossExposureValue,
   localLawyerLinks,
-  whyImportantItems
+  whyImportantItems,
+  materialsChecklist
 }) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
@@ -1701,6 +1812,12 @@ async function generateReportPdf({
   }
 
   y = addPdfSection(doc, copy.attorneyTopics, copy.attorneyTopicItems, y);
+
+  y = addPdfSection(doc, copy.materialsTitle, [
+    copy.materialsIntro,
+    ...materialsChecklist,
+    copy.materialsPrivacyNote
+  ], y);
 
   y = addPdfSection(doc, copy.localLawyersTitle, [
     `${copy.localLawyersIntro} ${localLawyerLinks.location}.`,
@@ -1884,6 +2001,7 @@ function App() {
   const coupleForeignChecks = useMemo(() => getCoupleSpecificForeignChecks(answers), [answers]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
   const localLawyerLinks = useMemo(() => getLocalLawyerLinks(answers, rule), [answers.locality, rule]);
+  const materialsChecklist = useMemo(() => getMaterialsChecklist(answers, copy), [answers, copy]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
   const toggleAsset = (groupKey, valueKey, asset) => {
@@ -2401,7 +2519,8 @@ function App() {
                         lossExposureItems,
                         lossExposureValue,
                         localLawyerLinks,
-                        whyImportantItems
+                        whyImportantItems,
+                        materialsChecklist
                       })
                     }
                   >
@@ -2576,13 +2695,30 @@ function App() {
                   <p>{costEstimate.note}</p>
                 </article>
 
-                <article>
-                  <h3>{copy.attorneyTopics}</h3>
+                <article className="attorney-topics-card">
+                  <div className="report-card-heading">
+                    <BriefcaseBusiness size={22} aria-hidden="true" />
+                    <h3>{copy.attorneyTopics}</h3>
+                  </div>
                   <ul>
                     {copy.attorneyTopicItems.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
+                </article>
+
+                <article className="materials-card">
+                  <div className="report-card-heading">
+                    <FileText size={22} aria-hidden="true" />
+                    <h3>{copy.materialsTitle}</h3>
+                  </div>
+                  <p>{copy.materialsIntro}</p>
+                  <ul>
+                    {materialsChecklist.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  <p className="materials-privacy-note">{copy.materialsPrivacyNote}</p>
                 </article>
 
                 <article className="local-lawyer-card">
