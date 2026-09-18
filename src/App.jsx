@@ -31,6 +31,10 @@ const initialAnswers = {
   coupleType: "",
   citizenshipStatus: "",
   citizenshipCountries: "",
+  militaryStatus: "",
+  governmentStatus: "",
+  pensionStatus: "",
+  publicBenefitsDetails: "",
   weddingMonths: "",
   discussedWithPartner: "",
   counsel: "",
@@ -108,6 +112,16 @@ const translations = {
     citizenshipNeither: "Neither is a U.S. citizen",
     citizenshipCountriesQuestion: "Countries of citizenship or cross-border context (optional)",
     citizenshipCountriesPlaceholder: "Example: United States and Canada",
+    militaryQuestion: "Does either partner currently serve, previously serve, or have military retirement or survivor benefits?",
+    governmentQuestion: "Does either partner work for a government or hold elected or appointed public office?",
+    pensionQuestion: "Does either partner have or expect a pension or other defined-benefit retirement plan?",
+    publicBenefitsDetailsQuestion: "Military, government, or pension details (optional)",
+    publicBenefitsDetailsPlaceholder: "Example: Army Reserve; federal employee; state teacher pension after 25 years",
+    publicBenefitsTitle: "Military, public-service, and pension profile",
+    militaryLabel: "Military service or benefits",
+    governmentLabel: "Government employment or public office",
+    pensionLabel: "Current or expected pension",
+    detailsLabel: "Provided details",
     marriageLicenseState: "What state will the marriage license get filed?",
     localityQuestion: "City or ZIP code (optional — used only to build local lawyer links)",
     localityPlaceholder: "Example: Boston or 02108",
@@ -137,6 +151,8 @@ const translations = {
       "Even though we are both U.S. citizens, the foreign property or legal connection still needs its own planning because citizenship does not override another country's title or family-law rules.",
     conversationFamilySpecific:
       "I also want us to be thoughtful about children, housing, support, and any career sacrifices, so the agreement protects the person making those contributions too.",
+    conversationPublicBenefits:
+      "We should also understand how military or government benefits and any pension may work, including vesting, survivor elections, and what can legally be divided or waived.",
     conversationFairness: "I want the process and the agreement to be fair to both of us—not a way for one person to ‘win.’ We should both be honest about finances, have time to think, and be able to get our own legal advice.",
     conversationRush: "Because the timing is tight, I do not want either of us to feel pressured. If there is not enough time to handle this properly, we should ask lawyers what a fair timeline looks like instead of forcing a rushed signature.",
     conversationAsk: "Would you be open to talking about what each of us would want protected, what would feel fair, and what questions we should bring to separate attorneys?",
@@ -225,7 +241,13 @@ const translations = {
     materialsEstate: "Estate and family-wealth records: trust documents, wills, gift or inheritance records, beneficiary designations, and relevant family letters or restrictions.",
     materialsInternational: "Cross-border records: foreign titles, account statements, marriage or citizenship documents, tax records, existing agreements, and certified translations when needed.",
     materialsPostnup: "Postnup records: documents showing major transfers or purchases during the marriage, joint-account history, existing estate documents, and any prior written financial promises.",
+    materialsMilitary: "Military records: current orders or service status, Leave and Earnings Statements, retirement-point or pension estimates, Thrift Savings Plan statements, Survivor Benefit Plan elections, and disability-benefit information.",
+    materialsGovernment: "Government/public-office records: employment and benefit summaries, required ethics or financial disclosures, conflict-of-interest rules, deferred compensation, and restrictions on outside income or asset ownership.",
+    materialsPension: "Pension records: plan summary, recent benefit estimate, vesting and service-credit history, contribution records, survivor options, beneficiary elections, and any prior division order.",
     materialsPrivacyNote: "Use a secure portal or another method approved by the attorney; do not email sensitive account numbers or identity documents casually.",
+    attorneyMilitary: "How federal military-benefit rules, service overlap, retirement division, disability benefits, Survivor Benefit Plan coverage, and jurisdiction limits affect permissible terms.",
+    attorneyGovernment: "Whether public-office or government-employment ethics rules, mandatory disclosures, conflicts, outside-income limits, or public-record concerns affect the agreement or negotiation process.",
+    attorneyPension: "How pension vesting, service credits, premarital and marital accrual, valuation, survivor benefits, beneficiary elections, and any future domestic-relations order should be handled.",
     localLawyersTitle: "Find local family-law attorneys",
     localLawyersIntro: "Search links are based on the selected state and optional city or ZIP code.",
     localLawyersMap: "Search nearby prenup/postnup attorneys",
@@ -307,6 +329,16 @@ const translations = {
     citizenshipNeither: "Ninguno es ciudadano de EE. UU.",
     citizenshipCountriesQuestion: "Países de ciudadanía o contexto internacional (opcional)",
     citizenshipCountriesPlaceholder: "Ejemplo: Estados Unidos y Canadá",
+    militaryQuestion: "¿Alguna persona sirve o sirvió en las fuerzas armadas, o tiene beneficios militares de jubilación o sobreviviente?",
+    governmentQuestion: "¿Alguna persona trabaja para el gobierno u ocupa un cargo público electo o designado?",
+    pensionQuestion: "¿Alguna persona tiene o espera una pensión u otro plan de jubilación de beneficio definido?",
+    publicBenefitsDetailsQuestion: "Detalles militares, gubernamentales o de pensión (opcional)",
+    publicBenefitsDetailsPlaceholder: "Ejemplo: Reserva del Ejército; empleo federal; pensión docente estatal tras 25 años",
+    publicBenefitsTitle: "Perfil militar, de servicio público y pensión",
+    militaryLabel: "Servicio o beneficios militares",
+    governmentLabel: "Empleo gubernamental o cargo público",
+    pensionLabel: "Pensión actual o esperada",
+    detailsLabel: "Detalles proporcionados",
     marriageLicenseState: "¿En qué estado se presentará la licencia de matrimonio?",
     localityQuestion: "Ciudad o código postal (opcional; solo se usa para crear enlaces a abogados locales)",
     localityPlaceholder: "Ejemplo: Boston o 02108",
@@ -336,6 +368,8 @@ const translations = {
       "Aunque ambos seamos ciudadanos estadounidenses, la propiedad o conexión extranjera necesita su propia planificación porque la ciudadanía no reemplaza las reglas de propiedad o familia de otro país.",
     conversationFamilySpecific:
       "También quiero que pensemos bien en los hijos, la vivienda, la manutención y cualquier sacrificio profesional, para que el acuerdo proteja también a quien haga esas contribuciones.",
+    conversationPublicBenefits:
+      "También deberíamos entender cómo funcionan los beneficios militares o gubernamentales y cualquier pensión, incluida la adquisición, las elecciones de sobreviviente y lo que legalmente puede dividirse o renunciarse.",
     conversationFairness: "Quiero que el proceso y el acuerdo sean justos para ambos, no una manera de que una persona ‘gane’. Los dos debemos ser honestos sobre las finanzas, tener tiempo para pensar y poder recibir asesoría legal independiente.",
     conversationRush: "Como el tiempo es ajustado, no quiero que ninguno se sienta presionado. Si no hay tiempo suficiente para hacerlo bien, debemos preguntar a abogados cuál sería un plazo justo en vez de forzar una firma apresurada.",
     conversationAsk: "¿Estarías dispuesto/a a hablar sobre qué querría proteger cada uno, qué nos parecería justo y qué preguntas deberíamos llevar a abogados separados?",
@@ -425,7 +459,13 @@ const translations = {
     materialsEstate: "Documentos patrimoniales: fideicomisos, testamentos, regalos o herencias, beneficiarios y cartas o restricciones familiares relevantes.",
     materialsInternational: "Documentos internacionales: títulos extranjeros, estados de cuenta, documentos de matrimonio o ciudadanía, impuestos, acuerdos existentes y traducciones certificadas cuando hagan falta.",
     materialsPostnup: "Para un postnup: documentos de transferencias o compras importantes durante el matrimonio, historial de cuentas conjuntas, documentos sucesorios y promesas financieras escritas.",
+    materialsMilitary: "Registros militares: órdenes o situación de servicio, comprobantes de pago, estimaciones de retiro, estados del Thrift Savings Plan, elecciones de Survivor Benefit Plan e información de discapacidad.",
+    materialsGovernment: "Registros gubernamentales o de cargo público: empleo y beneficios, declaraciones éticas o financieras obligatorias, reglas de conflicto, compensación diferida y límites a ingresos externos.",
+    materialsPension: "Registros de pensión: resumen del plan, estimación reciente, historial de adquisición y servicio, contribuciones, opciones de sobreviviente, beneficiarios y órdenes previas de división.",
     materialsPrivacyNote: "Usa un portal seguro u otro método aprobado por el abogado; no envíes números de cuenta o documentos de identidad por correo electrónico sin protección.",
+    attorneyMilitary: "Cómo afectan las normas federales militares, los años de servicio, la división del retiro, la discapacidad, el Survivor Benefit Plan y los límites de jurisdicción a los términos permitidos.",
+    attorneyGovernment: "Si las reglas éticas, divulgaciones, conflictos, límites de ingresos externos o registros públicos del empleo o cargo gubernamental afectan el acuerdo.",
+    attorneyPension: "Cómo tratar adquisición, años de servicio, acumulación antes y durante el matrimonio, valoración, beneficios de sobreviviente, beneficiarios y una futura orden de división.",
     localLawyersTitle: "Buscar abogados locales de derecho familiar",
     localLawyersIntro: "Los enlaces se basan en el estado seleccionado y la ciudad o código postal opcional.",
     localLawyersMap: "Buscar abogados cercanos de acuerdos prenupciales/postnupciales",
@@ -487,6 +527,16 @@ const translations = {
     citizenshipNeither: "لا أحد منهما مواطن أمريكي",
     citizenshipCountriesQuestion: "دول الجنسية أو السياق العابر للحدود (اختياري)",
     citizenshipCountriesPlaceholder: "مثال: الولايات المتحدة وكندا",
+    militaryQuestion: "هل يخدم أحد الطرفين حاليا أو خدم سابقا في الجيش أو لديه مزايا تقاعد أو بقاء عسكرية؟",
+    governmentQuestion: "هل يعمل أحد الطرفين لدى جهة حكومية أو يشغل منصبا عاما منتخبا أو معينا؟",
+    pensionQuestion: "هل لدى أحد الطرفين أو يتوقع معاشا أو خطة تقاعد ذات مزايا محددة؟",
+    publicBenefitsDetailsQuestion: "تفاصيل الخدمة العسكرية أو الحكومية أو المعاش (اختياري)",
+    publicBenefitsDetailsPlaceholder: "مثال: احتياط الجيش؛ موظف فدرالي؛ معاش معلم حكومي بعد 25 سنة",
+    publicBenefitsTitle: "ملف الخدمة العسكرية والعامة والمعاش",
+    militaryLabel: "الخدمة أو المزايا العسكرية",
+    governmentLabel: "العمل الحكومي أو المنصب العام",
+    pensionLabel: "المعاش الحالي أو المتوقع",
+    detailsLabel: "التفاصيل المقدمة",
     marriageLicenseState: "في أي ولاية سيتم تقديم رخصة الزواج؟",
     localityQuestion: "المدينة أو الرمز البريدي (اختياري — يستخدم فقط لإنشاء روابط لمحامين محليين)",
     localityPlaceholder: "مثال: بوسطن أو 02108",
@@ -516,6 +566,8 @@ const translations = {
       "حتى مع كوننا مواطنين أمريكيين، فإن الملكية أو الصلة الأجنبية تحتاج إلى تخطيط مستقل لأن الجنسية لا تلغي قواعد الملكية أو الأسرة في دولة أخرى.",
     conversationFamilySpecific:
       "أريد أيضا أن نفكر بعناية في الأطفال والسكن والدعم وأي تضحيات مهنية، لكي يحمي الاتفاق الطرف الذي يقدم تلك المساهمات أيضا.",
+    conversationPublicBenefits:
+      "ينبغي أيضا أن نفهم المزايا العسكرية أو الحكومية وأي معاش، بما في ذلك الاستحقاق وخيارات البقاء وما يجوز قانونا تقسيمه أو التنازل عنه.",
     conversationFairness: "أريد أن تكون العملية والاتفاق عادلين لكلينا، لا وسيلة لكي «يفوز» طرف. ينبغي أن نكون صريحين بشأن المال، وأن نحصل على وقت للتفكير، وأن يتمكن كل منا من طلب مشورة قانونية مستقلة.",
     conversationRush: "لأن الوقت ضيق، لا أريد أن يشعر أي منا بالضغط. إذا لم يكن هناك وقت كاف للقيام بهذا بشكل صحيح، فلنسأل المحامين عن جدول زمني عادل بدلا من فرض توقيع متسرع.",
     conversationAsk: "هل أنت مستعد/ة للحديث عما يريد كل منا حمايته، وما الذي يبدو عادلا، وما الأسئلة التي ينبغي أن نطرحها على محاميين مستقلين؟",
@@ -605,7 +657,13 @@ const translations = {
     materialsEstate: "سجلات التركة وثروة الأسرة: وثائق الائتمان والوصايا والهدايا أو الميراث وتعيينات المستفيدين والقيود العائلية ذات الصلة.",
     materialsInternational: "السجلات العابرة للحدود: سندات أجنبية وكشوف حساب ووثائق الزواج أو الجنسية والضرائب والاتفاقات القائمة والترجمات المعتمدة عند الحاجة.",
     materialsPostnup: "لسياق ما بعد الزواج: مستندات التحويلات أو المشتريات الكبيرة أثناء الزواج وتاريخ الحسابات المشتركة ووثائق التركة وأي وعود مالية مكتوبة.",
+    materialsMilitary: "السجلات العسكرية: أوامر الخدمة أو وضعها وكشوف الأجر وتقديرات التقاعد وكشوف خطة الادخار وخيارات مزايا البقاء ومعلومات العجز.",
+    materialsGovernment: "سجلات العمل الحكومي أو المنصب العام: ملخصات العمل والمزايا والإفصاحات الأخلاقية أو المالية وقواعد تعارض المصالح والتعويض المؤجل وقيود الدخل الخارجي.",
+    materialsPension: "سجلات المعاش: ملخص الخطة وتقدير المزايا وسجل الاستحقاق والخدمة والمساهمات وخيارات البقاء والمستفيدين وأوامر التقسيم السابقة.",
     materialsPrivacyNote: "استخدما بوابة آمنة أو وسيلة يعتمدها المحامي؛ لا ترسلا أرقام الحسابات أو وثائق الهوية عبر بريد إلكتروني عادي.",
+    attorneyMilitary: "كيفية تأثير قواعد المزايا العسكرية الفدرالية ومدة الخدمة وتقسيم التقاعد والعجز وتغطية البقاء وحدود الاختصاص على الشروط الممكنة.",
+    attorneyGovernment: "ما إذا كانت قواعد أخلاقيات الوظيفة أو المنصب الحكومي والإفصاحات والتعارضات وقيود الدخل أو السجلات العامة تؤثر في الاتفاق.",
+    attorneyPension: "كيفية معالجة استحقاق المعاش وسنوات الخدمة والتراكم قبل الزواج وخلاله والتقييم ومزايا البقاء والمستفيدين وأي أمر تقسيم مستقبلي.",
     localLawyersTitle: "العثور على محامي أسرة محليين",
     localLawyersIntro: "تعتمد روابط البحث على الولاية المختارة والمدينة أو الرمز البريدي الاختياري.",
     localLawyersMap: "البحث عن محامي اتفاقات قبل/بعد الزواج بالقرب منك",
@@ -667,6 +725,16 @@ const translations = {
     citizenshipNeither: "双方都不是美国公民",
     citizenshipCountriesQuestion: "公民所属国家或跨境背景（可选）",
     citizenshipCountriesPlaceholder: "例如：美国和加拿大",
+    militaryQuestion: "任何一方目前或曾经服役，或拥有军人退休金或遗属福利吗？",
+    governmentQuestion: "任何一方在政府工作，或担任民选或任命的公职吗？",
+    pensionQuestion: "任何一方拥有或预计获得养老金或其他固定收益退休计划吗？",
+    publicBenefitsDetailsQuestion: "军队、政府或养老金详情（可选）",
+    publicBenefitsDetailsPlaceholder: "例如：陆军预备役；联邦雇员；工作25年后可领取州教师养老金",
+    publicBenefitsTitle: "军队、公共服务和养老金情况",
+    militaryLabel: "服役或军人福利",
+    governmentLabel: "政府就业或公职",
+    pensionLabel: "当前或预期养老金",
+    detailsLabel: "已提供详情",
     marriageLicenseState: "结婚许可证将在哪个州提交？",
     localityQuestion: "城市或邮政编码（可选；仅用于生成本地律师链接）",
     localityPlaceholder: "例如：Boston 或 02108",
@@ -696,6 +764,8 @@ const translations = {
       "即使我们双方都是美国公民，外国财产或法律联系仍需要单独规划，因为公民身份不会取代另一个国家的产权或家庭法规则。",
     conversationFamilySpecific:
       "我也希望我们认真考虑子女、住房、扶养和任何职业牺牲，让协议也能保护作出这些贡献的一方。",
+    conversationPublicBenefits:
+      "我们也应该了解军队或政府福利以及养老金的运作方式，包括归属、遗属选择，以及哪些权益依法可以分割或放弃。",
     conversationFairness: "我希望过程和协议对我们双方都公平，而不是让某一个人“赢”。我们都应该诚实披露财务情况，有时间思考，并且可以分别获得自己的法律建议。",
     conversationRush: "因为时间比较紧，我不希望任何一方感到被逼迫。如果时间不足以妥善处理，我们应该问律师怎样的时间安排才公平，而不是仓促签字。",
     conversationAsk: "你愿意和我一起谈谈我们各自想保护什么、怎样才算公平，以及我们应该分别向律师提出哪些问题吗？",
@@ -785,7 +855,13 @@ const translations = {
     materialsEstate: "遗产和家族财富资料：信托、遗嘱、赠与或继承记录、受益人指定及相关家族限制。",
     materialsInternational: "跨境资料：外国产权文件、账户对账单、婚姻或公民身份文件、税务资料、现有协议及必要的认证翻译。",
     materialsPostnup: "婚后协议资料：婚姻期间重大转让或购买文件、共同账户历史、现有遗产规划文件及任何书面财务承诺。",
+    materialsMilitary: "军队资料：当前命令或服役状态、工资单、退役积分或养老金估算、节俭储蓄计划对账单、遗属福利选择和伤残福利资料。",
+    materialsGovernment: "政府或公职资料：就业和福利摘要、强制伦理或财务披露、利益冲突规则、递延薪酬及外部收入限制。",
+    materialsPension: "养老金资料：计划摘要、近期福利估算、归属和服务年限记录、缴费、遗属选项、受益人指定及以往分割命令。",
     materialsPrivacyNote: "使用律师批准的安全门户或其他方式；不要通过普通电子邮件随意发送账号或身份证明。",
+    attorneyMilitary: "联邦军人福利规则、服役期间、退休金分割、伤残福利、遗属福利计划和管辖限制如何影响可约定条款。",
+    attorneyGovernment: "公职或政府就业的伦理规则、强制披露、利益冲突、外部收入限制或公共记录问题是否影响协议或协商。",
+    attorneyPension: "如何处理养老金归属、服务年限、婚前婚内累积、估值、遗属福利、受益人选择及未来财产分割命令。",
     localLawyersTitle: "查找当地家庭法律师",
     localLawyersIntro: "搜索链接会根据所选州以及可选的城市或邮政编码生成。",
     localLawyersMap: "搜索附近的婚前/婚后协议律师",
@@ -1002,8 +1078,30 @@ function getMaterialsChecklist(answers, copy) {
     items.push(copy.materialsInternational);
   }
   if (answers.mode === "postnup") items.push(copy.materialsPostnup);
+  if (answers.militaryStatus === "yes") items.push(copy.materialsMilitary);
+  if (answers.governmentStatus === "yes") items.push(copy.materialsGovernment);
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") items.push(copy.materialsPension);
 
   return items;
+}
+
+function getAttorneyDiscussionTopics(answers, copy) {
+  const topics = [...copy.attorneyTopicItems];
+  if (answers.militaryStatus === "yes") topics.push(copy.attorneyMilitary);
+  if (answers.governmentStatus === "yes") topics.push(copy.attorneyGovernment);
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") topics.push(copy.attorneyPension);
+  return topics;
+}
+
+function getPublicBenefitsSummary(answers, copy) {
+  const lines = [];
+  if (answers.militaryStatus) lines.push(`${copy.militaryLabel}: ${copy[answers.militaryStatus]}.`);
+  if (answers.governmentStatus) lines.push(`${copy.governmentLabel}: ${copy[answers.governmentStatus]}.`);
+  if (answers.pensionStatus) lines.push(`${copy.pensionLabel}: ${copy[answers.pensionStatus]}.`);
+  if (answers.publicBenefitsDetails.trim()) {
+    lines.push(`${copy.detailsLabel}: ${answers.publicBenefitsDetails.trim()}.`);
+  }
+  return lines;
 }
 
 function slugifyLocation(value) {
@@ -1075,6 +1173,9 @@ function getConversationScript(answers, copy, language) {
     lines.push(copy.conversationBothCitizensForeign);
   }
   if (answers.children === "yes" || answers.careerSacrifice === "yes") lines.push(copy.conversationFamilySpecific);
+  if (answers.militaryStatus === "yes" || answers.governmentStatus === "yes" || answers.pensionStatus === "yes") {
+    lines.push(copy.conversationPublicBenefits);
+  }
   lines.push(copy.conversationFairness);
   if (answers.pressure === "yes" || weddingTimingIsTight) lines.push(copy.conversationRush);
   lines.push(copy.conversationAsk);
@@ -1182,6 +1283,15 @@ function getRiskItems(answers, rule) {
 
   if (answers.children === "yes") {
     risks.push("Children can affect financial planning, housing needs, support expectations, and what terms a court may refuse to enforce as against public policy.");
+  }
+  if (answers.militaryStatus === "yes") {
+    risks.push("Military retirement, survivor coverage, disability benefits, and federal jurisdiction rules may limit or change what an agreement can accomplish.");
+  }
+  if (answers.governmentStatus === "yes") {
+    risks.push("Government employment or public office may add pension, ethics, disclosure, conflict-of-interest, outside-income, or public-record considerations.");
+  }
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") {
+    risks.push("A current or future pension can require careful treatment of vesting, service credits, marital accrual, valuation, survivor elections, and division orders.");
   }
 
   if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
@@ -1378,6 +1488,9 @@ function getCostEstimate(answers, result) {
   if (answers.incomeGap === "yes" || getIncomeSnapshot(answers).length > 0) factors.push("income gap or expected income growth");
   if (answers.mode === "postnup") factors.push("postnup review after marriage");
   if (answers.pressure === "yes") factors.push("timing or pressure concerns");
+  if (answers.militaryStatus === "yes") factors.push("military retirement or survivor-benefit rules");
+  if (answers.governmentStatus === "yes") factors.push("government employment or public-office rules");
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") factors.push("pension valuation or survivor benefits");
 
   if (factors.length >= 4 || answers.internationalAssets === "yes") tier = "High";
   if (tier === "Lower" && factors.length >= 2) tier = "Moderate";
@@ -1711,7 +1824,9 @@ async function generateReportPdf({
   lossExposureValue,
   localLawyerLinks,
   whyImportantItems,
-  materialsChecklist
+  materialsChecklist,
+  attorneyDiscussionTopics,
+  publicBenefitsSummary
 }) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "letter" });
@@ -1811,7 +1926,11 @@ async function generateReportPdf({
     y = addPdfSection(doc, copy.assetSnapshot, assetLines, y);
   }
 
-  y = addPdfSection(doc, copy.attorneyTopics, copy.attorneyTopicItems, y);
+  if (publicBenefitsSummary.length > 0) {
+    y = addPdfSection(doc, copy.publicBenefitsTitle, publicBenefitsSummary, y);
+  }
+
+  y = addPdfSection(doc, copy.attorneyTopics, attorneyDiscussionTopics, y);
 
   y = addPdfSection(doc, copy.materialsTitle, [
     copy.materialsIntro,
@@ -1870,6 +1989,19 @@ function scoreAnswers(answers) {
   ["business", "realEstate", "incomeGap", "careerSacrifice", "debts", "children"].forEach((key) => {
     if (answers[key] === "yes") score += 1;
   });
+
+  if (answers.militaryStatus === "yes") {
+    score += 1;
+    reasons.push("Military retirement, survivor, disability, and federal benefit rules can add specialized planning issues.");
+  }
+  if (answers.governmentStatus === "yes") {
+    score += 1;
+    reasons.push("Government employment or public office can add pension, ethics, disclosure, or conflict-of-interest considerations.");
+  }
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") {
+    score += 1;
+    reasons.push("A current or expected pension should be addressed before vesting, service credits, survivor benefits, or valuation become disputed.");
+  }
 
   if (answers.pressure === "yes") {
     score += 2;
@@ -2002,6 +2134,8 @@ function App() {
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
   const localLawyerLinks = useMemo(() => getLocalLawyerLinks(answers, rule), [answers.locality, rule]);
   const materialsChecklist = useMemo(() => getMaterialsChecklist(answers, copy), [answers, copy]);
+  const attorneyDiscussionTopics = useMemo(() => getAttorneyDiscussionTopics(answers, copy), [answers, copy]);
+  const publicBenefitsSummary = useMemo(() => getPublicBenefitsSummary(answers, copy), [answers, copy]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
   const toggleAsset = (groupKey, valueKey, asset) => {
@@ -2159,6 +2293,29 @@ function App() {
                       value={answers.citizenshipCountries}
                       onChange={(event) => setAnswer("citizenshipCountries", event.target.value)}
                       placeholder={copy.citizenshipCountriesPlaceholder}
+                    />
+                  </label>
+                )}
+                <div>
+                  <p className="label-text">{copy.militaryQuestion}</p>
+                  <YesNo copy={copy} value={answers.militaryStatus} onChange={(value) => setAnswer("militaryStatus", value)} />
+                </div>
+                <div>
+                  <p className="label-text">{copy.governmentQuestion}</p>
+                  <YesNo copy={copy} value={answers.governmentStatus} onChange={(value) => setAnswer("governmentStatus", value)} />
+                </div>
+                <div>
+                  <p className="label-text">{copy.pensionQuestion}</p>
+                  <YesNo copy={copy} value={answers.pensionStatus} onChange={(value) => setAnswer("pensionStatus", value)} />
+                </div>
+                {(answers.militaryStatus === "yes" || answers.governmentStatus === "yes" || answers.pensionStatus === "yes") && (
+                  <label>
+                    {copy.publicBenefitsDetailsQuestion}
+                    <input
+                      type="text"
+                      value={answers.publicBenefitsDetails}
+                      onChange={(event) => setAnswer("publicBenefitsDetails", event.target.value)}
+                      placeholder={copy.publicBenefitsDetailsPlaceholder}
                     />
                   </label>
                 )}
@@ -2520,7 +2677,9 @@ function App() {
                         lossExposureValue,
                         localLawyerLinks,
                         whyImportantItems,
-                        materialsChecklist
+                        materialsChecklist,
+                        attorneyDiscussionTopics,
+                        publicBenefitsSummary
                       })
                     }
                   >
@@ -2695,13 +2854,27 @@ function App() {
                   <p>{costEstimate.note}</p>
                 </article>
 
+                {publicBenefitsSummary.length > 0 && (
+                  <article className="public-benefits-card">
+                    <div className="report-card-heading">
+                      <Landmark size={22} aria-hidden="true" />
+                      <h3>{copy.publicBenefitsTitle}</h3>
+                    </div>
+                    <ul>
+                      {publicBenefitsSummary.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </article>
+                )}
+
                 <article className="attorney-topics-card">
                   <div className="report-card-heading">
                     <BriefcaseBusiness size={22} aria-hidden="true" />
                     <h3>{copy.attorneyTopics}</h3>
                   </div>
                   <ul>
-                    {copy.attorneyTopicItems.map((item) => (
+                    {attorneyDiscussionTopics.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
