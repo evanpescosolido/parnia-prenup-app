@@ -280,19 +280,33 @@ const translations = {
     consequencesTitle: "Consequences simulator",
     storyEyebrow: "Slightly dramatic scenario",
     storyTitle: "If no agreement exists",
-    statisticsTitle: "Divorce can happen context",
+    statisticsTitle: "Divorce statistics and unofficial context",
     statisticsDisclaimer:
-      "This is a reality-check section, not a prediction. The point is simple: divorce can happen, and the messier the financial facts are, the more useful advance planning can be.",
+      "This combines an official population statistic with a transparent, unofficial planning indicator. The indicator is not this couple's personal divorce probability.",
     baselineRate:
-      "The state benchmark is included only to keep the possibility concrete, not to estimate this couple's future.",
+      "The CDC rate is a population-level annual crude rate—not the percentage of marriages ending in divorce and not this couple's probability.",
     complexityImpact:
-      "The stressor signal is not a real divorce-probability forecast. It shows how easily a breakup could become harder, more expensive, and more chaotic if it happens.",
+      "Positive points flag more unresolved planning friction; negative points reflect preparation already underway. The math is editorial and deliberately visible, not a validated model.",
+    nationalBenchmark: "U.S. reported-jurisdiction benchmark",
+    stateComparison: "Compared with the national benchmark",
+    stateDataUnavailable: "No comparable 2023 CDC state rate is available",
+    unofficialIndexTitle: "Unofficial divorce-context indicator",
+    unofficialIndexExplanation:
+      "Starts at 50 and moves only by the listed signals. It is a 0–100 planning scale, not a percentage or forecast.",
+    signalBreakdown: "Signals used in the indicator",
+    noIndicatorSignals: "No profile or preparation signals have been entered yet.",
+    notScoredTitle: "Characteristics deliberately not scored",
+    notScoredIntro:
+      "These answers still shape legal and financial planning, but the app does not turn them into divorce odds without directly comparable evidence.",
+    divorceSourceLabel: "CDC/NCHS 2023 state divorce statistics",
+    contextBandLower: "Lower-context signal",
+    contextBandMixed: "Mixed-context signal",
+    contextBandElevated: "Elevated-context signal",
     selectedStressors: "Selected stressors",
     noStressors: "No major stressors selected yet.",
     estimatedDisputeExposure: "Estimated dispute exposure",
     stateBenchmark: "State benchmark",
-    stressAdjustedRate: "Planning signal",
-    rateNote: "annual divorces per 1,000 residents",
+    rateNote: "provisional annual divorces per 1,000 residents (2023)",
     exposureLower: "Lower",
     exposureModerate: "Moderate",
     exposureHigh: "High",
@@ -966,57 +980,56 @@ const futureAssetOptions = [
 ];
 
 const stateDivorceBenchmarks = {
-  AL: 3.6,
-  AK: 3.5,
-  AZ: 2.4,
-  AR: 3.6,
-  CA: 1.6,
-  CO: 2.9,
-  CT: 1.6,
-  DE: 2.3,
-  FL: 3.2,
-  GA: 2.1,
-  HI: 1.4,
-  ID: 3.8,
-  IL: 1.3,
-  IN: 2.4,
-  IA: 1.7,
-  KS: 2.3,
-  KY: 3.1,
-  LA: 1.7,
-  ME: 2.8,
-  MD: 1.6,
-  MA: 1.0,
-  MI: 2.4,
-  MN: 1.6,
-  MS: 2.5,
-  MO: 2.7,
-  MT: 2.5,
+  AL: 3.0,
+  AK: 3.1,
+  AZ: 2.0,
+  AR: 3.0,
+  CO: 2.8,
+  CT: 2.6,
+  DE: 2.6,
+  FL: 3.0,
+  GA: 2.2,
+  ID: 3.4,
+  IL: 1.2,
+  IA: 1.9,
+  KS: 1.7,
+  KY: 2.9,
+  LA: 0.9,
+  ME: 2.5,
+  MD: 2.7,
+  MA: 1.8,
+  MI: 2.2,
+  MS: 2.9,
+  MO: 2.6,
+  MT: 2.3,
   NE: 2.6,
-  NV: 4.2,
-  NH: 2.6,
+  NV: 3.8,
+  NH: 2.5,
   NJ: 2.2,
-  NM: 2.5,
-  NY: 1.8,
-  NC: 2.6,
-  ND: 2.5,
-  OH: 2.6,
-  OK: 3.8,
-  OR: 2.5,
-  PA: 2.3,
-  RI: 2.2,
-  SC: 2.5,
-  SD: 2.5,
-  TN: 3.3,
-  TX: 1.8,
-  UT: 3.0,
-  VT: 2.7,
-  VA: 2.9,
-  WA: 2.6,
-  WV: 3.2,
+  NY: 2.4,
+  NC: 2.7,
+  ND: 2.6,
+  OH: 2.4,
+  OK: 3.3,
+  OR: 2.8,
+  PA: 2.2,
+  RI: 2.3,
+  SC: 2.2,
+  SD: 2.3,
+  TN: 2.9,
+  TX: 2.1,
+  UT: 3.1,
+  VT: 2.4,
+  VA: 2.7,
+  WA: 2.7,
+  WV: 2.9,
   WI: 2.1,
-  WY: 3.3
+  WY: 3.4
 };
+
+const statesWithoutComparableCdcDivorceRate = new Set(["CA", "HI", "IN", "MN", "NM"]);
+const nationalDivorceBenchmark = 2.4;
+const divorceStatisticsSource = "https://www.cdc.gov/nchs/state-stats/more-maps/divorce.html";
 
 function getCopy(language) {
   const selected = translations[language] ?? {};
@@ -1555,20 +1568,58 @@ function getConsequenceContext(answers, result, currentAssetTotal, futureAssetTo
 }
 
 function getDivorceRateContext(answers, consequenceContext) {
-  const baseRate = stateDivorceBenchmarks[answers.state] ?? 2.4;
-  const stressorWeight = consequenceContext.stressors.reduce((total, stressor) => {
-    if (stressor.includes("foreign") || stressor.includes("business") || stressor.includes("real estate")) return total + 0.25;
-    if (stressor.includes("income") || stressor.includes("career") || stressor.includes("debt")) return total + 0.18;
-    if (stressor.includes("pressure") || stressor.includes("future")) return total + 0.14;
-    return total + 0.08;
-  }, 0);
-  const adjustedRate = Math.min(baseRate + stressorWeight, baseRate + 1.4);
-  const roundedAdjustedRate = Math.round(adjustedRate * 10) / 10;
+  const hasComparableStateRate = !statesWithoutComparableCdcDivorceRate.has(answers.state);
+  const stateRate = hasComparableStateRate ? stateDivorceBenchmarks[answers.state] : null;
+  const stateComparisonPct = stateRate === null ? null : Math.round(((stateRate - nationalDivorceBenchmark) / nationalDivorceBenchmark) * 100);
+  const signals = [];
+  const notScored = [];
+  let indicatorScore = 50;
+
+  const addSignal = (label, points) => {
+    signals.push({ label, points });
+    indicatorScore += points;
+  };
+
+  if (stateComparisonPct !== null) {
+    const statePoints = Math.max(-10, Math.min(10, Math.round(stateComparisonPct / 6)));
+    if (statePoints !== 0) addSignal("Selected-state rate compared with the national reported-jurisdiction rate", statePoints);
+  }
+  if (answers.pressure === "yes") addSignal("Rush or pressure was reported", 10);
+  if (answers.discussedWithPartner === "no") addSignal("The topic has not yet been discussed", 6);
+  if (answers.discussedWithPartner === "yes") addSignal("The topic has already been discussed", -4);
+  if (answers.disclosureStarted === "no") addSignal("Financial disclosure has not started", 5);
+  if (answers.disclosureStarted === "yes") addSignal("Financial disclosure has started", -3);
+  if (answers.counsel === "no") addSignal("Neither person has spoken with counsel yet", 3);
+  if (answers.counsel === "yes") addSignal("At least one person has spoken with counsel", -2);
+  if (answers.debts === "yes") addSignal("Debt obligations were selected", 5);
+  if (answers.incomeGap === "yes") addSignal("A meaningful income or wealth gap was selected", 4);
+  if (answers.careerSacrifice === "yes") addSignal("Career sacrifice or support expectations were selected", 3);
+  if (answers.internationalAssets === "yes") addSignal("Foreign assets or cross-border enforcement were selected", 4);
+  if (answers.internationalAssets === "unsure") addSignal("Foreign-asset status is uncertain", 2);
+  if (answers.business === "yes") addSignal("Business ownership or future growth was selected", 2);
+  if (answers.realEstate === "yes") addSignal("Real-estate ownership was selected", 2);
+
+  if (answers.coupleType) notScored.push("Couple type was not scored because the app does not have a directly comparable official rate for this individual couple.");
+  if (answers.citizenshipStatus) notScored.push("Citizenship was not scored; citizenship alone is not treated as a divorce predictor.");
+  if (answers.children === "yes") notScored.push("Children were not scored because the intake does not capture the family structure, timing, or cohort data needed for a meaningful comparison.");
+  if (answers.militaryStatus === "yes") notScored.push("Military status was not scored because service branch, component, deployment, age, and cohort data are not directly comparable with the CDC state rate.");
+  if (answers.governmentStatus === "yes") notScored.push("Government employment or public office was not scored because it is a legal-planning factor, not a supported divorce-rate adjustment.");
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure") notScored.push("Pension status was not scored because it affects financial complexity, not a defensible personal divorce probability.");
+
+  indicatorScore = Math.max(15, Math.min(85, indicatorScore));
+  const band = indicatorScore >= 65 ? "Elevated" : indicatorScore >= 45 ? "Mixed" : "Lower";
 
   return {
-    baseRate,
-    adjustedRate: roundedAdjustedRate,
-    adjustment: Math.round((roundedAdjustedRate - baseRate) * 10) / 10
+    nationalRate: nationalDivorceBenchmark,
+    stateRate,
+    stateComparisonPct,
+    hasComparableStateRate,
+    indicatorScore,
+    band,
+    signals,
+    notScored,
+    sourceUrl: divorceStatisticsSource,
+    stressors: consequenceContext.stressors
   };
 }
 
@@ -2619,30 +2670,70 @@ function App() {
                   </div>
                   <div className="stat-grid">
                     <div className="stat-row">
-                      <span>{divorceRateContext.baseRate.toFixed(1)}</span>
+                      <span>{divorceRateContext.nationalRate.toFixed(1)}</span>
                       <p>
-                        {rule.name} {copy.stateBenchmark}: {copy.rateNote}.
+                        {copy.nationalBenchmark}: {copy.rateNote}.
                       </p>
                     </div>
                     <div className="stat-row">
-                      <span>+{divorceRateContext.adjustment.toFixed(1)}</span>
+                      <span>{divorceRateContext.stateRate === null ? "N/A" : divorceRateContext.stateRate.toFixed(1)}</span>
                       <p>
-                        {copy.stressAdjustedRate}: caution points from selected stressors.
+                        {rule.name} {copy.stateBenchmark}: {divorceRateContext.stateRate === null ? copy.stateDataUnavailable : copy.rateNote}.
                       </p>
                     </div>
+                    <div className="stat-row">
+                      <span>
+                        {divorceRateContext.stateComparisonPct === null
+                          ? "—"
+                          : `${divorceRateContext.stateComparisonPct > 0 ? "+" : ""}${divorceRateContext.stateComparisonPct}%`}
+                      </span>
+                      <p>{copy.stateComparison}</p>
+                    </div>
                   </div>
+
+                  <div className={`context-index ${divorceRateContext.band.toLowerCase()}`}>
+                    <div className="context-index-heading">
+                      <span>{copy.unofficialIndexTitle}</span>
+                      <strong>{divorceRateContext.indicatorScore}<small> / 100</small></strong>
+                    </div>
+                    <div className="context-index-track" aria-hidden="true">
+                      <span style={{ width: `${divorceRateContext.indicatorScore}%` }} />
+                    </div>
+                    <p><strong>{copy[`contextBand${divorceRateContext.band}`]}</strong> · {copy.unofficialIndexExplanation}</p>
+                  </div>
+
                   <p>{copy.baselineRate}</p>
                   <p>{copy.complexityImpact}</p>
-                  <h3>{copy.selectedStressors}</h3>
-                  {consequenceContext.stressors.length > 0 ? (
-                    <ul>
-                      {consequenceContext.stressors.map((stressor) => (
-                        <li key={stressor}>{stressor}</li>
+
+                  <h3>{copy.signalBreakdown}</h3>
+                  {divorceRateContext.signals.length > 0 ? (
+                    <ul className="signal-list">
+                      {divorceRateContext.signals.map((signal) => (
+                        <li key={signal.label}>
+                          <span>{signal.label}</span>
+                          <strong className={signal.points > 0 ? "up" : "down"}>
+                            {signal.points > 0 ? "+" : ""}{signal.points}
+                          </strong>
+                        </li>
                       ))}
                     </ul>
                   ) : (
-                    <p>{copy.noStressors}</p>
+                    <p>{copy.noIndicatorSignals}</p>
                   )}
+
+                  {divorceRateContext.notScored.length > 0 && (
+                    <div className="not-scored">
+                      <h3>{copy.notScoredTitle}</h3>
+                      <p>{copy.notScoredIntro}</p>
+                      <ul>
+                        {divorceRateContext.notScored.map((item) => <li key={item}>{item}</li>)}
+                      </ul>
+                    </div>
+                  )}
+
+                  <a className="statistics-source" href={divorceRateContext.sourceUrl} target="_blank" rel="noreferrer">
+                    {copy.divorceSourceLabel} <ExternalLink size={14} aria-hidden="true" />
+                  </a>
                 </article>
               </div>
             </section>

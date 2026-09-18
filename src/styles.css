@@ -547,7 +547,7 @@ select {
 .consequence-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
 }
 
 .story-card,
@@ -716,7 +716,7 @@ select {
 .stat-grid {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: 14px;
 }
 
@@ -734,6 +734,129 @@ select {
   font-weight: 850;
   line-height: 1;
   margin-bottom: 8px;
+}
+
+.stat-row p {
+  font-size: 0.84rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.context-index {
+  background: #f3f8fe;
+  border: 1px solid #c8dcee;
+  border-radius: 8px;
+  margin: 16px 0;
+  padding: 15px;
+}
+
+.context-index-heading {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.context-index-heading > span {
+  color: #12304d;
+  font-weight: 800;
+}
+
+.context-index-heading > strong {
+  color: #12304d;
+  font-size: 1.65rem;
+  white-space: nowrap;
+}
+
+.context-index-heading small {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.context-index-track {
+  background: #dce8f4;
+  border-radius: 999px;
+  height: 9px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.context-index-track span {
+  background: #2563eb;
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.context-index.elevated .context-index-track span {
+  background: #b45309;
+}
+
+.context-index.lower .context-index-track span {
+  background: #15803d;
+}
+
+.context-index p {
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.signal-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.signal-list li {
+  align-items: flex-start;
+  border-bottom: 1px solid #e3ebf3;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.signal-list strong {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  padding: 3px 8px;
+}
+
+.signal-list strong.up {
+  background: #fff3dc;
+  color: #92400e;
+}
+
+.signal-list strong.down {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.not-scored {
+  background: #ffffff;
+  border: 1px dashed #b9cce0;
+  border-radius: 8px;
+  margin: 16px 0;
+  padding: 14px;
+}
+
+.not-scored h3 {
+  margin-top: 0;
+}
+
+.not-scored p,
+.not-scored li {
+  font-size: 0.88rem;
+}
+
+.statistics-source {
+  align-items: center;
+  color: #1d4ed8;
+  display: inline-flex;
+  font-size: 0.88rem;
+  font-weight: 760;
+  gap: 5px;
 }
 
 .report h2 {
