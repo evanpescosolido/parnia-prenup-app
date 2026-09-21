@@ -859,6 +859,125 @@ select {
   gap: 5px;
 }
 
+.litigation-cost-card {
+  background: linear-gradient(135deg, #0f2b46 0%, #163f65 100%);
+  border: 1px solid #214f78;
+  border-radius: 10px;
+  color: #ffffff;
+  margin-top: 14px;
+  padding: 22px;
+}
+
+.litigation-cost-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.litigation-cost-card .eyebrow {
+  color: #93c5fd;
+}
+
+.litigation-cost-card h3,
+.litigation-cost-card h4 {
+  color: #ffffff;
+}
+
+.litigation-cost-card h3 {
+  font-size: 1.45rem;
+  margin: 4px 0 8px;
+}
+
+.litigation-cost-card p {
+  color: #dbeafe;
+}
+
+.litigation-cost-range {
+  color: #ffffff;
+  flex: 0 0 auto;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  line-height: 1;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.litigation-cost-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 20px 0;
+}
+
+.litigation-cost-grid > div {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 13px;
+}
+
+.litigation-cost-grid span {
+  color: #bfdbfe;
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.litigation-cost-grid strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.litigation-cost-details {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.litigation-cost-details h4 {
+  margin: 0 0 8px;
+}
+
+.litigation-cost-details ul {
+  color: #dbeafe;
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+.litigation-cost-details li + li {
+  margin-top: 5px;
+}
+
+.litigation-method {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.litigation-method p {
+  margin-top: 0;
+}
+
+.litigation-method a {
+  align-items: center;
+  color: #bfdbfe;
+  display: inline-flex;
+  font-weight: 760;
+  gap: 5px;
+}
+
+.litigation-disclaimer {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.83rem;
+  line-height: 1.5;
+  margin: 18px 0 0;
+  padding-top: 14px;
+}
+
 .report h2 {
   font-size: 1.75rem;
   margin-bottom: 0;
@@ -1256,6 +1375,23 @@ li + li {
   .stat-grid,
   .mini-grid {
     grid-template-columns: 1fr;
+  }
+
+  .litigation-cost-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .litigation-cost-details {
+    grid-template-columns: 1fr;
+  }
+
+  .litigation-cost-header {
+    flex-direction: column;
+  }
+
+  .litigation-cost-range {
+    text-align: left;
+    white-space: normal;
   }
 
   .why-important-card ul {

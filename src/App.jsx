@@ -302,6 +302,19 @@ const translations = {
     contextBandLower: "Lower-context signal",
     contextBandMixed: "Mixed-context signal",
     contextBandElevated: "Elevated-context signal",
+    litigationCostEyebrow: "The expensive version of figuring it out later",
+    litigationCostTitle: "Rough combined divorce-litigation cost",
+    litigationCostIntro:
+      "This estimates what both sides together might spend litigating financial issues, using the selected state's lawyer-rate benchmark and the asset complexity entered here.",
+    litigationAttorneyFees: "Estimated combined attorney fees",
+    litigationExpertFees: "Possible valuation and expert costs",
+    litigationHours: "Combined attorney-time assumption",
+    litigationAssetBasis: "Entered asset-value basis",
+    litigationFactors: "Inputs increasing the estimate",
+    litigationNoFactors: "No asset-specific complexity factor selected yet",
+    litigationRateSource: "State lawyer-rate benchmark source",
+    litigationDisclaimer:
+      "Planning estimate only—not a quote or prediction. It assumes a genuinely contested financial case and does not include the property divided between spouses, child-custody litigation, support awards, taxes, appeals, or the cost of challenging an agreement. A prenup or postnup may narrow disputes but cannot guarantee that litigation will be avoided.",
     selectedStressors: "Selected stressors",
     noStressors: "No major stressors selected yet.",
     estimatedDisputeExposure: "Estimated dispute exposure",
@@ -1541,6 +1554,82 @@ function getCostEstimate(answers, result) {
   };
 }
 
+function getDivorceLitigationEstimate(answers, currentAssetTotal, futureAssetTotal) {
+  const stateCost = getStateCostAdjustment(answers.state);
+  const enteredAssetValue = currentAssetTotal + futureAssetTotal;
+  const assetTopicCount = answers.currentAssets.length + answers.futureAssets.length;
+  const factors = [];
+  let lowHours = 60;
+  let highHours = 140;
+  let expertLow = 0;
+  let expertHigh = 0;
+
+  const addHours = (label, low, high) => {
+    factors.push(label);
+    lowHours += low;
+    highHours += high;
+  };
+
+  if (enteredAssetValue >= 5000000) addHours("$5M+ in entered current and future asset values", 50, 140);
+  else if (enteredAssetValue >= 1000000) addHours("$1M+ in entered current and future asset values", 35, 90);
+  else if (enteredAssetValue >= 250000) addHours("$250K+ in entered current and future asset values", 20, 50);
+  else if (enteredAssetValue > 0) addHours("entered current or future asset values", 10, 25);
+
+  if (assetTopicCount > 2) {
+    const extraTopics = assetTopicCount - 2;
+    addHours(`${assetTopicCount} separate asset or debt topics`, Math.min(30, extraTopics * 4), Math.min(80, extraTopics * 10));
+  }
+  if (answers.business === "yes") {
+    addHours("business ownership, control, or valuation", 30, 90);
+    expertLow += 7500;
+    expertHigh += 30000;
+  }
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") {
+    addHours("foreign assets, tracing, or cross-border counsel", 40, 120);
+    expertLow += 5000;
+    expertHigh += 25000;
+  }
+  if (answers.realEstate === "yes") {
+    addHours("real-estate title, equity, or tracing", 15, 45);
+    expertLow += 1000;
+    expertHigh += 5000;
+  }
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure" || answers.militaryStatus === "yes") {
+    addHours("pension or military-benefit valuation and division", 15, 45);
+    expertLow += 1000;
+    expertHigh += 6000;
+  }
+  if (answers.incomeGap === "yes" || answers.careerSacrifice === "yes" || getIncomeSnapshot(answers).length > 0) {
+    addHours("income, support, or career-sacrifice disputes", 10, 30);
+  }
+  if (answers.debts === "yes") addHours("debt classification or allocation", 8, 20);
+  if (answers.disclosureStarted === "no") addHours("financial disclosure has not started", 10, 30);
+  if (enteredAssetValue >= 1000000 && answers.business !== "yes") {
+    expertLow += 3000;
+    expertHigh += 15000;
+  }
+
+  lowHours = Math.min(lowHours, 250);
+  highHours = Math.min(highHours, 650);
+
+  const attorneyLow = roundToNearest(lowHours * stateCost.benchmarkRate, 1000);
+  const attorneyHigh = roundToNearest(highHours * stateCost.benchmarkRate, 1000);
+  const roundedExpertLow = roundToNearest(expertLow, 1000);
+  const roundedExpertHigh = roundToNearest(expertHigh, 1000);
+  const totalLow = attorneyLow + roundedExpertLow;
+  const totalHigh = attorneyHigh + roundedExpertHigh;
+
+  return {
+    range: formatCostRange(totalLow, totalHigh, highHours === 650),
+    attorneyRange: formatCostRange(attorneyLow, attorneyHigh),
+    expertRange: expertHigh > 0 ? formatCostRange(roundedExpertLow, roundedExpertHigh) : "$0 specifically added",
+    hoursRange: `${lowHours}-${highHours} hours across both sides`,
+    enteredAssetValue,
+    factors: factors.length > 0 ? factors : ["baseline contested financial divorce"],
+    stateCost
+  };
+}
+
 function getConsequenceContext(answers, result, currentAssetTotal, futureAssetTotal) {
   const stressors = [];
 
@@ -1623,7 +1712,7 @@ function getDivorceRateContext(answers, consequenceContext) {
   };
 }
 
-function getConsequenceStory(answers, rule, context, costEstimate) {
+function getConsequenceStory(answers, rule, context, costEstimate, litigationEstimate) {
   const agreementName = answers.mode === "prenup" ? "prenup" : "postnup";
   const assetPhrase = answers.currentAssets.length
     ? `The first argument starts with ${answers.currentAssets.slice(0, 3).join(", ").toLowerCase()}, then escalates until a perfectly normal bank statement is being treated like evidence from a submarine trial`
@@ -1645,7 +1734,7 @@ function getConsequenceStory(answers, rule, context, costEstimate) {
     `${assetPhrase}. ${futurePhrase}`,
     `${internationalPhrase} ${incomePhrase}`,
     `Instead of calmly pointing to a signed agreement, everyone pays lawyers to reconstruct intent from old emails, bank transfers, half-remembered conversations, and screenshots that somehow all have 3% battery and the emotional tone of a hostage note.`,
-    `The estimated attorney-cost range for drafting now is ${costEstimate.range}. The cost of fighting later is not shown here because the app is educational, not a haunted cash register.`,
+    `The estimated attorney-cost range for drafting now is ${costEstimate.range}. The rough combined cost of litigating the financial divorce later is ${litigationEstimate.range}. The haunted cash register has, regrettably, learned arithmetic.`,
     `Dispute exposure based on the current answers: ${context.exposure}. Translation: the ${agreementName} conversation may be awkward now, but future-you may send present-you a fruit basket and a notarized thank-you card.`
   ];
 }
@@ -2176,9 +2265,13 @@ function App() {
     () => getDivorceRateContext(answers, consequenceContext),
     [answers, consequenceContext]
   );
+  const divorceLitigationEstimate = useMemo(
+    () => getDivorceLitigationEstimate(answers, currentAssetTotal, futureAssetTotal),
+    [answers, currentAssetTotal, futureAssetTotal]
+  );
   const consequenceStory = useMemo(
-    () => getConsequenceStory(answers, rule, consequenceContext, costEstimate),
-    [answers, rule, consequenceContext, costEstimate]
+    () => getConsequenceStory(answers, rule, consequenceContext, costEstimate, divorceLitigationEstimate),
+    [answers, rule, consequenceContext, costEstimate, divorceLitigationEstimate]
   );
   const conversationScript = useMemo(() => getConversationScript(answers, copy, language), [answers, copy, language]);
   const coupleForeignChecks = useMemo(() => getCoupleSpecificForeignChecks(answers), [answers]);
@@ -2736,6 +2829,59 @@ function App() {
                   </a>
                 </article>
               </div>
+
+              <article className="litigation-cost-card">
+                <div className="litigation-cost-header">
+                  <div>
+                    <p className="eyebrow">{copy.litigationCostEyebrow}</p>
+                    <h3>{copy.litigationCostTitle}</h3>
+                    <p>{copy.litigationCostIntro}</p>
+                  </div>
+                  <strong className="litigation-cost-range">{divorceLitigationEstimate.range}</strong>
+                </div>
+
+                <div className="litigation-cost-grid">
+                  <div>
+                    <span>{copy.litigationAttorneyFees}</span>
+                    <strong>{divorceLitigationEstimate.attorneyRange}</strong>
+                  </div>
+                  <div>
+                    <span>{copy.litigationExpertFees}</span>
+                    <strong>{divorceLitigationEstimate.expertRange}</strong>
+                  </div>
+                  <div>
+                    <span>{copy.litigationHours}</span>
+                    <strong>{divorceLitigationEstimate.hoursRange}</strong>
+                  </div>
+                  <div>
+                    <span>{copy.litigationAssetBasis}</span>
+                    <strong>
+                      {divorceLitigationEstimate.enteredAssetValue > 0
+                        ? formatCurrency(divorceLitigationEstimate.enteredAssetValue)
+                        : "No values entered"}
+                    </strong>
+                  </div>
+                </div>
+
+                <div className="litigation-cost-details">
+                  <div>
+                    <h4>{copy.litigationFactors}</h4>
+                    <ul>
+                      {divorceLitigationEstimate.factors.map((factor) => <li key={factor}>{factor}</li>)}
+                    </ul>
+                  </div>
+                  <div className="litigation-method">
+                    <p>
+                      <strong>{rule.name}:</strong> {divorceLitigationEstimate.stateCost.label}. The estimate multiplies that benchmark by the displayed combined attorney-time range, then adds only the selected valuation/expert allowances.
+                    </p>
+                    <a href={divorceLitigationEstimate.stateCost.sourceUrl} target="_blank" rel="noreferrer">
+                      {copy.litigationRateSource} <ExternalLink size={14} aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+
+                <p className="litigation-disclaimer">{copy.litigationDisclaimer}</p>
+              </article>
             </section>
           )}
 
