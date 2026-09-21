@@ -483,6 +483,208 @@ select {
   grid-template-columns: minmax(120px, 180px) minmax(240px, 420px);
 }
 
+.field-group-intro {
+  color: #526579;
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: -6px 0 0;
+  max-width: 780px;
+}
+
+.foreign-intake {
+  background: linear-gradient(135deg, #f3f8fe 0%, #fbfdff 100%);
+  border: 1px solid #b9d2eb;
+  border-radius: 10px;
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+}
+
+.foreign-intake-grid,
+.foreign-yes-no-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.foreign-intake-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.foreign-yes-no-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.foreign-yes-no-grid label {
+  align-content: start;
+  background: #ffffff;
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 13px;
+}
+
+.foreign-yes-no-grid .segmented {
+  margin-top: auto;
+}
+
+.foreign-asset-chips .chip {
+  border-radius: 8px;
+  text-align: left;
+}
+
+.foreign-implications-preview {
+  background: #ffffff;
+  border: 1px solid #93c5fd;
+  border-radius: 9px;
+  box-shadow: inset 4px 0 0 #2563eb;
+  padding: 18px;
+}
+
+.foreign-preview-heading {
+  align-items: flex-start;
+  color: #12304d;
+  display: flex;
+  gap: 10px;
+}
+
+.foreign-preview-heading h3 {
+  margin: 0 0 5px;
+}
+
+.foreign-preview-heading p {
+  margin: 0 0 14px;
+}
+
+.foreign-preview-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.foreign-preview-grid section,
+.foreign-couple-details {
+  background: #f7fbff;
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  padding: 13px;
+}
+
+.foreign-preview-grid h4,
+.foreign-couple-details h4 {
+  color: #12304d;
+  margin: 0 0 7px;
+}
+
+.foreign-preview-grid p,
+.foreign-preview-grid li,
+.foreign-couple-details li {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.foreign-preview-grid p,
+.foreign-preview-grid ul,
+.foreign-couple-details ul {
+  margin-bottom: 0;
+}
+
+.foreign-couple-details {
+  margin-top: 10px;
+}
+
+.complexity-analysis {
+  background: #eef6ff;
+  border: 1px solid #b9d2eb;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.complexity-analysis-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.complexity-analysis-heading h3 {
+  margin: 0 0 5px;
+}
+
+.complexity-analysis-heading p {
+  color: #526579;
+  margin: 0;
+}
+
+.complexity-level {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #cbd9e8;
+  border-radius: 8px;
+  display: grid;
+  flex: 0 0 150px;
+  gap: 3px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.complexity-level span {
+  color: #12304d;
+  font-size: 1.45rem;
+  font-weight: 850;
+}
+
+.complexity-level strong {
+  color: #2563eb;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.complexity-level.high strong {
+  color: #b45309;
+}
+
+.complexity-level.lower strong {
+  color: #15803d;
+}
+
+.complexity-factor-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.complexity-factor-list article {
+  align-items: flex-start;
+  background: #ffffff;
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 13px;
+}
+
+.complexity-factor-list h4 {
+  color: #12304d;
+  margin: 0 0 5px;
+}
+
+.complexity-factor-list p {
+  color: #526579;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.complexity-factor-list article > strong {
+  background: #fff3dc;
+  border-radius: 999px;
+  color: #92400e;
+  flex: 0 0 auto;
+  padding: 4px 8px;
+}
+
 .consequences {
   display: grid;
   gap: 18px;
@@ -978,6 +1180,126 @@ select {
   padding-top: 14px;
 }
 
+.consequence-detail-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.consequence-detail-card,
+.agreement-boundary-card {
+  background: #fbfdff;
+  border: 1px solid #d8e3ef;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.consequence-detail-heading {
+  align-items: center;
+  color: #12304d;
+  display: flex;
+  gap: 9px;
+}
+
+.consequence-detail-heading h3 {
+  margin: 0;
+}
+
+.consequence-detail-card > p {
+  color: #526579;
+}
+
+.consequence-exposure-value {
+  background: #eaf3ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  display: grid;
+  margin: 14px 0;
+  padding: 13px;
+}
+
+.consequence-exposure-value span {
+  color: #526579;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.consequence-exposure-value strong {
+  color: #12304d;
+  font-size: 1.5rem;
+}
+
+.exposure-detail-card li {
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.consequence-timeline {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.consequence-timeline li {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 92px minmax(0, 1fr);
+  padding: 0 0 16px;
+  position: relative;
+}
+
+.consequence-timeline li > span {
+  background: #eaf3ff;
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  font-weight: 850;
+  height: fit-content;
+  padding: 5px 8px;
+  text-align: center;
+}
+
+.consequence-timeline h4 {
+  color: #12304d;
+  margin: 2px 0 5px;
+}
+
+.consequence-timeline p {
+  color: #526579;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.agreement-boundary-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fbfdff 50%, #fff7ed 100%);
+}
+
+.agreement-boundary-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.agreement-boundary-grid section {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.agreement-boundary-grid h4 {
+  color: #12304d;
+  margin: 0 0 9px;
+}
+
+.agreement-boundary-grid li {
+  line-height: 1.5;
+  margin-bottom: 7px;
+}
+
 .report h2 {
   font-size: 1.75rem;
   margin-bottom: 0;
@@ -1368,13 +1690,27 @@ li + li {
   .asset-value-row,
   .choice-grid.two,
   .consequence-grid,
+  .consequence-detail-grid,
+  .agreement-boundary-grid,
+  .complexity-factor-list,
+  .foreign-intake-grid,
   .foreign-law-grid,
+  .foreign-preview-grid,
+  .foreign-yes-no-grid,
   .income-grid,
   .lawyer-link-list,
   .report-grid,
   .stat-grid,
   .mini-grid {
     grid-template-columns: 1fr;
+  }
+
+  .complexity-analysis-heading {
+    flex-direction: column;
+  }
+
+  .complexity-level {
+    width: 100%;
   }
 
   .litigation-cost-grid {

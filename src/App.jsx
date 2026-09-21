@@ -45,6 +45,12 @@ const initialAnswers = {
   futureAssetValues: {},
   internationalAssets: "",
   foreignCountry: "",
+  foreignAssetTypes: [],
+  foreignResidence: "",
+  foreignOwnership: "",
+  futureMoveAbroad: "",
+  foreignAgreementStatus: "",
+  foreignLanguageDocuments: "",
   incomeGap: "",
   currentAnnualIncome: "",
   expectedAnnualIncome: "",
@@ -171,9 +177,28 @@ const translations = {
     estimatedFutureValues: "Estimated future values",
     currentTotal: "Current estimated total:",
     futureTotal: "Future estimated total:",
-    complexityTitle: "Complexity flags",
+    complexityTitle: "Agreement complexity and foreign implications",
+    complexityIntro:
+      "These questions identify where one state's agreement may collide with another country's property, family, tax, inheritance, registration, or enforcement rules.",
     internationalQuestion: "Are any current or expected assets outside the United States?",
     foreignCountry: "Foreign country or jurisdiction connected to the asset",
+    foreignAssetTypesTitle: "What is located or expected there?",
+    foreignResidenceQuestion: "Where does either person live, have legal domicile, or realistically expect to live?",
+    foreignResidencePlaceholder: "Example: Massachusetts now; possible move to France in 2029",
+    foreignOwnershipQuestion: "How is the foreign property or account owned or titled?",
+    foreignOwnershipPlaceholder: "Example: solely owned apartment; family company; joint bank account; trust beneficiary",
+    futureMoveQuestion: "Could either person move to, work in, or retire in another country?",
+    foreignAgreementQuestion: "Is there already a marriage contract, local marital regime election, trust instrument, or similar foreign document?",
+    foreignLanguageQuestion: "Are important titles, statements, contracts, or official records in another language?",
+    complexityAnalysisTitle: "What is making this agreement complicated",
+    complexityAnalysisIntro: "This is a drafting and coordination score—not a prediction that the agreement will fail.",
+    complexityLower: "Lower complexity",
+    complexityModerate: "Moderate complexity",
+    complexityHigh: "High complexity",
+    foreignImplicationsTitle: "Cross-border implications to investigate",
+    foreignImplicationsIntro:
+      "A U.S. agreement should not be assumed to bind a foreign court, registry, pension administrator, company, trustee, or tax authority.",
+    foreignProfileDetails: "Details from this couple's answers",
     incomeGap: "Is there a meaningful income or wealth gap?",
     incomeGrowthTitle: "Expected income and growth during the marriage",
     currentIncome: "Current estimated annual income",
@@ -315,6 +340,30 @@ const translations = {
     litigationRateSource: "State lawyer-rate benchmark source",
     litigationDisclaimer:
       "Planning estimate only—not a quote or prediction. It assumes a genuinely contested financial case and does not include the property divided between spouses, child-custody litigation, support awards, taxes, appeals, or the cost of challenging an agreement. A prenup or postnup may narrow disputes but cannot guarantee that litigation will be avoided.",
+    consequenceExposureTitle: "Where money, property, or control could get tied up",
+    consequenceExposureIntro:
+      "These are the entered topics most likely to require tracing, valuation, negotiation, a buyout, or a court decision if the couple has no controlling agreement.",
+    consequenceExposureValue: "Entered value connected to these issues",
+    consequenceTimelineTitle: "How a contested financial divorce can unfold",
+    consequenceTimelineIntro:
+      "Illustrative stages only. They can overlap, settle early, or last much longer depending on the court, cooperation, discovery, experts, and appeals.",
+    agreementBoundaryTitle: "What an agreement may help with—and where it stops",
+    agreementMayHelp: "May reduce uncertainty about",
+    agreementCannotControl: "Cannot conclusively control",
+    agreementMayHelpItems: [
+      "Which assets and debts are separate, shared, marital, or community property.",
+      "How appreciation, investment income, future earnings, real-estate equity, and business growth will be treated.",
+      "Responsibility for debts, valuation methods, sale or buyout procedures, and some fee or dispute-resolution rules.",
+      "Spousal-support expectations where state law permits, subject to enforceability review.",
+      "Disclosure expectations and a written record of what both people understood when they signed."
+    ],
+    agreementCannotControlItems: [
+      "A child's custody, parenting schedule, or final child-support rights; courts decide those under current law and the child's interests.",
+      "Undisclosed or hidden assets, fraudulent transfers, illegal terms, or rights that cannot lawfully be waived.",
+      "Whether a court will enforce every provision after reviewing voluntariness, disclosure, counsel, timing, fairness, and public policy.",
+      "Future facts nobody addressed, every tax consequence, or every foreign court and asset registry.",
+      "All legal fees or conflict. A clear agreement can narrow issues; it is not a force field."
+    ],
     selectedStressors: "Selected stressors",
     noStressors: "No major stressors selected yet.",
     estimatedDisputeExposure: "Estimated dispute exposure",
@@ -992,6 +1041,16 @@ const futureAssetOptions = [
   "Income from separate property"
 ];
 
+const foreignAssetTypeOptions = [
+  "Real estate or land",
+  "Bank, brokerage, or cryptocurrency account",
+  "Business or company interest",
+  "Trust, gift, or inheritance",
+  "Pension or retirement benefit",
+  "Intellectual property or royalties",
+  "Debt, guarantee, or tax obligation"
+];
+
 const stateDivorceBenchmarks = {
   AL: 3.0,
   AK: 3.1,
@@ -1223,7 +1282,105 @@ function getCoupleSpecificForeignChecks(answers) {
   if (answers.citizenshipCountries.trim()) {
     checks.push(`Citizenship or cross-border context entered: ${answers.citizenshipCountries.trim()}. Local counsel should verify every listed country's connection.`);
   }
+  if (answers.foreignResidence.trim()) {
+    checks.push(`Residence, domicile, or expected-move context entered: ${answers.foreignResidence.trim()}. Confirm how each location affects jurisdiction, governing law, tax residence, and enforcement.`);
+  }
+  if (answers.foreignAssetTypes.length > 0) {
+    checks.push(`Foreign asset types entered: ${answers.foreignAssetTypes.join(", ")}. Verify title, classification, valuation, transfer restrictions, and local registration for each type.`);
+  }
+  if (answers.foreignOwnership.trim()) {
+    checks.push(`Foreign ownership or title entered: ${answers.foreignOwnership.trim()}. Confirm the legal owner, beneficial owner, source of funds, and whether another person or entity has rights.`);
+  }
+  if (answers.futureMoveAbroad === "yes" || answers.futureMoveAbroad === "unsure") {
+    checks.push("A future move, job, or retirement abroad is possible. Counsel should consider a governing-law clause, forum selection, periodic review, and whether a coordinated local agreement is needed.");
+  }
+  if (answers.foreignAgreementStatus === "yes" || answers.foreignAgreementStatus === "unsure") {
+    checks.push("An existing or possible foreign marital-regime document, trust instrument, or local contract must be reviewed for conflicts, amendment rules, and priority over a new US agreement.");
+  }
+  if (answers.foreignLanguageDocuments === "yes" || answers.foreignLanguageDocuments === "unsure") {
+    checks.push("Foreign-language records may require certified translation, an interpreter, and proof that each person understood the agreement and disclosure materials.");
+  }
   return checks;
+}
+
+function getAgreementComplexityAnalysis(answers, foreignLawContext) {
+  const factors = [];
+  let score = 0;
+  const hasForeignConnection = answers.internationalAssets === "yes" || answers.internationalAssets === "unsure";
+  const addFactor = (title, detail, points) => {
+    factors.push({ title, detail, points });
+    score += points;
+  };
+
+  if (hasForeignConnection) {
+    addFactor(
+      "More than one legal system may matter",
+      `${foreignLawContext.label}: ownership, marital-property treatment, formalities, taxes, inheritance, and enforcement may not follow the selected U.S. state's rules.`,
+      4
+    );
+  }
+  if (hasForeignConnection && !answers.foreignCountry.trim()) {
+    addFactor("Exact foreign jurisdiction is unresolved", "Country-level analysis may still be too broad; a province, state, territory, emirate, or other local jurisdiction may control.", 2);
+  }
+  if (hasForeignConnection && (answers.foreignCountry.match(/,|;/g) || []).length > 0) {
+    addFactor("Multiple foreign jurisdictions", "Each country—and sometimes each province, state, territory, or emirate—may require separate analysis and local counsel.", 2);
+  }
+  if (hasForeignConnection && answers.foreignAssetTypes.length > 0) {
+    const sensitiveTypes = answers.foreignAssetTypes.filter((item) => /Real estate|Business|Trust|Pension/.test(item));
+    addFactor(
+      "Foreign asset classification and title",
+      `${answers.foreignAssetTypes.join(", ")}. ${sensitiveTypes.length > 0 ? "One or more selected types commonly depends on local registries, mandatory rules, or specialist valuation." : "Account access, beneficial ownership, valuation, and currency conversion still need verification."}`,
+      sensitiveTypes.length > 0 ? 3 : 2
+    );
+  }
+  if (hasForeignConnection && !answers.foreignOwnership.trim()) {
+    addFactor("Foreign title or beneficial ownership is not documented yet", "The agreement cannot classify or protect an asset reliably until counsel knows the registered owner, beneficial owner, source of funds, and any entity or trust rights.", 1);
+  }
+  if (hasForeignConnection && answers.foreignOwnership.trim()) {
+    addFactor("Foreign ownership structure needs local verification", `Entered ownership context: ${answers.foreignOwnership.trim()}. Local records and beneficial ownership may not match informal descriptions.`, 1);
+  }
+  if (hasForeignConnection && (answers.futureMoveAbroad === "yes" || answers.futureMoveAbroad === "unsure")) {
+    addFactor("Future residence may change the forum", "A later move can affect jurisdiction, domicile, tax residence, applicable law, and where an agreement must be enforced.", 2);
+  }
+  if (hasForeignConnection && (answers.foreignAgreementStatus === "yes" || answers.foreignAgreementStatus === "unsure")) {
+    addFactor("Existing foreign documents may conflict", "A marriage contract, marital-regime election, trust, or local instrument must be coordinated rather than silently overwritten.", 2);
+  }
+  if (hasForeignConnection && (answers.foreignLanguageDocuments === "yes" || answers.foreignLanguageDocuments === "unsure")) {
+    addFactor("Translation and informed-consent proof", "Certified translations, interpreters, and consistent bilingual schedules may be needed to support disclosure and understanding.", 1);
+  }
+  if (answers.citizenshipStatus === "one-us" || answers.citizenshipStatus === "neither-us") {
+    addFactor("Citizenship, domicile, and immigration connections", "Nationality alone does not decide the case, but it can create additional jurisdiction, succession, tax, and recognition questions.", 2);
+  }
+  if (answers.coupleType === "same-sex" && (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure")) {
+    addFactor("Marriage recognition must be confirmed abroad", "Some jurisdictions do not recognize the marriage, same-sex divorce, spousal rights, or the agreement in the same way.", 2);
+  }
+  if (answers.business === "yes") addFactor("Business ownership and future growth", "Control, valuation dates, retained earnings, compensation, buyout mechanics, and transfer restrictions need precise drafting.", 3);
+  if (answers.realEstate === "yes") addFactor("Real-estate title and contributions", "Deeds, mortgages, down payments, improvements, appreciation, occupancy, sale, and buyout rights can pull in property-specific law.", 2);
+  if (answers.currentAssets.length + answers.futureAssets.length >= 4) {
+    addFactor("Many asset categories need separate rules", "Different assets can require different definitions, tracing methods, valuation dates, income treatment, and transfer procedures.", 2);
+  }
+  if (answers.incomeGap === "yes" || answers.careerSacrifice === "yes" || getIncomeSnapshot(answers).length > 0) {
+    addFactor("Income, support, or career-sacrifice planning", "The agreement may need support rules, review triggers, housing protection, insurance, or compensation that remains fair over time.", 2);
+  }
+  if (answers.debts === "yes") addFactor("Debt and creditor exposure", "The agreement should classify existing and future obligations, but it generally cannot erase a creditor's rights against a signer or joint account holder.", 1);
+  if (answers.children === "yes") addFactor("Family needs affect financial terms", "Housing, caregiving, and support planning can shape the financial agreement even though custody and child support cannot be conclusively set in advance.", 1);
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure" || answers.militaryStatus === "yes") {
+    addFactor("Pension or federal-benefit rules", "Vesting, service credits, survivor elections, division orders, and non-waivable federal or plan rules require specialist review.", 2);
+  }
+  if (answers.mode === "postnup") addFactor("The agreement is being made after marriage", "Existing marital rights, fiduciary duties, transfers, and consideration can make process and enforceability more demanding.", 2);
+  if (answers.pressure === "yes") addFactor("Timing or pressure threatens the process", "Rushed review can undermine voluntary consent and leave too little time for disclosure, independent counsel, and negotiation.", 3);
+  if (answers.disclosureStarted === "no") addFactor("Financial disclosure has not started", "Incomplete schedules, missing values, and later-discovered assets can complicate negotiation and enforceability.", 2);
+
+  if (factors.length === 0) {
+    factors.push({
+      title: "No major special complication selected yet",
+      detail: "State formalities, complete disclosure, independent review, careful drafting, and enough time still matter in every agreement.",
+      points: 0
+    });
+  }
+
+  const level = score >= 9 ? "High" : score >= 4 ? "Moderate" : "Lower";
+  return { score, level, factors };
 }
 
 function translateAsset(asset, language) {
@@ -1628,6 +1785,43 @@ function getDivorceLitigationEstimate(answers, currentAssetTotal, futureAssetTot
     factors: factors.length > 0 ? factors : ["baseline contested financial divorce"],
     stateCost
   };
+}
+
+function getConsequenceTimeline(answers) {
+  const disclosureDetail = answers.disclosureStarted === "yes"
+    ? "Existing financial disclosure may shorten this stage, but both sides can still request records, subpoenas, and sworn answers."
+    : "Accounts, debts, tax returns, compensation, titles, and transfers may have to be reconstructed through formal discovery and subpoenas.";
+  const valuationTopics = [];
+  if (answers.business === "yes") valuationTopics.push("business valuation");
+  if (answers.realEstate === "yes") valuationTopics.push("real-estate appraisal and tracing");
+  if (answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") valuationTopics.push("foreign records or local counsel");
+  if (answers.pensionStatus === "yes" || answers.pensionStatus === "unsure" || answers.militaryStatus === "yes") valuationTopics.push("pension or military-benefit analysis");
+  const valuationDetail = valuationTopics.length > 0
+    ? `Selected issues may require ${valuationTopics.join(", ")}, followed by negotiation or mediation.`
+    : "The parties may exchange valuations, trace separate property, calculate marital portions, and negotiate or mediate.";
+
+  return [
+    {
+      range: "0-3 months",
+      title: "Filing, response, and temporary rules",
+      detail: "The court may address immediate use of property, payment of bills, access to accounts, temporary support, and orders against moving or hiding assets."
+    },
+    {
+      range: "2-9 months",
+      title: "Financial disclosure and discovery",
+      detail: disclosureDetail
+    },
+    {
+      range: "4-15+ months",
+      title: "Tracing, valuation, and settlement work",
+      detail: valuationDetail
+    },
+    {
+      range: "12-24+ months",
+      title: "Trial and final financial orders if issues remain",
+      detail: "Witnesses and experts may testify, the court applies state law, and post-trial motions or appeals can extend the process. Many cases settle before this stage."
+    }
+  ];
 }
 
 function getConsequenceContext(answers, result, currentAssetTotal, futureAssetTotal) {
@@ -2269,6 +2463,7 @@ function App() {
     () => getDivorceLitigationEstimate(answers, currentAssetTotal, futureAssetTotal),
     [answers, currentAssetTotal, futureAssetTotal]
   );
+  const consequenceTimeline = useMemo(() => getConsequenceTimeline(answers), [answers]);
   const consequenceStory = useMemo(
     () => getConsequenceStory(answers, rule, consequenceContext, costEstimate, divorceLitigationEstimate),
     [answers, rule, consequenceContext, costEstimate, divorceLitigationEstimate]
@@ -2276,12 +2471,23 @@ function App() {
   const conversationScript = useMemo(() => getConversationScript(answers, copy, language), [answers, copy, language]);
   const coupleForeignChecks = useMemo(() => getCoupleSpecificForeignChecks(answers), [answers]);
   const foreignLawContext = useMemo(() => getForeignLawContext(answers.foreignCountry), [answers.foreignCountry]);
+  const complexityAnalysis = useMemo(
+    () => getAgreementComplexityAnalysis(answers, foreignLawContext),
+    [answers, foreignLawContext]
+  );
   const localLawyerLinks = useMemo(() => getLocalLawyerLinks(answers, rule), [answers.locality, rule]);
   const materialsChecklist = useMemo(() => getMaterialsChecklist(answers, copy), [answers, copy]);
   const attorneyDiscussionTopics = useMemo(() => getAttorneyDiscussionTopics(answers, copy), [answers, copy]);
   const publicBenefitsSummary = useMemo(() => getPublicBenefitsSummary(answers, copy), [answers, copy]);
 
   const setAnswer = (key, value) => setAnswers((current) => ({ ...current, [key]: value }));
+  const toggleListAnswer = (key, value) =>
+    setAnswers((current) => ({
+      ...current,
+      [key]: current[key].includes(value)
+        ? current[key].filter((item) => item !== value)
+        : [...current[key], value]
+    }));
   const toggleAsset = (groupKey, valueKey, asset) => {
     setAnswers((current) => {
       const isSelected = current[groupKey].includes(asset);
@@ -2643,21 +2849,125 @@ function App() {
 
           {step.id === "complexity" && (
             <FieldGroup title={copy.complexityTitle}>
+              <p className="field-group-intro">{copy.complexityIntro}</p>
               <label>
                 {copy.internationalQuestion}
                 <YesNo copy={copy} value={answers.internationalAssets} onChange={(value) => setAnswer("internationalAssets", value)} />
               </label>
 
               {(answers.internationalAssets === "yes" || answers.internationalAssets === "unsure") && (
-                <label>
-                  {copy.foreignCountry}
-                  <input
-                    type="text"
-                    value={answers.foreignCountry}
-                    onChange={(event) => setAnswer("foreignCountry", event.target.value)}
-                    placeholder="Example: Canada, France, India, Dubai"
-                  />
-                </label>
+                <section className="foreign-intake">
+                  <div className="foreign-intake-grid">
+                    <label>
+                      {copy.foreignCountry}
+                      <input
+                        type="text"
+                        value={answers.foreignCountry}
+                        onChange={(event) => setAnswer("foreignCountry", event.target.value)}
+                        placeholder="Example: Ontario, France, India, Dubai"
+                      />
+                    </label>
+                    <label>
+                      {copy.foreignResidenceQuestion}
+                      <input
+                        type="text"
+                        value={answers.foreignResidence}
+                        onChange={(event) => setAnswer("foreignResidence", event.target.value)}
+                        placeholder={copy.foreignResidencePlaceholder}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <p className="label-text">{copy.foreignAssetTypesTitle}</p>
+                    <div className="chip-grid foreign-asset-chips">
+                      {foreignAssetTypeOptions.map((assetType) => (
+                        <button
+                          className={answers.foreignAssetTypes.includes(assetType) ? "chip selected" : "chip"}
+                          key={assetType}
+                          type="button"
+                          onClick={() => toggleListAnswer("foreignAssetTypes", assetType)}
+                        >
+                          {assetType}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <label>
+                    {copy.foreignOwnershipQuestion}
+                    <input
+                      type="text"
+                      value={answers.foreignOwnership}
+                      onChange={(event) => setAnswer("foreignOwnership", event.target.value)}
+                      placeholder={copy.foreignOwnershipPlaceholder}
+                    />
+                  </label>
+
+                  <div className="foreign-yes-no-grid">
+                    <label>
+                      {copy.futureMoveQuestion}
+                      <YesNo copy={copy} value={answers.futureMoveAbroad} onChange={(value) => setAnswer("futureMoveAbroad", value)} />
+                    </label>
+                    <label>
+                      {copy.foreignAgreementQuestion}
+                      <YesNo copy={copy} value={answers.foreignAgreementStatus} onChange={(value) => setAnswer("foreignAgreementStatus", value)} />
+                    </label>
+                    <label>
+                      {copy.foreignLanguageQuestion}
+                      <YesNo copy={copy} value={answers.foreignLanguageDocuments} onChange={(value) => setAnswer("foreignLanguageDocuments", value)} />
+                    </label>
+                  </div>
+
+                  <div className="foreign-implications-preview">
+                    <div className="foreign-preview-heading">
+                      <Globe2 size={21} aria-hidden="true" />
+                      <div>
+                        <h3>{copy.foreignImplicationsTitle}</h3>
+                        <p>{copy.foreignImplicationsIntro}</p>
+                      </div>
+                    </div>
+                    <p><strong>{foreignLawContext.label}:</strong> {foreignLawContext.overview}</p>
+                    <div className="foreign-preview-grid">
+                      <section>
+                        <h4>{copy.foreignAgreementTreatment}</h4>
+                        <p>{foreignLawContext.agreementTreatment}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignPropertyRules}</h4>
+                        <p>{foreignLawContext.propertyRules}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignFormalities}</h4>
+                        <p>{foreignLawContext.formalities}</p>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignWatchItems}</h4>
+                        <ul>{foreignLawContext.watchItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                      </section>
+                      <section>
+                        <h4>{copy.foreignQuestions}</h4>
+                        <ul>{foreignLawContext.questions.map((item) => <li key={item}>{item}</li>)}</ul>
+                      </section>
+                      {foreignLawContext.sources.length > 0 && (
+                        <section>
+                          <h4>{copy.foreignSources}</h4>
+                          <ul>
+                            {foreignLawContext.sources.map((source) => (
+                              <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></li>
+                            ))}
+                          </ul>
+                        </section>
+                      )}
+                    </div>
+                    {coupleForeignChecks.length > 0 && (
+                      <div className="foreign-couple-details">
+                        <h4>{copy.foreignProfileDetails}</h4>
+                        <ul>{coupleForeignChecks.map((item) => <li key={item}>{item}</li>)}</ul>
+                      </div>
+                    )}
+                  </div>
+                </section>
               )}
 
               <label>
@@ -2728,6 +3038,30 @@ function App() {
                 <Globe2 size={20} aria-hidden="true" />
                 <p>{rule.international}</p>
               </div>
+
+              <section className="complexity-analysis">
+                <div className="complexity-analysis-heading">
+                  <div>
+                    <h3>{copy.complexityAnalysisTitle}</h3>
+                    <p>{copy.complexityAnalysisIntro}</p>
+                  </div>
+                  <div className={`complexity-level ${complexityAnalysis.level.toLowerCase()}`}>
+                    <span>{complexityAnalysis.score}</span>
+                    <strong>{copy[`complexity${complexityAnalysis.level}`]}</strong>
+                  </div>
+                </div>
+                <div className="complexity-factor-list">
+                  {complexityAnalysis.factors.map((factor) => (
+                    <article key={`${factor.title}-${factor.detail}`}>
+                      <div>
+                        <h4>{factor.title}</h4>
+                        <p>{factor.detail}</p>
+                      </div>
+                      {factor.points > 0 && <strong>+{factor.points}</strong>}
+                    </article>
+                  ))}
+                </div>
+              </section>
             </FieldGroup>
           )}
 
@@ -2881,6 +3215,61 @@ function App() {
                 </div>
 
                 <p className="litigation-disclaimer">{copy.litigationDisclaimer}</p>
+              </article>
+
+              <div className="consequence-detail-grid">
+                <article className="consequence-detail-card exposure-detail-card">
+                  <div className="consequence-detail-heading">
+                    <CircleDollarSign size={21} aria-hidden="true" />
+                    <h3>{copy.consequenceExposureTitle}</h3>
+                  </div>
+                  <p>{copy.consequenceExposureIntro}</p>
+                  {lossExposureValue > 0 && (
+                    <div className="consequence-exposure-value">
+                      <span>{copy.consequenceExposureValue}</span>
+                      <strong>{formatCurrency(lossExposureValue)}</strong>
+                    </div>
+                  )}
+                  <ul>
+                    {lossExposureItems.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </article>
+
+                <article className="consequence-detail-card timeline-card">
+                  <div className="consequence-detail-heading">
+                    <Clock3 size={21} aria-hidden="true" />
+                    <h3>{copy.consequenceTimelineTitle}</h3>
+                  </div>
+                  <p>{copy.consequenceTimelineIntro}</p>
+                  <ol className="consequence-timeline">
+                    {consequenceTimeline.map((stage) => (
+                      <li key={stage.title}>
+                        <span>{stage.range}</span>
+                        <div>
+                          <h4>{stage.title}</h4>
+                          <p>{stage.detail}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </article>
+              </div>
+
+              <article className="agreement-boundary-card">
+                <div className="consequence-detail-heading">
+                  <ShieldCheck size={21} aria-hidden="true" />
+                  <h3>{copy.agreementBoundaryTitle}</h3>
+                </div>
+                <div className="agreement-boundary-grid">
+                  <section>
+                    <h4>{copy.agreementMayHelp}</h4>
+                    <ul>{copy.agreementMayHelpItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                  </section>
+                  <section>
+                    <h4>{copy.agreementCannotControl}</h4>
+                    <ul>{copy.agreementCannotControlItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                  </section>
+                </div>
               </article>
             </section>
           )}
